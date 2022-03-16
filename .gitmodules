@@ -1,0 +1,4 @@
+[submodule "third_party/raylib-rs"]
+	path = third_party/raylib-rs
+	url = https://github.com/Ewpratten/raylib-rs
+	ignore = dirty
