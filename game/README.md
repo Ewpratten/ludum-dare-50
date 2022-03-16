@@ -10,4 +10,5 @@ This directory should contain game code and exported assets. No workfiles please
 - `./desktop_wrapper`
   - A tiny bit of code to initialize the game and run it
   - Used to improve the speed of the Rust compiler
-
+- `./dist`
+  - Anything in here will be bundled directly into the game executable
