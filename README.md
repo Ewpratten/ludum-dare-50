@@ -1,5 +1,7 @@
-# ludum-dare-50
-A game build over a weekend for Ludum Dare 50
+# Ludum Dare 50: *unnamed game*
+[![Build Full Release](https://github.com/Ewpratten/ludum-dare-50/actions/workflows/build.yml/badge.svg)](https://github.com/Ewpratten/ludum-dare-50/actions/workflows/build.yml)
+
+
 
 
 ## Cloning

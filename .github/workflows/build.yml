@@ -46,5 +46,5 @@ jobs:
       # Upload any generated artifacts
       - uses: actions/upload-artifact@v3
         with:
-          name: game-binary
+          name: game-binaries
           path: target/production_tmp/ldjam50-*
