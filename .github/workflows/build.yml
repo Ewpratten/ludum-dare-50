@@ -1,0 +1,50 @@
+name: Build Full Release
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest,  windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        shell: bash
+        run: |
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+      
+      # When building on Ubuntu, we need some dev libs to compile Raylib correctly
+      - name: Install additional Linux libraries
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install libasound2-dev mesa-common-dev libx11-dev libxrandr-dev libxi-dev xorg-dev libgl1-mesa-dev libglu1-mesa-dev -y
+        
+      # Build the game
+      - uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --all-features
+
+      # If we are on Linux, do the linux post-process steps
+      - name: Linux packaging
+        if: runner.os == 'Linux'
+        shell: bash
+        run: bash ./automation/scripts/post_process_release_linux.sh
+
+      # If we are on Windows, do the win64 post-process steps
+      - name: Windows packaging
+        if: runner.os == 'Windows'
+        shell: bash
+        run: bash ./automation/scripts/post_process_release_windows.sh
+
+      # Upload any generated artifacts
+      - uses: actions/upload-artifact@v3
+        with:
+          name: game-binary
+          path: target/production_tmp/ldjam50-*
