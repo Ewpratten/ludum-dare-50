@@ -1,0 +1,13 @@
+[workspace]
+members = ["./game/game_logic", "./game/desktop_wrapper"]
+exclude = [
+    "./third_party/raylib-rs/raylib",
+    "./third_party/raylib-rs/raylib-sys",
+]
+
+[profile.release]
+lto = true
+codegen-units = 1
+
+[profile.dev]
+split-debuginfo = "unpacked"

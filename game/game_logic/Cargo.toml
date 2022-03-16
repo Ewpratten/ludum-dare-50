@@ -1,0 +1,11 @@
+[package]
+name = "game_logic"
+publish = false
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+raylib = {version="3.5", path="../../third_party/raylib-rs/raylib"}
+# raylib = { version = "3.5", git = "https://github.com/ewpratten/raylib-rs", branch = "ludum-dare-50" }
