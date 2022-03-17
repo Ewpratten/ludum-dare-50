@@ -5,3 +5,4 @@
 [submodule "third_party/sm"]
 	path = third_party/sm
 	url = https://github.com/Ewpratten/sm
+	ignore = dirty
