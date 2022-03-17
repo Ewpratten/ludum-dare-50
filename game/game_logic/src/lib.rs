@@ -1,6 +1,9 @@
 //! This file is the main entry point for the game logic.
 
+use std::borrow::Borrow;
+
 pub(crate) mod persistent;
+pub(crate) mod rendering;
 
 /// This is the game logic entrypoint. Despite being async,
 /// this is expected to block the main thread for rendering and stuff.
@@ -15,7 +18,13 @@ pub async fn entrypoint() {
     let mut save_state = persistent::save_state::GameSaveState::load_or_create()
         .expect("Failed to parse game save state from disk. Possibly corrupt file?");
 
-    // TODO: Blocking game loop goes here
+    // Blocking call to the graphics rendering loop.
+    rendering::event_loop::handle_graphics_blocking(
+        |builder| {
+            builder.msaa_4x().vsync();
+        },
+        settings.target_fps,
+    );
 
     // Clean up any resources
     settings
