@@ -5,7 +5,6 @@ version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-raylib = {version="3.5", path="../../third_party/raylib-rs/raylib"}
-# raylib = { version = "3.5", git = "https://github.com/ewpratten/raylib-rs", branch = "ludum-dare-50" }
+raylib = { version = "3.7", path = "../../third_party/raylib-rs/raylib" }
+sad_machine = { version = "1.0", path = "../../third_party/sm" }
