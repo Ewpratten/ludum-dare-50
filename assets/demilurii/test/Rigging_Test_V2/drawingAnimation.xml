@@ -1,0 +1,155 @@
+<drawingAnimations>
+ <drawingAnimation spritesheet="sheet_Top-AP03_EmiliaF_AW_V1" name="AP03_EmiliaF_AW_V3_Top">
+  <drawing node="PHOTOREF" name="13-PHOTOREF" drwId="1">
+   <drw skinId="0" frame="1" repeat="18" name="13-PHOTOREF-1.png"/>
+  </drawing>
+  <drawing node="EAR_STRUCTURE" name="19-EAR_STRUCTURE" drwId="2"/>
+  <drawing node="STRUCTURE_F_LEG_STRUCTURE" name="11-F_LEG_STRUCTURE" drwId="3">
+   <drw skinId="0" frame="1" repeat="1" name="11-F_LEG_STRUCTURE-1.png"/>
+   <drw skinId="0" frame="2" repeat="1" name="11-F_LEG_STRUCTURE-10.png"/>
+   <drw skinId="0" frame="3" repeat="1" name="11-F_LEG_STRUCTURE-2.png"/>
+   <drw skinId="0" frame="4" repeat="1" name="11-F_LEG_STRUCTURE-11.png"/>
+   <drw skinId="0" frame="5" repeat="1" name="11-F_LEG_STRUCTURE-3.png"/>
+   <drw skinId="0" frame="6" repeat="1" name="11-F_LEG_STRUCTURE-12.png"/>
+   <drw skinId="0" frame="7" repeat="1" name="11-F_LEG_STRUCTURE-4.png"/>
+   <drw skinId="0" frame="8" repeat="1" name="11-F_LEG_STRUCTURE-13.png"/>
+   <drw skinId="0" frame="9" repeat="1" name="11-F_LEG_STRUCTURE-5.png"/>
+   <drw skinId="0" frame="10" repeat="1" name="11-F_LEG_STRUCTURE-14.png"/>
+   <drw skinId="0" frame="11" repeat="1" name="11-F_LEG_STRUCTURE-6.png"/>
+   <drw skinId="0" frame="12" repeat="1" name="11-F_LEG_STRUCTURE-15.png"/>
+   <drw skinId="0" frame="13" repeat="1" name="11-F_LEG_STRUCTURE-7.png"/>
+   <drw skinId="0" frame="14" repeat="1" name="11-F_LEG_STRUCTURE-16.png"/>
+   <drw skinId="0" frame="15" repeat="1" name="11-F_LEG_STRUCTURE-8.png"/>
+   <drw skinId="0" frame="16" repeat="1" name="11-F_LEG_STRUCTURE-17.png"/>
+   <drw skinId="0" frame="17" repeat="2" name="11-F_LEG_STRUCTURE-1.png"/>
+  </drawing>
+  <drawing node="STRUCTURE_B_LEG_STRUCTURE" name="12-B_LEG_STRUCTURE" drwId="4">
+   <drw skinId="0" frame="1" repeat="1" name="12-B_LEG_STRUCTURE-1.png"/>
+   <drw skinId="0" frame="2" repeat="1" name="12-B_LEG_STRUCTURE-10.png"/>
+   <drw skinId="0" frame="3" repeat="1" name="12-B_LEG_STRUCTURE-2.png"/>
+   <drw skinId="0" frame="4" repeat="1" name="12-B_LEG_STRUCTURE-11.png"/>
+   <drw skinId="0" frame="5" repeat="1" name="12-B_LEG_STRUCTURE-3.png"/>
+   <drw skinId="0" frame="6" repeat="1" name="12-B_LEG_STRUCTURE-12.png"/>
+   <drw skinId="0" frame="7" repeat="1" name="12-B_LEG_STRUCTURE-4.png"/>
+   <drw skinId="0" frame="8" repeat="1" name="12-B_LEG_STRUCTURE-13.png"/>
+   <drw skinId="0" frame="9" repeat="1" name="12-B_LEG_STRUCTURE-5.png"/>
+   <drw skinId="0" frame="10" repeat="1" name="12-B_LEG_STRUCTURE-14.png"/>
+   <drw skinId="0" frame="11" repeat="1" name="12-B_LEG_STRUCTURE-6.png"/>
+   <drw skinId="0" frame="12" repeat="1" name="12-B_LEG_STRUCTURE-17.png"/>
+   <drw skinId="0" frame="13" repeat="1" name="12-B_LEG_STRUCTURE-7.png"/>
+   <drw skinId="0" frame="14" repeat="1" name="12-B_LEG_STRUCTURE-15.png"/>
+   <drw skinId="0" frame="15" repeat="1" name="12-B_LEG_STRUCTURE-8.png"/>
+   <drw skinId="0" frame="16" repeat="1" name="12-B_LEG_STRUCTURE-16.png"/>
+   <drw skinId="0" frame="17" repeat="2" name="12-B_LEG_STRUCTURE-1.png"/>
+  </drawing>
+  <drawing node="STRUCTURE_BODY_STRUCTURE" name="15-BODY_STRUCTURE" drwId="5">
+   <drw skinId="0" frame="1" repeat="2" name="15-BODY_STRUCTURE-2.png"/>
+   <drw skinId="0" frame="3" repeat="1" name="15-BODY_STRUCTURE-4.png"/>
+   <drw skinId="0" frame="4" repeat="1" name="15-BODY_STRUCTURE-3.png"/>
+   <drw skinId="0" frame="5" repeat="2" name="15-BODY_STRUCTURE-1.png"/>
+   <drw skinId="0" frame="7" repeat="1" name="15-BODY_STRUCTURE-3.png"/>
+   <drw skinId="0" frame="8" repeat="1" name="15-BODY_STRUCTURE-4.png"/>
+   <drw skinId="0" frame="9" repeat="2" name="15-BODY_STRUCTURE-2.png"/>
+   <drw skinId="0" frame="11" repeat="1" name="15-BODY_STRUCTURE-4.png"/>
+   <drw skinId="0" frame="12" repeat="1" name="15-BODY_STRUCTURE-3.png"/>
+   <drw skinId="0" frame="13" repeat="2" name="15-BODY_STRUCTURE-1.png"/>
+   <drw skinId="0" frame="15" repeat="1" name="15-BODY_STRUCTURE-3.png"/>
+   <drw skinId="0" frame="16" repeat="1" name="15-BODY_STRUCTURE-4.png"/>
+   <drw skinId="0" frame="17" repeat="2" name="15-BODY_STRUCTURE-2.png"/>
+  </drawing>
+  <drawing node="STRUCTURE_TAIL_STRUCTURE" name="16-TAIL_STRUCTURE" drwId="6">
+   <drw skinId="0" frame="1" repeat="1" name="16-TAIL_STRUCTURE-1.png"/>
+   <drw skinId="0" frame="2" repeat="1" name="16-TAIL_STRUCTURE-4.png"/>
+   <drw skinId="0" frame="3" repeat="1" name="16-TAIL_STRUCTURE-5.png"/>
+   <drw skinId="0" frame="4" repeat="1" name="16-TAIL_STRUCTURE-3.png"/>
+   <drw skinId="0" frame="5" repeat="1" name="16-TAIL_STRUCTURE-6.png"/>
+   <drw skinId="0" frame="6" repeat="1" name="16-TAIL_STRUCTURE-7.png"/>
+   <drw skinId="0" frame="7" repeat="2" name="16-TAIL_STRUCTURE-2.png"/>
+   <drw skinId="0" frame="9" repeat="1" name="16-TAIL_STRUCTURE-7.png"/>
+   <drw skinId="0" frame="10" repeat="1" name="16-TAIL_STRUCTURE-6.png"/>
+   <drw skinId="0" frame="11" repeat="1" name="16-TAIL_STRUCTURE-3.png"/>
+   <drw skinId="0" frame="12" repeat="1" name="16-TAIL_STRUCTURE-5.png"/>
+   <drw skinId="0" frame="13" repeat="1" name="16-TAIL_STRUCTURE-4.png"/>
+   <drw skinId="0" frame="14" repeat="1" name="16-TAIL_STRUCTURE-1.png"/>
+   <drw skinId="0" frame="15" repeat="2" name="16-TAIL_STRUCTURE-9.png"/>
+  </drawing>
+  <drawing node="STRUCTURE_TAIL_TIP" name="14-TAIL_TIP" drwId="7">
+   <drw skinId="0" frame="1" repeat="1" name="14-TAIL_TIP-7.png"/>
+   <drw skinId="0" frame="2" repeat="1" name="14-TAIL_TIP-8.png"/>
+   <drw skinId="0" frame="3" repeat="1" name="14-TAIL_TIP-9.png"/>
+   <drw skinId="0" frame="4" repeat="1" name="14-TAIL_TIP-14.png"/>
+   <drw skinId="0" frame="5" repeat="1" name="14-TAIL_TIP-10.png"/>
+   <drw skinId="0" frame="6" repeat="1" name="14-TAIL_TIP-11.png"/>
+   <drw skinId="0" frame="7" repeat="1" name="14-TAIL_TIP-12.png"/>
+   <drw skinId="0" frame="8" repeat="1" name="14-TAIL_TIP-13.png"/>
+   <drw skinId="0" frame="9" repeat="1" name="14-TAIL_TIP-1.png"/>
+   <drw skinId="0" frame="10" repeat="1" name="14-TAIL_TIP-2.png"/>
+   <drw skinId="0" frame="11" repeat="1" name="14-TAIL_TIP-3.png"/>
+   <drw skinId="0" frame="12" repeat="1" name="14-TAIL_TIP-15.png"/>
+   <drw skinId="0" frame="13" repeat="1" name="14-TAIL_TIP-16.png"/>
+   <drw skinId="0" frame="14" repeat="1" name="14-TAIL_TIP-4.png"/>
+   <drw skinId="0" frame="15" repeat="1" name="14-TAIL_TIP-5.png"/>
+   <drw skinId="0" frame="16" repeat="1" name="14-TAIL_TIP-6.png"/>
+  </drawing>
+  <drawing node="STRUCTURE_MAOUS" name="18-MAOUS" drwId="8">
+   <drw skinId="0" frame="1" repeat="1" name="18-MAOUS-10.png"/>
+   <drw skinId="0" frame="2" repeat="1" name="18-MAOUS-11.png"/>
+   <drw skinId="0" frame="3" repeat="1" name="18-MAOUS-12.png"/>
+   <drw skinId="0" frame="4" repeat="1" name="18-MAOUS-13.png"/>
+   <drw skinId="0" frame="5" repeat="1" name="18-MAOUS-1.png"/>
+   <drw skinId="0" frame="6" repeat="1" name="18-MAOUS-4.png"/>
+   <drw skinId="0" frame="7" repeat="1" name="18-MAOUS-2.png"/>
+   <drw skinId="0" frame="8" repeat="1" name="18-MAOUS-6.png"/>
+   <drw skinId="0" frame="9" repeat="1" name="18-MAOUS-7.png"/>
+   <drw skinId="0" frame="10" repeat="1" name="18-MAOUS-3.png"/>
+   <drw skinId="0" frame="11" repeat="1" name="18-MAOUS-5.png"/>
+   <drw skinId="0" frame="12" repeat="1" name="18-MAOUS-8.png"/>
+   <drw skinId="0" frame="13" repeat="1" name="18-MAOUS-9.png"/>
+   <drw skinId="0" frame="14" repeat="1" name="18-MAOUS-15.png"/>
+   <drw skinId="0" frame="15" repeat="1" name="18-MAOUS-16.png"/>
+   <drw skinId="0" frame="16" repeat="1" name="18-MAOUS-17.png"/>
+   <drw skinId="0" frame="17" repeat="1" name="18-MAOUS-10.png"/>
+  </drawing>
+  <drawing node="STRUCTURE_NOSE_STRUCTURE" name="17-NOSE_STRUCTURE" drwId="9">
+   <drw skinId="0" frame="1" repeat="1" name="17-NOSE_STRUCTURE-3.png"/>
+   <drw skinId="0" frame="2" repeat="1" name="17-NOSE_STRUCTURE-6.png"/>
+   <drw skinId="0" frame="3" repeat="1" name="17-NOSE_STRUCTURE-5.png"/>
+   <drw skinId="0" frame="4" repeat="1" name="17-NOSE_STRUCTURE-7.png"/>
+   <drw skinId="0" frame="5" repeat="1" name="17-NOSE_STRUCTURE-1.png"/>
+   <drw skinId="0" frame="6" repeat="1" name="17-NOSE_STRUCTURE-8.png"/>
+   <drw skinId="0" frame="7" repeat="1" name="17-NOSE_STRUCTURE-4.png"/>
+   <drw skinId="0" frame="8" repeat="1" name="17-NOSE_STRUCTURE-9.png"/>
+   <drw skinId="0" frame="9" repeat="1" name="17-NOSE_STRUCTURE-2.png"/>
+   <drw skinId="0" frame="10" repeat="1" name="17-NOSE_STRUCTURE-9.png"/>
+   <drw skinId="0" frame="11" repeat="1" name="17-NOSE_STRUCTURE-4.png"/>
+   <drw skinId="0" frame="12" repeat="1" name="17-NOSE_STRUCTURE-8.png"/>
+   <drw skinId="0" frame="13" repeat="1" name="17-NOSE_STRUCTURE-1.png"/>
+   <drw skinId="0" frame="14" repeat="1" name="17-NOSE_STRUCTURE-7.png"/>
+   <drw skinId="0" frame="15" repeat="1" name="17-NOSE_STRUCTURE-5.png"/>
+   <drw skinId="0" frame="16" repeat="1" name="17-NOSE_STRUCTURE-6.png"/>
+   <drw skinId="0" frame="17" repeat="1" name="17-NOSE_STRUCTURE-3.png"/>
+  </drawing>
+  <drawing node="STRUCTURE_HEAD_STRUCTURE" name="9-HEAD_STRUCTURE" drwId="10">
+   <drw skinId="0" frame="1" repeat="1" name="9-HEAD_STRUCTURE-2.png"/>
+   <drw skinId="0" frame="2" repeat="1" name="9-HEAD_STRUCTURE-7.png"/>
+   <drw skinId="0" frame="3" repeat="1" name="9-HEAD_STRUCTURE-5.png"/>
+   <drw skinId="0" frame="4" repeat="1" name="9-HEAD_STRUCTURE-6.png"/>
+   <drw skinId="0" frame="5" repeat="1" name="9-HEAD_STRUCTURE-3.png"/>
+   <drw skinId="0" frame="6" repeat="1" name="9-HEAD_STRUCTURE-6.png"/>
+   <drw skinId="0" frame="7" repeat="1" name="9-HEAD_STRUCTURE-5.png"/>
+   <drw skinId="0" frame="8" repeat="1" name="9-HEAD_STRUCTURE-7.png"/>
+   <drw skinId="0" frame="9" repeat="1" name="9-HEAD_STRUCTURE-4.png"/>
+   <drw skinId="0" frame="10" repeat="1" name="9-HEAD_STRUCTURE-7.png"/>
+   <drw skinId="0" frame="11" repeat="1" name="9-HEAD_STRUCTURE-5.png"/>
+   <drw skinId="0" frame="12" repeat="1" name="9-HEAD_STRUCTURE-6.png"/>
+   <drw skinId="0" frame="13" repeat="1" name="9-HEAD_STRUCTURE-3.png"/>
+   <drw skinId="0" frame="14" repeat="1" name="9-HEAD_STRUCTURE-6.png"/>
+   <drw skinId="0" frame="15" repeat="1" name="9-HEAD_STRUCTURE-5.png"/>
+   <drw skinId="0" frame="16" repeat="1" name="9-HEAD_STRUCTURE-7.png"/>
+   <drw skinId="0" frame="17" repeat="2" name="9-HEAD_STRUCTURE-1.png"/>
+  </drawing>
+  <drawing node="FLOOR" name="4-FLOOR" drwId="11">
+   <drw skinId="0" frame="1" repeat="60" name="4-FLOOR-1.png"/>
+  </drawing>
+ </drawingAnimation>
+</drawingAnimations>

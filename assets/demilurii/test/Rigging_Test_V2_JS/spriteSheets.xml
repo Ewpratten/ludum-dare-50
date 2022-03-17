@@ -1,0 +1,305 @@
+<!DOCTYPE spritesheets>
+<spritesheets>
+ <spritesheet resolution="ipad" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad.png">
+  <sprite scaleY="1" angleDegrees="0" rect="1024,1152,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00001.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,1152,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00002.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,576,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00004.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,576,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00005.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00007.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00008.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-01.png">
+  <sprite scaleY="1" angleDegrees="0" rect="1024,1152,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00003.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,1152,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00006.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,576,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00010.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,576,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00011.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00013.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00014.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-02.png">
+  <sprite scaleY="1" angleDegrees="0" rect="1024,1152,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00009.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,1152,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00012.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,576,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00016.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,576,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00017.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00019.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00021.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00023.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00025.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00027.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00029.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00031.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00033.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00035.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00037.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00039.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00041.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00043.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00045.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00047.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00049.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00051.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00053.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00055.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00057.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00059.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00020.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00024.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00028.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00032.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00036.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00040.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00044.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00048.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00052.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00056.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00060.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00022.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00030.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00038.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00046.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00054.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00026.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00042.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00058.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00034.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00050.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad" width="2048" height="1024" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-03.png">
+  <sprite scaleY="1" angleDegrees="0" rect="1024,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00015.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1024,576" offsetX="-512" offsetY="-288" name="AP03_EmiliaF_AW_V3-00018.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00001.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-01.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00002.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-02.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00003.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-03.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00004.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-04.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00005.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-05.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00006.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-06.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00007.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-07.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00008.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-08.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00009.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-09.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00010.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-10.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00011.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-11.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00012.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-12.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00013.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-13.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00014.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-14.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00015.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-15.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00016.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-16.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00017.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-17.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00018.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="ipad-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-ipad-retina-18.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00019.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00020.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00022.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00024.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00026.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00028.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00030.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00032.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00034.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00036.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00038.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00040.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00042.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00044.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00046.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00048.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00050.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00052.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00054.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00056.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00058.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00060.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00021.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00025.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00029.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00033.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00037.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00041.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00045.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00049.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00053.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00057.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00023.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00031.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00039.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00047.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00055.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00027.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00043.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00059.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00035.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,2048,1152" offsetX="-1024" offsetY="-576" name="AP03_EmiliaF_AW_V3-00051.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="iphone" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-iphone.png">
+  <sprite scaleY="1" angleDegrees="0" rect="1440,1080,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00001.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="960,1080,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00002.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,1080,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00003.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,1080,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00004.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1440,810,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00005.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="960,810,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00006.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,810,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00007.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,810,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00008.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1440,540,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00009.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="960,540,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00010.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,540,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00011.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,540,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00012.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1440,270,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00013.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="960,270,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00014.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,270,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00015.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,270,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00016.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="1440,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00017.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="960,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00018.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00019.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00020.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00022.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00024.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00026.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00028.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00030.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00032.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00034.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00036.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00038.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00040.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00042.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00044.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00046.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00048.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00050.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00052.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00054.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00056.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00058.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00060.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00021.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00025.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00029.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00033.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00037.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00041.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00045.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00049.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00053.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00057.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00023.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00031.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00039.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00047.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00055.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00027.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00043.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00059.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00035.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="480,0,480,270" offsetX="-240" offsetY="-135" name="AP03_EmiliaF_AW_V3-00051.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="iphone-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-iphone-retina.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,1278,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00001.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,639,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00002.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00003.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="iphone-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-iphone-retina-01.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,1278,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00004.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,639,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00005.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00006.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="iphone-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-iphone-retina-02.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,1278,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00007.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,639,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00008.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00009.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="iphone-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-iphone-retina-03.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,1278,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00010.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,639,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00011.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00012.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="iphone-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-iphone-retina-04.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,1278,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00013.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,639,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00014.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00015.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="iphone-retina" width="2048" height="2048" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-iphone-retina-05.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,1278,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00016.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,639,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00017.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00018.png" scaleX="1"/>
+ </spritesheet>
+ <spritesheet resolution="iphone-retina" width="2048" height="1024" name="sheet_Rigging_Test_V2_JS" filename="spriteSheets/sheet_Rigging_Test_V2_JS-iphone-retina-06.png">
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00019.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00020.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00022.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00024.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00026.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00028.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00030.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00032.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00034.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00036.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00038.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00040.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00042.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00044.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00046.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00048.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00050.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00052.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00054.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00056.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00058.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00060.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00021.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00025.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00029.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00033.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00037.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00041.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00045.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00049.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00053.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00057.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00023.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00031.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00039.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00047.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00055.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00027.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00043.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00059.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00035.png" scaleX="1"/>
+  <sprite scaleY="1" angleDegrees="0" rect="0,0,1136,639" offsetX="-568" offsetY="-319.5" name="AP03_EmiliaF_AW_V3-00051.png" scaleX="1"/>
+ </spritesheet>
+</spritesheets>
