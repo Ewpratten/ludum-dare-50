@@ -1,0 +1,261 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;discord-sdk-0.3.0&#x2F;src&#x2F;proto&#x2F;command.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>command.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a class="sidebar-logo" href="../../../discord_sdk/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.png" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../discord_sdk/index.html"><img class="rust-logo" src="../../../rust-logo.png" alt="logo"></a><nav class="sub"><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::lobby::Lobby</span>;
+<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+
+<span class="doccomment">/// The different RPC command types</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;SCREAMING_SNAKE_CASE&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">CommandKind</span> {
+    <span class="doccomment">/// Dispatch the event specified in &quot;evt&quot;.</span>
+    <span class="ident">Dispatch</span>,
+
+    <span class="doccomment">/// Subscribes to the event specified in &quot;evt&quot;</span>
+    <span class="ident">Subscribe</span>,
+    <span class="doccomment">/// Unsubscribes from the event specified in &quot;evt&quot;</span>
+    <span class="ident">Unsubscribe</span>,
+
+    <span class="doccomment">/// Updates the user&#39;s rich presence</span>
+    <span class="ident">SetActivity</span>,
+    <span class="doccomment">/// RPC sent when the local user has [`JoinReply::Accept`]ed a join request</span>
+    <span class="ident">SendActivityJoinInvite</span>,
+    <span class="doccomment">/// RPC sent when the local user has [`JoinReply::Reject`]ed a join request</span>
+    <span class="ident">CloseActivityJoinRequest</span>,
+    <span class="doccomment">/// RPC sent to invite another [`User`]</span>
+    <span class="ident">ActivityInviteUser</span>,
+    <span class="doccomment">/// RPC sent to accept the invite of another [`User`]</span>
+    <span class="ident">AcceptActivityInvite</span>,
+
+    <span class="doccomment">/// RPC sent to create a lobby</span>
+    <span class="ident">CreateLobby</span>,
+    <span class="doccomment">/// RPC sent to modify the mutable properties of a lobby</span>
+    <span class="ident">UpdateLobby</span>,
+    <span class="doccomment">/// RPC sent to search for lobbies based on some criteria</span>
+    <span class="ident">SearchLobbies</span>,
+    <span class="doccomment">/// RPC sent to delete a lobby</span>
+    <span class="ident">DeleteLobby</span>,
+    <span class="doccomment">/// RPC sent to connect to a lobby</span>
+    <span class="ident">ConnectToLobby</span>,
+    <span class="doccomment">/// RPC sent to disconnect from a lobby</span>
+    <span class="ident">DisconnectFromLobby</span>,
+    <span class="doccomment">/// RPC to send a message to a lobby</span>
+    <span class="ident">SendToLobby</span>,
+    <span class="doccomment">/// RPC sent to join the current user to the voice channel of the specified lobby</span>
+    <span class="ident">ConnectToLobbyVoice</span>,
+    <span class="doccomment">/// RPC sent to disconnect the current user from the voice channel of the specified lobby</span>
+    <span class="ident">DisconnectFromLobbyVoice</span>,
+    <span class="doccomment">/// RPC sent to update a lobby member&#39;s metadata</span>
+    <span class="ident">UpdateLobbyMember</span>,
+
+    <span class="doccomment">/// RPC sent to toggle the overlay either opened or closed</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;SET_OVERLAY_LOCKED&quot;</span>)]</span>
+    <span class="ident">SetOverlayVisibility</span>,
+    <span class="doccomment">/// RPC sent to open the activity invite overlay modal</span>
+    <span class="ident">OpenOverlayActivityInvite</span>,
+    <span class="doccomment">/// RPC sent to open the guild invite overlay modal</span>
+    <span class="ident">OpenOverlayGuildInvite</span>,
+    <span class="doccomment">/// RPC sent to open the voice settings for the application</span>
+    <span class="ident">OpenOverlayVoiceSettings</span>,
+
+    <span class="doccomment">/// RPC sent to retrieve the full list of a user&#39;s active relationships</span>
+    <span class="ident">GetRelationships</span>,
+
+    <span class="doccomment">/// RPC sent to change the local user&#39;s voice settings</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;SET_VOICE_SETTINGS_2&quot;</span>)]</span>
+    <span class="ident">SetVoiceSettings</span>,
+    <span class="doccomment">/// RPC sent to change the local settings for another user</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;SET_USER_VOICE_SETTINGS_2&quot;</span>)]</span>
+    <span class="ident">SetUserVoiceSettings</span>,
+}
+
+<span class="doccomment">/// The response to an RPC sent by us.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;cmd&quot;</span>, <span class="ident">content</span> <span class="op">=</span> <span class="string">&quot;data&quot;</span>, <span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;SCREAMING_SNAKE_CASE&quot;</span>)]</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum</span> <span class="ident">Command</span> {
+    <span class="ident">Subscribe</span> {
+        <span class="ident">evt</span>: <span class="ident"><span class="kw">super</span>::EventKind</span>,
+    },
+
+    <span class="ident">CreateLobby</span>(<span class="ident">Lobby</span>),
+    <span class="ident">UpdateLobby</span>,
+    <span class="ident">SearchLobbies</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Lobby</span><span class="op">&gt;</span>),
+    <span class="ident">DeleteLobby</span>,
+    <span class="ident">ConnectToLobby</span>(<span class="ident">Lobby</span>),
+    <span class="ident">DisconnectFromLobby</span>,
+    <span class="ident">SendToLobby</span>,
+    <span class="ident">ConnectToLobbyVoice</span>,
+    <span class="ident">DisconnectFromLobbyVoice</span>,
+    <span class="ident">UpdateLobbyMember</span>,
+
+    <span class="ident">SetActivity</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::activity::SetActivity</span><span class="op">&gt;</span><span class="op">&gt;</span>),
+    <span class="ident">ActivityInviteUser</span>,
+    <span class="ident">AcceptActivityInvite</span>,
+    <span class="ident">SendActivityJoinInvite</span>,
+    <span class="ident">CloseActivityJoinRequest</span>,
+
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;SET_OVERLAY_LOCKED&quot;</span>)]</span>
+    <span class="ident">SetOverlayVisibility</span>,
+    <span class="ident">OpenOverlayActivityInvite</span>,
+    <span class="ident">OpenOverlayGuildInvite</span>,
+    <span class="ident">OpenOverlayVoiceSettings</span>,
+
+    <span class="ident">GetRelationships</span> {
+        <span class="ident">relationships</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::relations::Relationship</span><span class="op">&gt;</span>,
+    },
+
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;SET_VOICE_SETTINGS_2&quot;</span>)]</span>
+    <span class="ident">SetVoiceSettings</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;SET_USER_VOICE_SETTINGS_2&quot;</span>)]</span>
+    <span class="ident">SetUserVoiceSettings</span>,
+}
+
+<span class="doccomment">/// An RPC sent from Discord as JSON, in response to an RPC sent by us.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```json</span>
+<span class="doccomment">/// {</span>
+<span class="doccomment">///     &quot;cmd&quot;: &quot;CREATE_LOBBY&quot;,</span>
+<span class="doccomment">///     &quot;evt&quot;: null,</span>
+<span class="doccomment">///     &quot;data&quot;: { &quot;secret&quot;: &quot;super_sekret&quot; },</span>
+<span class="doccomment">///     &quot;nonce&quot;: &quot;1&quot;,</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">CommandFrame</span> {
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">flatten</span>)]</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">inner</span>: <span class="ident">Command</span>,
+    <span class="doccomment">/// This nonce will match the nonce of the request from us that initiated</span>
+    <span class="doccomment">/// this response</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;crate::util::string::deserialize&quot;</span>)]</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">nonce</span>: <span class="ident">usize</span>,
+}
+</code></pre></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="discord_sdk" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
+</body></html>

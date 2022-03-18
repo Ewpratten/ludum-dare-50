@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RelationKind",""],["RelationStatus",""]],"mod":[["events",""],["state",""]],"struct":[["Relationship",""],["RelationshipActivity",""],["RelationshipActivityTimestamps","The start and end timestamp of the activity. These are unix timestamps."],["RelationshipPresence",""]]});

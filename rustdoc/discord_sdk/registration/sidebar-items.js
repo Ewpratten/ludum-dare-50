@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BinArg",""],["LaunchCommand",""]],"fn":[["register_app",""]],"struct":[["Application",""],["Url","A parsed URL record."]]});

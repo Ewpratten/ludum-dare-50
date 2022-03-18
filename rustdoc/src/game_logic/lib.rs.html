@@ -38,12 +38,14 @@
 <span id="36">36</span>
 <span id="37">37</span>
 <span id="38">38</span>
+<span id="39">39</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This file is the main entry point for the game logic.</span>
 
 <span class="kw">use</span> <span class="ident">std::borrow::Borrow</span>;
 
 <span class="kw">mod</span> <span class="ident">persistent</span>;
 <span class="kw">mod</span> <span class="ident">rendering</span>;
+<span class="kw">mod</span> <span class="ident">discord</span>;
 
 <span class="doccomment">/// This is the game logic entrypoint. Despite being async,</span>
 <span class="doccomment">/// this is expected to block the main thread for rendering and stuff.</span>

@@ -6,7 +6,7 @@ applications with the Rust programming language. At a high level, it
 provides a few major components:</p>
 <ul>
 <li>Tools for <a href="#working-with-tasks">working with asynchronous tasks</a>, including
-<a href="crate::sync">synchronization primitives and channels</a> and <a href="crate::time">timeouts, sleeps, and
+<a href="sync/index.html">synchronization primitives and channels</a> and <a href="time/index.html">timeouts, sleeps, and
 intervals</a>.</li>
 <li>APIs for <a href="#asynchronous-io">performing asynchronous I/O</a>, including <a href="net/index.html">TCP and UDP</a> sockets,
 <a href="crate::fs">filesystem</a> operations, and <a href="crate::process">process</a> and <a href="crate::signal">signal</a> management.</li>
@@ -49,21 +49,21 @@ task context.</li>
 </ul>
 <p>The <a href="task/index.html"><code>tokio::task</code></a> module is present only when the “rt” feature flag
 is enabled.</p>
-<p>The <a href="crate::sync"><code>tokio::sync</code></a> module contains synchronization primitives to use when
+<p>The <a href="sync/index.html"><code>tokio::sync</code></a> module contains synchronization primitives to use when
 needing to communicate or share data. These include:</p>
 <ul>
-<li>channels (<a href="crate::sync::oneshot"><code>oneshot</code></a>, <a href="crate::sync::mpsc"><code>mpsc</code></a>, and <a href="crate::sync::watch"><code>watch</code></a>), for sending values
+<li>channels (<a href="sync/oneshot/index.html"><code>oneshot</code></a>, <a href="sync/mpsc/index.html"><code>mpsc</code></a>, and <a href="sync/watch/index.html"><code>watch</code></a>), for sending values
 between tasks,</li>
-<li>a non-blocking <a href="crate::sync::Mutex"><code>Mutex</code></a>, for controlling access to a shared, mutable
+<li>a non-blocking <a href="sync/struct.Mutex.html"><code>Mutex</code></a>, for controlling access to a shared, mutable
 value,</li>
-<li>an asynchronous <a href="crate::sync::Barrier"><code>Barrier</code></a> type, for multiple tasks to synchronize before
+<li>an asynchronous <a href="sync/struct.Barrier.html"><code>Barrier</code></a> type, for multiple tasks to synchronize before
 beginning a computation.</li>
 </ul>
 <p>The <code>tokio::sync</code> module is present only when the “sync” feature flag is
 enabled.</p>
-<p>The <a href="crate::time"><code>tokio::time</code></a> module provides utilities for tracking time and
-scheduling work. This includes functions for setting <a href="crate::time::timeout()">timeouts</a> for
-tasks, <a href="crate::time::sleep()">sleeping</a> work to run in the future, or <a href="crate::time::interval()">repeating an operation at an
+<p>The <a href="time/index.html"><code>tokio::time</code></a> module provides utilities for tracking time and
+scheduling work. This includes functions for setting <a href="time/fn.timeout.html">timeouts</a> for
+tasks, <a href="time/fn.sleep.html">sleeping</a> work to run in the future, or <a href="time/fn.interval.html">repeating an operation at an
 interval</a>.</p>
 <p>In order to use <code>tokio::time</code>, the “time” feature flag must be enabled.</p>
 <p>Finally, Tokio provides a <em>runtime</em> for executing asynchronous tasks. Most
@@ -114,7 +114,7 @@ tasks. It is also possible to create an extra Tokio runtime dedicated to
 CPU-bound tasks, but if you do this, you should be careful that the extra
 runtime runs <em>only</em> CPU-bound tasks, as IO-bound tasks on that runtime
 will behave poorly.</p>
-<p>Hint: If using rayon, you can use a <a href="crate::sync::oneshot"><code>oneshot</code></a> channel to send the result back
+<p>Hint: If using rayon, you can use a <a href="sync/oneshot/index.html"><code>oneshot</code></a> channel to send the result back
 to Tokio when the rayon task finishes.</p>
 <h3 id="asynchronous-io" class="section-header"><a href="#asynchronous-io">Asynchronous IO</a></h3>
 <p>As well as scheduling and running tasks, Tokio provides everything you need
@@ -127,8 +127,8 @@ counterpart to <a href="https://doc.rust-lang.org/1.59.0/std/io/index.html"><cod
 <p>Tokio also includes APIs for performing various kinds of I/O and interacting
 with the operating system asynchronously. These include:</p>
 <ul>
-<li><a href="net/index.html"><code>tokio::net</code></a>, which contains non-blocking versions of <a href="crate::net::tcp">TCP</a>, <a href="crate::net::UdpSocket">UDP</a>, and
-<a href="crate::net::unix">Unix Domain Sockets</a> (enabled by the “net” feature flag),</li>
+<li><a href="net/index.html"><code>tokio::net</code></a>, which contains non-blocking versions of <a href="net/tcp/index.html">TCP</a>, <a href="net/struct.UdpSocket.html">UDP</a>, and
+<a href="net/unix/index.html">Unix Domain Sockets</a> (enabled by the “net” feature flag),</li>
 <li><a href="crate::fs"><code>tokio::fs</code></a>, similar to <a href="https://doc.rust-lang.org/1.59.0/std/fs/index.html"><code>std::fs</code></a> but for performing filesystem I/O
 asynchronously (enabled by the “fs” feature flag),</li>
 <li><a href="crate::signal"><code>tokio::signal</code></a>, for asynchronously handling Unix and Windows OS signals
@@ -228,7 +228,9 @@ releases. To enable these features, the <code>--cfg tokio_unstable</code> must b
 </div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="stream/index.html" title="tokio::stream mod">stream</a></div><div class="item-right docblock-short"><p>Due to the <code>Stream</code> trait’s inclusion in <code>std</code> landing later than Tokio’s 1.0
 release, most of the Tokio stream utilities have been moved into the <a href="https://docs.rs/tokio-stream"><code>tokio-stream</code></a>
 crate.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="sync/index.html" title="tokio::sync mod">sync</a></div><div class="item-right docblock-short"><p>Synchronization primitives for use in asynchronous contexts.</p>
 </div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="task/index.html" title="tokio::task mod">task</a></div><div class="item-right docblock-short"><p>Asynchronous green-threads.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="time/index.html" title="tokio::time mod">time</a></div><div class="item-right docblock-short"><p>Utilities for tracking time.</p>
 </div></div></div><h2 id="macros" class="small-section-header"><a href="#macros">Macros</a></h2>
 <div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.join.html" title="tokio::join macro">join</a></div><div class="item-right docblock-short"><p>Waits on multiple concurrent branches, returning when <strong>all</strong> branches
 complete.</p>
