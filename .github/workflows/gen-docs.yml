@@ -1,0 +1,50 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches:
+      - master
+    pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        shell: bash
+        run: |
+          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
+          git submodule sync --recursive
+          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+
+      # Initial setup
+      - name: Setup mdBook
+        uses: peaceiris/actions-mdbook@v1
+        with:
+          mdbook-version: 'latest'
+
+      # Build all the components
+      - name: Build RustDoc
+        uses: actions-rs/cargo@v1
+        with:
+          command: doc
+      - name: Build mdBook
+        run: mdbook build
+
+      # Organize the output
+      - name: Create output directory
+        run: mkdir -p documentation_output
+      - name: Move mdBook output
+        run: mv target/book documentation_output/book
+      - name: Move RustDoc output
+        run: mv target/doc documentation_output/rustdoc
+      - name: Move index page
+        run: mv assets/www/index.html documentation_output/index.html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./documentation_output

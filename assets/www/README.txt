@@ -1,0 +1,1 @@
+This directory exists just to host the web index.html file.
