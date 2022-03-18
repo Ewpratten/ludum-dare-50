@@ -44,7 +44,7 @@ impl PersistentGameSettings {
 
     /// Loads the settings from disk.
     #[profiling::function]
-    pub fn load_or_create() -> Result<Self, serde_json::Error> {
+    pub fn load_or_create(force_create: bool) -> Result<Self, serde_json::Error> {
         // Attempt to load the settings from the save location.
         let save_location = Self::get_save_location();
         log::debug!(
@@ -52,7 +52,7 @@ impl PersistentGameSettings {
             save_location.display()
         );
 
-        if save_location.is_file() {
+        if save_location.is_file() && !force_create {
             log::debug!("Found existing settings file.");
             return serde_json::from_str(std::fs::read_to_string(&save_location).unwrap().as_str());
         }
