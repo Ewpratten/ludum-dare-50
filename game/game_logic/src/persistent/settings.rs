@@ -69,6 +69,15 @@ impl PersistentGameSettings {
         let save_location = Self::get_save_location();
         log::debug!("Saving game settings to: {}", save_location.display());
 
+        // Create the directory if it doesn't exist.
+        if !save_location.parent().unwrap().is_dir() {
+            log::debug!(
+                "Creating directory: {}",
+                save_location.parent().unwrap().display()
+            );
+            std::fs::create_dir_all(save_location.parent().unwrap()).unwrap();
+        }
+
         // Write the settings to disk.
         std::fs::write(save_location, serde_json::to_string(self).unwrap()).unwrap();
 
