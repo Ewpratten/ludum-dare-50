@@ -13,3 +13,5 @@ profiling = "1.0.5"
 serde = { version = "1.0.136", features = ["derive"] }
 serde_json = "1.0.79"
 directories = "4.0.1"
+chrono = { verison = "0.4.19", features = ["serde"] }
+discord-sdk = "0.3.0"
