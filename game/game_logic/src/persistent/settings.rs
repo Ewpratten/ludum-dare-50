@@ -9,13 +9,14 @@ use serde::{Deserialize, Serialize};
 /// Please don't add anything relating to gameplay though (no coins, health, etc.).
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PersistentGameSettings {
-    // TODO: Add settings here.
+    /// The target framerate for the game
+    pub target_fps: u32,
 }
 
 // Add any default values here.
 impl Default for PersistentGameSettings {
     fn default() -> Self {
-        Self {}
+        Self { target_fps: 60 }
     }
 }
 
@@ -43,7 +44,7 @@ impl PersistentGameSettings {
 
     /// Loads the settings from disk.
     #[profiling::function]
-    pub fn load_or_create() -> Result<Self, serde_json::Error> {
+    pub fn load_or_create(force_create: bool) -> Result<Self, serde_json::Error> {
         // Attempt to load the settings from the save location.
         let save_location = Self::get_save_location();
         log::debug!(
@@ -51,7 +52,7 @@ impl PersistentGameSettings {
             save_location.display()
         );
 
-        if save_location.is_file() {
+        if save_location.is_file() && !force_create {
             log::debug!("Found existing settings file.");
             return serde_json::from_str(std::fs::read_to_string(&save_location).unwrap().as_str());
         }

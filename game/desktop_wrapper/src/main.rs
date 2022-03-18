@@ -7,8 +7,8 @@ use clap::StructOpt;
 use log::LevelFilter;
 
 mod cli;
-mod logging;
 mod debug_profiling;
+mod logging;
 
 #[tokio::main]
 async fn main() {
@@ -30,6 +30,6 @@ async fn main() {
 
     // Start the game
     log::info!("Starting game");
-    game_logic::entrypoint().await;
+    game_logic::entrypoint(args.force_recreate_savefiles).await;
     log::info!("Goodbye!");
 }

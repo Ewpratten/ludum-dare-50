@@ -42,7 +42,7 @@ impl GameSaveState {
 
     /// Loads the savestate from disk.
     #[profiling::function]
-    pub fn load_or_create() -> Result<Self, serde_json::Error> {
+    pub fn load_or_create(force_create: bool) -> Result<Self, serde_json::Error> {
         // Attempt to load the savestate from the save location.
         let save_location = Self::get_save_location();
         log::debug!(
@@ -50,7 +50,7 @@ impl GameSaveState {
             save_location.display()
         );
 
-        if save_location.is_file() {
+        if save_location.is_file() && !force_create {
             log::debug!("Found existing savestate file.");
             return serde_json::from_str(std::fs::read_to_string(&save_location).unwrap().as_str());
         }
