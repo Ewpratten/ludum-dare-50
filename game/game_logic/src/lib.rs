@@ -2,8 +2,8 @@
 
 use std::borrow::Borrow;
 
-pub(crate) mod persistent;
-pub(crate) mod rendering;
+mod persistent;
+mod rendering;
 
 /// This is the game logic entrypoint. Despite being async,
 /// this is expected to block the main thread for rendering and stuff.
