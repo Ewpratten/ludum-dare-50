@@ -29,6 +29,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: doc
+          args: --features nobuild
       - name: Build mdBook
         run: mdbook build
 
