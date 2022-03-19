@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["PersistentGameSettings","Settings for the game."]]});

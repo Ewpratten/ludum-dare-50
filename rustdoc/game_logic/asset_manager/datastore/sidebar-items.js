@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["InternalData","This structure is dynamically packed with the contents of `dist` at compile time"]]});

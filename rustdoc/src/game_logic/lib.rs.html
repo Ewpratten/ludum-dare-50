@@ -39,33 +39,65 @@
 <span id="37">37</span>
 <span id="38">38</span>
 <span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This file is the main entry point for the game logic.</span>
 
-<span class="kw">use</span> <span class="ident">std::borrow::Borrow</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">asset_manager::json::load_json_structure</span>, <span class="ident">project_constants::ProjectConstants</span>};
 
-<span class="kw">mod</span> <span class="ident">persistent</span>;
-<span class="kw">mod</span> <span class="ident">rendering</span>;
-<span class="kw">mod</span> <span class="ident">discord</span>;
+<span class="attribute">#[<span class="ident">macro_use</span>]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">approx</span>; <span class="comment">// For the macro `relative_eq!`</span>
+
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">asset_manager</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">discord</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">persistent</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">project_constants</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">rendering</span>;
 
 <span class="doccomment">/// This is the game logic entrypoint. Despite being async,</span>
 <span class="doccomment">/// this is expected to block the main thread for rendering and stuff.</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Setting `force_recreate_savefiles` will cause the game to recreate its settings and savestate files.</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">entrypoint</span>(<span class="ident">force_recreate_savefiles</span>: <span class="ident">bool</span>) {
     <span class="macro">log::info!</span>(<span class="string">&quot;Game main thread handed off to logic crate.&quot;</span>);
 
+    <span class="comment">// Load the project constants</span>
+    <span class="kw">let</span> <span class="ident">project_constants</span>: <span class="ident">ProjectConstants</span> <span class="op">=</span>
+        <span class="ident">load_json_structure</span>(<span class="string">&quot;project-constants.json&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not load project constants&quot;</span>);
+
     <span class="comment">// Load the game settings</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">settings</span> <span class="op">=</span> <span class="ident">persistent::settings::PersistentGameSettings::load_or_create</span>(<span class="ident">force_recreate_savefiles</span>)
-        .<span class="ident">expect</span>(<span class="string">&quot;Failed to parse game settings from disk. Possibly corrupt file?&quot;</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">settings</span> <span class="op">=</span>
+        <span class="ident">persistent::settings::PersistentGameSettings::load_or_create</span>(<span class="ident">force_recreate_savefiles</span>)
+            .<span class="ident">expect</span>(<span class="string">&quot;Failed to parse game settings from disk. Possibly corrupt file?&quot;</span>);
 
     <span class="comment">// Load the game save state</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">save_state</span> <span class="op">=</span> <span class="ident">persistent::save_state::GameSaveState::load_or_create</span>(<span class="ident">force_recreate_savefiles</span>)
-        .<span class="ident">expect</span>(<span class="string">&quot;Failed to parse game save state from disk. Possibly corrupt file?&quot;</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">save_state</span> <span class="op">=</span>
+        <span class="ident">persistent::save_state::GameSaveState::load_or_create</span>(<span class="ident">force_recreate_savefiles</span>)
+            .<span class="ident">expect</span>(<span class="string">&quot;Failed to parse game save state from disk. Possibly corrupt file?&quot;</span>);
 
     <span class="comment">// Blocking call to the graphics rendering loop.</span>
     <span class="ident">rendering::event_loop::handle_graphics_blocking</span>(
         <span class="op">|</span><span class="ident">builder</span><span class="op">|</span> {
-            <span class="ident">builder</span>.<span class="ident">msaa_4x</span>().<span class="ident">vsync</span>();
+            <span class="ident">builder</span>
+                .<span class="ident">msaa_4x</span>()
+                .<span class="ident">vsync</span>()
+                .<span class="ident">title</span>(<span class="ident">project_constants</span>.<span class="ident">game_name</span>.<span class="ident">as_str</span>())
+                .<span class="ident">height</span>(<span class="ident">project_constants</span>.<span class="ident">base_window_size</span>.<span class="number">1</span> <span class="kw">as</span> <span class="ident">i32</span>)
+                .<span class="ident">width</span>(<span class="ident">project_constants</span>.<span class="ident">base_window_size</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">i32</span>);
         },
         <span class="ident">settings</span>.<span class="ident">target_fps</span>,
     );

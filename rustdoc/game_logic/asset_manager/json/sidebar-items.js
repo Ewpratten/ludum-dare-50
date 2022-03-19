@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["InternalJsonLoadError","Possible errors generated when deserializing JSON data from memory"]],"fn":[["load_json_structure","Load an embedded JSON file"]]});

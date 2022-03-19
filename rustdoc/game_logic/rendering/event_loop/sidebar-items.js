@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["handle_graphics_blocking","Will begin rendering graphics. Returns when the window closes"]]});
