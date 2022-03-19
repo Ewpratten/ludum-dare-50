@@ -5,3 +5,5 @@
     1. [Development Environment](development-environment.md)
     2. [Artist Information](artist-information.md)
  3. [Infrastructure Overview](infrastructure-overview.md)
+ 4. [Software Design](software-design.md)
+    1. [Asset Manager](design-asset-manager.md)

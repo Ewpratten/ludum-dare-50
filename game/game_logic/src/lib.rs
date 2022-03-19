@@ -2,9 +2,10 @@
 
 use std::borrow::Borrow;
 
-mod persistent;
-mod rendering;
-mod discord;
+pub mod persistent;
+pub mod rendering;
+pub mod discord;
+pub mod asset_manager;
 
 /// This is the game logic entrypoint. Despite being async,
 /// this is expected to block the main thread for rendering and stuff.

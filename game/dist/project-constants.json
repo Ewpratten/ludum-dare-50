@@ -1,0 +1,9 @@
+{
+    "game_name": "Ludum Dare 50",
+    "base_window_size": [
+        1080,
+        720
+    ],
+    "discord_app_id": 954413081918857276,
+    "target_fps": 60
+}
