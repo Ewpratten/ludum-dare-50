@@ -4,6 +4,8 @@ import os
 from PIL import Image
 import json
 import logging
+import time
+import getpass
 from typing import List
 from project_root import get_project_root
 logger = logging.getLogger(__name__)
@@ -26,12 +28,12 @@ def check_sprite_exists(sprite_type: str, sprite_name: str) -> bool:
 
     # Build the path the sprite should exist in
     sprite_path = os.path.join(
-        project_root, "game", "dist", "anm", sprite_type, f"{sprite_type}_{sprite_name}")
+        project_root, "game", "dist", "assets", "anm", sprite_type, f"{sprite_type}_{sprite_name}")
 
     return os.path.isdir(sprite_path)
 
 
-def stitch_images_and_write_to_disk(sprite_type: str, sprite_name: str, images: List[str]) -> None:
+def stitch_images_and_write_to_disk(sprite_type: str, sprite_name: str, images: List[str], quantize: bool) -> None:
 
     # Load all the images
     images_to_stitch = []
@@ -57,14 +59,17 @@ def stitch_images_and_write_to_disk(sprite_type: str, sprite_name: str, images: 
     # Save the new image
     project_root = get_project_root()
     logger.debug(f"Project root: {project_root}")
-    new_image = new_image.quantize(method=2)
-    new_image.save(os.path.join(project_root, "game", "dist", "anm", sprite_type,
+    if quantize:
+        new_image = new_image.quantize(method=2)
+    new_image.save(os.path.join(project_root, "game", "dist", "assets", "anm", sprite_type,
                    f"{sprite_type}_{sprite_name}", f"{sprite_type}_{sprite_name}.png"))
 
     # Build some JSON metadata
     metadata = {
         "sheet_height": max_height,
         "sheet_width": total_width,
+        "published_at": time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()),
+        "published_by": getpass.getuser(),
         "frames": []
     }
 
@@ -80,6 +85,6 @@ def stitch_images_and_write_to_disk(sprite_type: str, sprite_name: str, images: 
         x_offset += image.size[0]
 
     # Write the metadata to disk
-    with open(os.path.join(project_root, "game", "dist", "anm", sprite_type,
+    with open(os.path.join(project_root, "game", "dist", "assets", "anm", sprite_type,
                            f"{sprite_type}_{sprite_name}", f"{sprite_type}_{sprite_name}.anim_meta.json"), "w") as f:
         json.dump(metadata, f, indent=4)

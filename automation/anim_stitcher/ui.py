@@ -74,6 +74,17 @@ class AnimStitcherWindow(QtWidgets.QWidget):
         self.sprite_name_layout.addWidget(self.sprite_name_input)
         self.layout().addLayout(self.sprite_name_layout)
 
+        # Add a selection option for the sprite optimization
+        self.optimization_layout = QtWidgets.QHBoxLayout()
+        self.optimization_label = QtWidgets.QLabel("Optimize For")
+        self.optimization_layout.addWidget(self.optimization_label)
+        self.optimization_dropdown = QtWidgets.QComboBox()
+        self.optimization_dropdown.addItem("Size")
+        self.optimization_dropdown.addItem("Quality")
+        self.optimization_dropdown.setEnabled(False)
+        self.optimization_layout.addWidget(self.optimization_dropdown)
+        self.layout().addLayout(self.optimization_layout)
+
         # Add a seperator
         self.layout().addWidget(qt_lines.QHLine())
 
@@ -110,6 +121,7 @@ class AnimStitcherWindow(QtWidgets.QWidget):
             self.sprite_type_dropdown.setEnabled(True)
             self.sprite_name_input.setEnabled(True)
             self.stitch_button.setEnabled(True)
+            self.optimization_dropdown.setEnabled(True)
 
             # Save the selected files
             self.selected_files = file_dialog.selectedFiles()
@@ -157,7 +169,7 @@ class AnimStitcherWindow(QtWidgets.QWidget):
 
         # Perform the actual stitching action
         stitcher.stitch_images_and_write_to_disk(
-            sprite_type, sprite_name, self.selected_files)
+            sprite_type, sprite_name, self.selected_files, self.optimization_dropdown.currentText() == "Size")
 
         # Close the window
         self.close()
