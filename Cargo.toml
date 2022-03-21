@@ -3,6 +3,7 @@ members = ["./game/game_logic", "./game/desktop_wrapper"]
 exclude = [
     "./third_party/raylib-rs/raylib",
     "./third_party/raylib-rs/raylib-sys",
+    "./automation/anim_stitcher"
 ]
 
 [profile.release]
