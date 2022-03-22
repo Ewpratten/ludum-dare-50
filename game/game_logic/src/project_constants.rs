@@ -10,7 +10,7 @@ pub struct ProjectConstants {
     pub base_window_size: (u32, u32),
 
     /// The Discord application ID
-    pub discord_app_id: u64,
+    pub discord_app_id: i64,
 
     /// The target framerate of the game
     pub target_fps: u32,

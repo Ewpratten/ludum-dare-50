@@ -1,9 +1,15 @@
 //! This file is the main entry point for the game logic.
 
-use crate::{asset_manager::json::load_json_structure, project_constants::ProjectConstants};
+use crate::{
+    asset_manager::json::load_json_structure,
+    discord::{DiscordRpcSignal, DiscordRpcThreadHandle},
+    project_constants::ProjectConstants,
+};
 
 #[macro_use]
 extern crate approx; // For the macro `relative_eq!`
+#[macro_use]
+extern crate log; // For the `info!`, `warn!`, etc. macros
 
 pub mod asset_manager;
 pub mod discord;
@@ -32,6 +38,24 @@ pub async fn entrypoint(force_recreate_savefiles: bool) {
         persistent::save_state::GameSaveState::load_or_create(force_recreate_savefiles)
             .expect("Failed to parse game save state from disk. Possibly corrupt file?");
 
+    // Connect to Discord
+    let discord = DiscordRpcThreadHandle::new(project_constants.discord_app_id)
+        .await
+        .expect("Failed to connect to Discord RPC");
+    let event_loop_discord_tx = discord.get_channel();
+    let _discord_task_handle = discord.begin_thread_non_blocking();
+
+    // Set a base activity to show in Discord
+    {
+        event_loop_discord_tx
+            .send(DiscordRpcSignal::ChangeDetails {
+                details: "Probably loading something IDK.".to_string(),
+                party_status: None,
+            })
+            .await
+            .expect("Failed to send Discord RPC event");
+    }
+
     // Blocking call to the graphics rendering loop.
     rendering::event_loop::handle_graphics_blocking(
         |builder| {
@@ -43,6 +67,7 @@ pub async fn entrypoint(force_recreate_savefiles: bool) {
                 .width(project_constants.base_window_size.0 as i32);
         },
         settings.target_fps,
+        event_loop_discord_tx,
     );
 
     // Clean up any resources

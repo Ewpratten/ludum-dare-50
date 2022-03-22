@@ -1,7 +1,9 @@
 use raylib::RaylibBuilder;
 
+use crate::discord::DiscordChannel;
+
 /// Will begin rendering graphics. Returns when the window closes
-pub fn handle_graphics_blocking<ConfigBuilder>(config: ConfigBuilder, target_frames_per_second: u32)
+pub fn handle_graphics_blocking<ConfigBuilder>(config: ConfigBuilder, target_frames_per_second: u32, discord_signaling: DiscordChannel)
 where
     ConfigBuilder: FnOnce(&mut RaylibBuilder),
 {
