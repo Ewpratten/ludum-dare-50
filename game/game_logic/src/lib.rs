@@ -1,7 +1,14 @@
 //! This file is the main entry point for the game logic.
+//!
+//! ## Overview
+//!
+//! The main function in this module is `entrypoint()`. This is called from `desktop_wrapper` to start the game.
+//!
+//! This module also includes all the other sub-modules of the game. If you are viewing this document from the web, click on the modules below to see more info.
+#![doc(issue_tracker_base_url = "https://github.com/Ewpratten/ludum-dare-50/issues/")]
 
 use crate::{
-    asset_manager::json::load_json_structure,
+    asset_manager::load_json_structure,
     discord::{DiscordRpcSignal, DiscordRpcThreadHandle},
     project_constants::ProjectConstants,
 };
@@ -11,11 +18,11 @@ extern crate approx; // For the macro `relative_eq!`
 #[macro_use]
 extern crate log; // For the `info!`, `warn!`, etc. macros
 
-pub mod asset_manager;
-pub mod discord;
-pub mod persistent;
-pub mod project_constants;
-pub mod rendering;
+pub(crate) mod asset_manager;
+pub(crate) mod discord;
+pub(crate) mod persistent;
+pub(crate) mod project_constants;
+pub(crate) mod rendering;
 
 /// This is the game logic entrypoint. Despite being async,
 /// this is expected to block the main thread for rendering and stuff.

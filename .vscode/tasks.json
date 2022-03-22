@@ -17,6 +17,20 @@
 				"$rustc"
 			],
 			"label": "Launch Game"
+		},
+		{
+			"type": "cargo",
+			"command": "doc",
+			"args": [
+				"-p",
+				"game_logic",
+				"--no-deps",
+				"--document-private-items"
+			],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"label": "Regenerate RustDoc"
 		}
 	]
 }

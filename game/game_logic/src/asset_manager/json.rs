@@ -1,3 +1,5 @@
+//! Utilities for loading JSON from the embedded filesystem.
+
 use serde::de::DeserializeOwned;
 
 use super::datastore::InternalData;
@@ -15,6 +17,13 @@ pub enum InternalJsonLoadError {
 }
 
 /// Load an embedded JSON file
+///
+/// **This is a blocking function call**
+/// 
+/// ## Errors
+///
+/// This may raise an error either because the requested asset was not found, or because the JSON data could not be deserialized.
+/// See [`InternalJsonLoadError`](enum.InternalJsonLoadError.html) for more information.
 pub fn load_json_structure<'a, T: DeserializeOwned>(
     dist_path: &str,
 ) -> Result<T, InternalJsonLoadError> {
