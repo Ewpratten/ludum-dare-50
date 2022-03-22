@@ -32,4 +32,7 @@ async fn main() {
     log::info!("Starting game");
     game_logic::entrypoint(args.force_recreate_savefiles).await;
     log::info!("Goodbye!");
+
+    // Exit the program
+    std::process::exit(0);
 }

@@ -43,7 +43,7 @@ pub async fn entrypoint(force_recreate_savefiles: bool) {
         .await
         .expect("Failed to connect to Discord RPC");
     let event_loop_discord_tx = discord.get_channel();
-    let _discord_task_handle = discord.begin_thread_non_blocking();
+    let discord_task_handle = discord.begin_thread_non_blocking();
 
     // Set a base activity to show in Discord
     {
@@ -77,4 +77,5 @@ pub async fn entrypoint(force_recreate_savefiles: bool) {
     save_state
         .save()
         .expect("Could not save game save state to disk.");
+    discord_task_handle.abort();
 }
