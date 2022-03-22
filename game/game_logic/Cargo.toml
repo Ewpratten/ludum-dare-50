@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 raylib = { version = "3.7", path = "../../third_party/raylib-rs/raylib" }
 sad_machine = { version = "1.0", path = "../../third_party/sm" }
-tokio = { version = "1.17.0", features = ["fs"] }
+tokio = { version = "1.17.0", features = ["fs", "sync"] }
 log = "0.4.14"
 profiling = "1.0.5"
 serde = { version = "1.0.136", features = ["derive"] }

@@ -1,4 +1,37 @@
-//! This module contains code needed for interacting with a local Discord instance.
+//! Interfacing with Discord
+//! 
+//! ## Overview
+//! 
+//! When the game is run at the same time as a Discord client on a computer, it will attach to the user's 
+//! account and display [Rich Presence](https://discord.com/rich-presence) information.
+//! 
+//! This is handled through the [`discord-sdk`](https://github.com/EmbarkStudios/discord-sdk) crate, 
+//! but still requires some additional code to get everything set up.
+//! 
+//! Our main focuses in this module are:
+//! 
+//! - Ensuring that the game does not crash when Discord is not running
+//! - Ensuring that Discord can not pause the game by taking too long to respond to an update
+//! 
+//! To solve these, we run this task in its own thread, and talk to it through 
+//! Tokio's [`mpsc`](https://docs.rs/tokio/latest/tokio/sync/mpsc/fn.channel.html) 
+//! implementation (as we are already working in an async context).
+//! 
+//! ## Usage
+//! 
+//! ```rust,no_run
+//! let app_id = 123456789;
+//! 
+//! // Connect to discord
+//! let discord = DiscordRpcThreadHandle::new(app_id).await.unwrap();
+//! let event_loop_discord_tx = discord.get_channel();
+//! 
+//! // When this variable is dropped, the connection is closed, so keep this around
+//! let discord_task_handle = discord.begin_thread_non_blocking();
+//! 
+//! // We can then send signals any time we want
+//! event_loop_discord_tx.send(DiscordRpcSignal::BeginGameTimer).await.unwrap();
+//! ```
 
 mod signal;
 use std::time::Duration;
