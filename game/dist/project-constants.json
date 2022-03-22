@@ -4,6 +4,16 @@
         1080,
         720
     ],
-    "discord_app_id": 954413081918857276,
-    "target_fps": 60
+    "target_fps": 60,
+    "discord": {
+        "app_id": 954413081918857276,
+        "artwork": {
+            "logo": "ld50-logo"
+        },
+        "strings": {
+            "details.loading": "Watching the game load",
+            "details.sm_failure": "Game went FUBAR",
+            "details.main_menu": "In the main menu"
+        }
+    }
 }

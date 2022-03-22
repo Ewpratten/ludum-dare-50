@@ -7,15 +7,20 @@
 //!
 //! You can think of this as a bit of bootstrap code for the game. All that happens directly here is rendering of the loading screen and a bit of error handling.
 
+use std::cell::RefCell;
+
 use crate::discord::DiscordChannel;
+use crate::project_constants::ProjectConstants;
 use crate::rendering::core_renderer_sm::{PreloadState, RenderBackendStates};
 use crate::rendering::screens::sm_failure_screen;
+use crate::scenes::process_ingame_frame;
 use raylib::RaylibBuilder;
 
 /// Will begin rendering graphics. Returns when the window closes
-pub fn handle_graphics_blocking<ConfigBuilder>(
+pub async fn handle_graphics_blocking<ConfigBuilder>(
     config: ConfigBuilder,
     target_frames_per_second: u32,
+    constants: &ProjectConstants,
     discord_signaling: DiscordChannel,
 ) where
     ConfigBuilder: FnOnce(&mut RaylibBuilder),
@@ -39,7 +44,7 @@ pub fn handle_graphics_blocking<ConfigBuilder>(
     let mut loading_screen = crate::rendering::screens::loading_screen::LoadingScreen::new();
     let mut sm_failure_screen = sm_failure_screen::SmFailureScreen::new();
 
-    // Run the event loop
+    // Handle loading the resources and rendering the loading screen
     log::trace!("Running event loop");
     while !raylib_handle.window_should_close() {
         // Handle state machine updates
@@ -48,13 +53,54 @@ pub fn handle_graphics_blocking<ConfigBuilder>(
                 backend_sm = m.finish_preload();
             }
             RenderBackendStates::Loading(ref m) => {
-                if loading_screen.render(&mut raylib_handle, &raylib_thread, &discord_signaling) {
+                if loading_screen
+                    .render(
+                        &mut raylib_handle,
+                        &raylib_thread,
+                        &discord_signaling,
+                        &constants,
+                    )
+                    .await
+                {
                     backend_sm = m.finish_loading();
                 }
             }
+            _ => break,
+        };
+
+        // Tell the profiler that we ended the frame
+        profiling::finish_frame!();
+    }
+    log::trace!("Finished loading game");
+
+    // Get access to the global resources
+    let global_resources = loading_screen
+        .resources
+        .expect("Failed to get global resources");
+
+    // Run the event loop
+    while !raylib_handle.window_should_close() {
+        // Handle state machine updates
+        match backend_sm {
             RenderBackendStates::SmFailed(ref m) => {
-                sm_failure_screen.render(&mut raylib_handle, &raylib_thread, &discord_signaling);
+                sm_failure_screen
+                    .render(
+                        &mut raylib_handle,
+                        &raylib_thread,
+                        &discord_signaling,
+                        &constants,
+                    )
+                    .await;
             }
+            RenderBackendStates::RenderGame(ref m) => {
+                process_ingame_frame(
+                    &mut raylib_handle,
+                    &raylib_thread,
+                    &discord_signaling,
+                    &global_resources,
+                );
+            }
+            _ => backend_sm = RenderBackendStates::sm_failed(),
         };
 
         // Tell the profiler that we ended the frame

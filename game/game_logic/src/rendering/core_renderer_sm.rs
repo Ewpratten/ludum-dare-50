@@ -3,14 +3,18 @@
 sad_machine::state_machine! {
     RenderBackendStates {
         InitialStates {
-            Preload
+            Preload, SmFailed
         }
         FinishPreload {
             Preload => Loading
         }
         FinishLoading {
-            // TODO: Make this hand off to the main render code
-            Loading => SmFailed
+            Loading => RenderGame
+        }
+        ForceSmFailure {
+            Preload => SmFailed,
+            Loading => SmFailed,
+            RenderGame => SmFailed
         }
     }
 }
