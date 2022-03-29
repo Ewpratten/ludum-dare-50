@@ -1,7 +1,7 @@
 {
     "sheet_height": 338,
-    "sheet_width": 10800,
-    "published_at": "2022-03-29 18:21:28",
+    "sheet_width": 9600,
+    "published_at": "2022-03-29 18:40:22",
     "published_by": "ewpratten",
     "fps": 24.0,
     "frames": [
@@ -97,18 +97,6 @@
         },
         {
             "x": 9000,
-            "y": 0,
-            "width": 600,
-            "height": 338
-        },
-        {
-            "x": 9600,
-            "y": 0,
-            "width": 600,
-            "height": 338
-        },
-        {
-            "x": 10200,
             "y": 0,
             "width": 600,
             "height": 338

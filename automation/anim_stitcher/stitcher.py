@@ -35,6 +35,10 @@ def check_sprite_exists(sprite_type: str, sprite_name: str) -> bool:
 
 def stitch_images_and_write_to_disk(sprite_type: str, sprite_name: str, images: List[str], quantize: bool, fps: float, reverse_order: bool) -> None:
 
+    # Handle reverse order
+    if reverse_order:
+        images = images[::-1]
+
     # Load all the images
     images_to_stitch = []
     for image_path in images:
@@ -74,13 +78,9 @@ def stitch_images_and_write_to_disk(sprite_type: str, sprite_name: str, images: 
         "frames": []
     }
 
-    # Handle reverse order
-    if reverse_order:
-        images_to_stitch.reverse()
-
     # Add the metadata for each image
     x_offset = 0
-    for image in images_to_stitch:
+    for i in range(len(images_to_stitch)):
         metadata["frames"].append({
             "x": x_offset,
             "y": 0,

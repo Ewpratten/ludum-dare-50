@@ -38,9 +38,8 @@ impl TestFoxScene {
         draw.clear_background(Color::WHITE);
 
         // Render the fox
-        self.fox_animation.render_frame_by_index(
+        self.fox_animation.render_automatic(
             &mut draw,
-            0,
             na::Vector2::new(0.0, 0.0),
             None,
             None,

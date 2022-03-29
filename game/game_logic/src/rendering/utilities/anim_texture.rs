@@ -1,5 +1,6 @@
 //! This module handles the code for rendering framerate-locked animations from textures
 
+use chrono::{DateTime, Utc};
 use nalgebra::Vector2;
 use raylib::{
     color::Color,
@@ -54,14 +55,20 @@ struct AnimatedTextureMetadata {
 
 #[derive(Debug)]
 pub struct AnimatedTexture {
+    /// The whole internal spritesheet
     texture: Texture2D,
+    /// The metadata describing the spritesheet
     texture_metadata: AnimatedTextureMetadata,
-    // a list of source rects to reduce memory allocation needs during render time
+    /// a list of source rects to reduce memory allocation needs during render time
     texture_source_rects: Vec<Rectangle>,
+    /// The animation start timestamp
+    start_time: Option<DateTime<Utc>>,
 }
 
 impl AnimatedTexture {
     /// Construct a new `AnimatedTexture`
+    ///
+    /// This will load all resources from RAM or disk. May take a while.
     #[profiling::function]
     pub fn new(
         raylib_handle: &mut RaylibHandle,
@@ -112,9 +119,11 @@ impl AnimatedTexture {
             texture,
             texture_metadata,
             texture_source_rects: source_rects,
+            start_time: None,
         })
     }
 
+    /// Render a single frame to the screen
     #[profiling::function]
     pub fn render_frame_by_index(
         &self,
@@ -153,5 +162,58 @@ impl AnimatedTexture {
             rotation.unwrap_or(0.0),
             tint.unwrap_or(Color::WHITE),
         );
+    }
+
+    /// Clear the internal tracker for when the animation started
+    ///
+    /// This will bring the animation back to frame 1. Useful for non-looping rendering
+    pub fn reset_animation(&mut self) {
+        self.start_time = None;
+    }
+
+    /// Get the current frame index
+    pub fn get_current_frame_index(&self) -> Option<usize> {
+        self.start_time.map(|start_time| {
+            let elapsed_time_ms = Utc::now()
+                .signed_duration_since(start_time)
+                .num_milliseconds() as f32;
+            let elapsed_time_s = elapsed_time_ms / 1000.0;
+            let frame_index = (elapsed_time_s * self.texture_metadata.fps) as usize;
+            frame_index % self.texture_metadata.frames.len()
+        })
+    }
+
+    /// Render the animation based on timestamp
+    pub fn render_automatic(
+        &mut self,
+        draw_handle: &mut RaylibDrawHandle,
+        position: Vector2<f32>,
+        percent_scale: Option<Vector2<f32>>,
+        origin: Option<Vector2<f32>>,
+        rotation: Option<f32>,
+        tint: Option<Color>,
+    ) {
+        // If this is the first time we're rendering, set the start time
+        if self.start_time.is_none() {
+            self.start_time = Some(Utc::now());
+        }
+
+        // Get the current frame index
+        let current_frame_index = self.get_current_frame_index();
+
+        // If we have a valid index, render it
+        if let Some(current_frame_index) = current_frame_index {
+            self.render_frame_by_index(
+                draw_handle,
+                current_frame_index,
+                position,
+                percent_scale,
+                origin,
+                rotation,
+                tint,
+            );
+        } else {
+            warn!("We somehow got a frame index of None");
+        }
     }
 }
