@@ -2,6 +2,7 @@
     "git.detectSubmodules": false,
     "cSpell.words": [
         "msaa",
+        "raylib",
         "repr",
         "vsync"
     ],

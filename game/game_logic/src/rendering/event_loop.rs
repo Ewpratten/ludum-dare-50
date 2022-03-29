@@ -13,7 +13,7 @@ use crate::discord::DiscordChannel;
 use crate::project_constants::ProjectConstants;
 use crate::rendering::core_renderer_sm::{PreloadState, RenderBackendStates};
 use crate::rendering::screens::sm_failure_screen;
-use crate::scenes::process_ingame_frame;
+use crate::scenes::SceneRenderDelegate;
 use raylib::RaylibBuilder;
 
 /// Will begin rendering graphics. Returns when the window closes
@@ -43,6 +43,9 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
     // Set up the internal screens
     let mut loading_screen = crate::rendering::screens::loading_screen::LoadingScreen::new();
     let mut sm_failure_screen = sm_failure_screen::SmFailureScreen::new();
+
+    // Set up the main render delegate
+    let mut render_delegate = SceneRenderDelegate::on_game_start();
 
     // Handle loading the resources and rendering the loading screen
     log::trace!("Running event loop");
@@ -93,7 +96,7 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
                     .await;
             }
             RenderBackendStates::RenderGame(ref m) => {
-                process_ingame_frame(
+                render_delegate.process_ingame_frame(
                     &mut raylib_handle,
                     &raylib_thread,
                     &discord_signaling,

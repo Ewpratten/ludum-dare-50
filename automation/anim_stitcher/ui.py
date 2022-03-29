@@ -85,6 +85,16 @@ class AnimStitcherWindow(QtWidgets.QWidget):
         self.optimization_layout.addWidget(self.optimization_dropdown)
         self.layout().addLayout(self.optimization_layout)
 
+        # Add a number input for the target FPS
+        self.fps_layout = QtWidgets.QHBoxLayout()
+        self.fps_label = QtWidgets.QLabel("Target FPS")
+        self.fps_layout.addWidget(self.fps_label)
+        self.fps_input = QtWidgets.QLineEdit()
+        self.fps_input.setText("24")
+        self.fps_input.setEnabled(False)
+        self.fps_layout.addWidget(self.fps_input)
+        self.layout().addLayout(self.fps_layout)
+
         # Add a seperator
         self.layout().addWidget(qt_lines.QHLine())
 
@@ -122,6 +132,7 @@ class AnimStitcherWindow(QtWidgets.QWidget):
             self.sprite_name_input.setEnabled(True)
             self.stitch_button.setEnabled(True)
             self.optimization_dropdown.setEnabled(True)
+            self.fps_input.setEnabled(True)
 
             # Save the selected files
             self.selected_files = file_dialog.selectedFiles()
@@ -167,9 +178,23 @@ class AnimStitcherWindow(QtWidgets.QWidget):
             if warning_dialog.exec_() == QtWidgets.QMessageBox.No:
                 return
 
+
+        # Pop up an error if the inputted FPS is not a number
+        try:
+            fps = float(self.fps_input.text())
+        except ValueError:
+            warning_dialog = QtWidgets.QMessageBox()
+            warning_dialog.setIcon(QtWidgets.QMessageBox.Warning)
+            warning_dialog.setText("Invalid FPS")
+            warning_dialog.setInformativeText(
+                "The FPS must be a number")
+            warning_dialog.setWindowTitle("Invalid FPS")
+            warning_dialog.exec_()
+            return
+
         # Perform the actual stitching action
         stitcher.stitch_images_and_write_to_disk(
-            sprite_type, sprite_name, self.selected_files, self.optimization_dropdown.currentText() == "Size")
+            sprite_type, sprite_name, self.selected_files, self.optimization_dropdown.currentText() == "Size", float(self.fps_input.text()))
 
         # Close the window
         self.close()

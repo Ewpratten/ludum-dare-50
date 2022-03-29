@@ -33,7 +33,7 @@ def check_sprite_exists(sprite_type: str, sprite_name: str) -> bool:
     return os.path.isdir(sprite_path)
 
 
-def stitch_images_and_write_to_disk(sprite_type: str, sprite_name: str, images: List[str], quantize: bool) -> None:
+def stitch_images_and_write_to_disk(sprite_type: str, sprite_name: str, images: List[str], quantize: bool, fps: float) -> None:
 
     # Load all the images
     images_to_stitch = []
