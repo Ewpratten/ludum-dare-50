@@ -2,6 +2,8 @@
     "git.detectSubmodules": false,
     "cSpell.words": [
         "msaa",
+        "raylib",
+        "repr",
         "vsync"
     ],
     "files.watcherExclude": {
@@ -10,5 +12,13 @@
         "**/node_modules/*/**": true,
         "**/.hg/store/**": true,
         "**/target/**": true,
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/__pycache__": true,
     }
 }

@@ -6,9 +6,10 @@
 //! The game thread can then send `DiscordRpcSignal` values through an `mpsc` sender, which will be received by the Discord RPC client thread.
 
 use chrono::Utc;
-use discord_sdk::activity::{ActivityBuilder, Assets, IntoTimestamp};
+use discord_sdk::activity::{ActivityBuilder, Assets};
 
 /// Definitions of signals that can be sent to the Discord RPC thread to control how discord displays game status.
+#[derive(Debug, Clone)]
 pub enum DiscordRpcSignal {
     /// Signal to begin a game timer (Discord will display `XX:XX elapsed`)
     BeginGameTimer,
@@ -50,7 +51,6 @@ pub struct StatefulDiscordRpcSignalHandler {
 }
 
 impl StatefulDiscordRpcSignalHandler {
-
     /// Apply a signal to generate a new activity
     pub fn apply(&mut self, signal: DiscordRpcSignal) -> ActivityBuilder {
         // Fill in the data based on the contents of the signal

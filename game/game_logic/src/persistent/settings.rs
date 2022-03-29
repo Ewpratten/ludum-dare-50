@@ -9,14 +9,13 @@ use serde::{Deserialize, Serialize};
 /// Please don't add anything relating to gameplay though (no coins, health, etc.).
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PersistentGameSettings {
-    /// The target framerate for the game
-    pub target_fps: u32,
+    // TODO: Add data here.
 }
 
 // Add any default values here.
 impl Default for PersistentGameSettings {
     fn default() -> Self {
-        Self { target_fps: 60 }
+        Self {}
     }
 }
 

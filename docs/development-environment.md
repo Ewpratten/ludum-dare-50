@@ -2,7 +2,7 @@
 
 ## Prerequisite Tooling
 
-On all systems, you must have [Rust](https://www.rust-lang.org/tools/install), [git](https://git-scm.com/), and [cmake](https://cmake.org/download/) installed.
+On all systems, you must have [Rust](https://www.rust-lang.org/tools/install), [git](https://git-scm.com/), [Python 3](https://www.python.org/) (with `pip`), and [cmake](https://cmake.org/download/) installed.
 
 ### Additional Dependencies for Linux
 
@@ -30,6 +30,9 @@ If you are cloning via the CLI, you will need an additional step to ensure our f
 git clone https://github.com/Ewpratten/ludum-dare-50
 cd ludum-dare-50
 git submodule update --init --recursive
+
+# Optionally, pull in the dependencies for the artist tools
+python3 -m pip install -r requirements.txt
 ```
 
 ## First Build

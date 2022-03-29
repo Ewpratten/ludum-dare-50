@@ -1,0 +1,25 @@
+QWidget {
+    background-color: #444444;
+    color: white;
+}
+
+QLabel[labelClass="label-title"] {
+    color: #58a5cc;
+    font-weight: bold;
+    font-size:25px;
+}
+
+QComboBox:disabled {
+    background-color:#272727;
+    color: #444444;
+}
+    
+QCheckBox:disabled {
+    background-color:#272727;
+    color: #444444;
+}
+
+QPushButton:disabled {
+    background-color:#272727;
+    color: #444444;
+}

@@ -1,0 +1,22 @@
+[
+    {
+        "short": "chr",
+        "friendly": "Character"
+    },
+    {
+        "short": "env",
+        "friendly": "Environment"
+    },
+    {
+        "short": "prp",
+        "friendly": "Prop"
+    },
+    {
+        "short": "cut",
+        "friendly": "Cutscene"
+    },
+    {
+        "short": "test",
+        "friendly": "Test"
+    }
+]
