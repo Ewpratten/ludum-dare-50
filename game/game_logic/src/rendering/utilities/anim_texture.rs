@@ -142,7 +142,7 @@ impl AnimatedTexture {
         );
         let origin: raylib::core::math::Vector2 =
             origin.unwrap_or_else(|| Vector2::<f32>::zeros()).into();
-        debug!("{:?} -> {:?}", source, destination);
+        // debug!("{:?} -> {:?}", source, destination);
 
         // Render the frame
         draw_handle.draw_texture_pro(

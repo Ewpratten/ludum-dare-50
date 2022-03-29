@@ -18,7 +18,7 @@ impl TestFoxScene {
     /// Construct a new `TestFoxScene`
     pub fn new(raylib_handle: &mut RaylibHandle, thread: &RaylibThread) -> Self {
         // Load the fox texture
-        let fox = AnimatedTexture::new(raylib_handle, thread, "test", "debugTexture").unwrap();
+        let fox = AnimatedTexture::new(raylib_handle, thread, "chr", "testFox").unwrap();
 
         Self { fox_animation: fox }
     }
