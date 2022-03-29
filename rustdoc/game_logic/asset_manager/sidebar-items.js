@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["datastore",""],["json",""]]});
+initSidebarItems({"mod":[["datastore","Access to the game’s embedded files."],["json","Utilities for loading JSON from the embedded filesystem."],["sprite_types",""],["texture","Code for loading textures from RAM to VRAM"]]});

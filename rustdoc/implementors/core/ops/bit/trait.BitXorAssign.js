@@ -1,3 +1,0 @@
-(function() {var implementors = {};
-implementors["discord_sdk"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.59.0/core/ops/bit/trait.BitXorAssign.html\" title=\"trait core::ops::bit::BitXorAssign\">BitXorAssign</a>&lt;<a class=\"struct\" href=\"discord_sdk/struct.Subscriptions.html\" title=\"struct discord_sdk::Subscriptions\">Subscriptions</a>&gt; for <a class=\"struct\" href=\"discord_sdk/struct.Subscriptions.html\" title=\"struct discord_sdk::Subscriptions\">Subscriptions</a>","synthetic":false,"types":["discord_sdk::Subscriptions"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

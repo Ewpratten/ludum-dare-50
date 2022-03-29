@@ -17,7 +17,63 @@
 <span id="15">15</span>
 <span id="16">16</span>
 <span id="17">17</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+</pre><pre class="rust"><code><span class="doccomment">//! The rust side of the `dist/project-constants.json` file</span>
+<span class="doccomment">//! </span>
+<span class="doccomment">//! ## Overview</span>
+<span class="doccomment">//! </span>
+<span class="doccomment">//! This file contains a structure defining all data we want to load from the project constants file.</span>
+<span class="doccomment">//! Feel free to add anything you&#39;d like here, just make sure the relavant data is also written in the JSON file so the game doesn&#39;t crash.</span>
+<span class="doccomment">//! You can treat these as constants. I just prefer storing this kind of data in JSON rather than hard-coding it in the program.</span>
+<span class="doccomment">//! </span>
+<span class="doccomment">//! ## How this is loaded</span>
+<span class="doccomment">//! </span>
+<span class="doccomment">//! Somewhere in `lib.rs`, a call is made to load this through the `asset_manager`. </span>
+<span class="doccomment">//! Its all already set up, so you shouldn&#39;t have to worry about the logistics.</span>
+
+<span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+
+<span class="kw">use</span> <span class="ident">serde::Deserialize</span>;
+
+<span class="doccomment">/// Constants relating to Discord</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DiscordConstants</span> {
+    <span class="doccomment">/// The Discord application ID</span>
+    <span class="kw">pub</span> <span class="ident">app_id</span>: <span class="ident">i64</span>,
+
+    <span class="doccomment">/// Artwork name mapping</span>
+    <span class="kw">pub</span> <span class="ident">artwork</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">String</span><span class="op">&gt;</span>,
+    
+    <span class="doccomment">/// Strings</span>
+    <span class="kw">pub</span> <span class="ident">strings</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">String</span><span class="op">&gt;</span>,
+}
 
 <span class="doccomment">/// This structure is filled with the contents of `dist/project-constants.json` at runtime</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
@@ -28,8 +84,8 @@
     <span class="doccomment">/// The window size to use on launch</span>
     <span class="kw">pub</span> <span class="ident">base_window_size</span>: (<span class="ident">u32</span>, <span class="ident">u32</span>),
 
-    <span class="doccomment">/// The Discord application ID</span>
-    <span class="kw">pub</span> <span class="ident">discord_app_id</span>: <span class="ident">u64</span>,
+    <span class="doccomment">/// The Discord constants</span>
+    <span class="kw">pub</span> <span class="ident">discord</span>: <span class="ident">DiscordConstants</span>,
 
     <span class="doccomment">/// The target framerate of the game</span>
     <span class="kw">pub</span> <span class="ident">target_fps</span>: <span class="ident">u32</span>,

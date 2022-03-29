@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["events",""]],"struct":[["Avatar","The MD5 hash of a user’s avatar"],["User","A Discord user."]],"type":[["UserId",""]]});

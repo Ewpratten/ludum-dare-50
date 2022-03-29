@@ -102,9 +102,10 @@
 <span class="doccomment">//! The game thread can then send `DiscordRpcSignal` values through an `mpsc` sender, which will be received by the Discord RPC client thread.</span>
 
 <span class="kw">use</span> <span class="ident">chrono::Utc</span>;
-<span class="kw">use</span> <span class="ident">discord_sdk::activity</span>::{<span class="ident">ActivityBuilder</span>, <span class="ident">Assets</span>, <span class="ident">IntoTimestamp</span>};
+<span class="kw">use</span> <span class="ident">discord_sdk::activity</span>::{<span class="ident">ActivityBuilder</span>, <span class="ident">Assets</span>};
 
 <span class="doccomment">/// Definitions of signals that can be sent to the Discord RPC thread to control how discord displays game status.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DiscordRpcSignal</span> {
     <span class="doccomment">/// Signal to begin a game timer (Discord will display `XX:XX elapsed`)</span>
     <span class="ident">BeginGameTimer</span>,
@@ -146,7 +147,6 @@
 }
 
 <span class="kw">impl</span> <span class="ident">StatefulDiscordRpcSignalHandler</span> {
-
     <span class="doccomment">/// Apply a signal to generate a new activity</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">apply</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">signal</span>: <span class="ident">DiscordRpcSignal</span>) -&gt; <span class="ident">ActivityBuilder</span> {
         <span class="comment">// Fill in the data based on the contents of the signal</span>

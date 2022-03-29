@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["anim_texture","This module handles the code for rendering framerate-locked animations from textures"]]});

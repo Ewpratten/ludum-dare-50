@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ResourceLoadError",""]],"fn":[["load_texture_from_internal_data","Loads an embedded texture into VRAM."]]});

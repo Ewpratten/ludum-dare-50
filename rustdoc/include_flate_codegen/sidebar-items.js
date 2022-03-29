@@ -1,1 +1,0 @@
-initSidebarItems({"macro":[["proc_macro_hack_deflate_file","`deflate_file!(\"file\")` is equivalent to `include_bytes!(\"file.gz\")`."],["proc_macro_hack_deflate_utf8_file","This macro is identical to `deflate_file!()`, except it additionally performs UTF-8 validation."]]});

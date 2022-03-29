@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AnimatedTextureLoadError","Possible errors to be thrown during the animation texture loading process"]],"struct":[["AnimatedTexture",""],["AnimatedTextureMetadata","Definition for the metadata structure attached to each spritesheet"],["FrameTextureDescriptor","Definition for the structure describing a frame’s size and position in a texture"]]});

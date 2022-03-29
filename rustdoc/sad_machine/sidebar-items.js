@@ -1,1 +1,0 @@
-initSidebarItems({"macro":[["state_machine","Generate the declaratively described state machine diagram."]]});

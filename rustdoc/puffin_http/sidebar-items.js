@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["DEFAULT_PORT","The default TCP port used."],["PROTOCOL_VERSION","Bumped on protocol breakage."]],"struct":[["Client","Connect to a [`crate::Server`], reading profile data and feeding it to a [`puffin::FrameView`]."],["Server","Listens for incoming connections and streams them puffin profiler data."]]});

@@ -78,7 +78,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="development-environment.html"><strong aria-hidden="true">2.1.</strong> Development Environment</a></li><li class="chapter-item expanded "><a href="artist-information.html"><strong aria-hidden="true">2.2.</strong> Artist Information</a></li></ol></li><li class="chapter-item expanded "><a href="infrastructure-overview.html"><strong aria-hidden="true">3.</strong> Infrastructure Overview</a></li><li class="chapter-item expanded "><a href="software-design.html"><strong aria-hidden="true">4.</strong> Software Design</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="design-asset-manager.html"><strong aria-hidden="true">4.1.</strong> Asset Manager</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="getting-started.html"><strong aria-hidden="true">2.</strong> Getting Started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="development-environment.html"><strong aria-hidden="true">2.1.</strong> Development Environment</a></li></ol></li><li class="chapter-item expanded "><a href="anim-stitcher.html"><strong aria-hidden="true">3.</strong> Using anim_stitcher</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -150,7 +150,7 @@
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="development-environment"><a class="header" href="#development-environment">Development Environment</a></h1>
 <h2 id="prerequisite-tooling"><a class="header" href="#prerequisite-tooling">Prerequisite Tooling</a></h2>
-<p>On all systems, you must have <a href="https://www.rust-lang.org/tools/install">Rust</a>, <a href="https://git-scm.com/">git</a>, and <a href="https://cmake.org/download/">cmake</a> installed.</p>
+<p>On all systems, you must have <a href="https://www.rust-lang.org/tools/install">Rust</a>, <a href="https://git-scm.com/">git</a>, <a href="https://www.python.org/">Python 3</a> (with <code>pip</code>), and <a href="https://cmake.org/download/">cmake</a> installed.</p>
 <h3 id="additional-dependencies-for-linux"><a class="header" href="#additional-dependencies-for-linux">Additional Dependencies for Linux</a></h3>
 <p>Linux systems require some additional development headers:</p>
 <p><strong>Ubuntu:</strong></p>
@@ -165,16 +165,37 @@
 <pre><code class="language-sh">git clone https://github.com/Ewpratten/ludum-dare-50
 cd ludum-dare-50
 git submodule update --init --recursive
+
+# Optionally, pull in the dependencies for the artist tools
+python3 -m pip install -r requirements.txt
 </code></pre>
 <h2 id="first-build"><a class="header" href="#first-build">First Build</a></h2>
 <p>We make heavy use of <code>cargo</code> to handle dependency management and build configuration. To build the game, just run:</p>
 <pre><code class="language-sh">cargo build
 </code></pre>
 <p>This will take quite a while on first build as it will download all dependencies and compile them locally.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="artist-information"><a class="header" href="#artist-information">Artist Information</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="infrastructure-overview"><a class="header" href="#infrastructure-overview">Infrastructure Overview</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="software-design"><a class="header" href="#software-design">Software Design</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="asset-manager"><a class="header" href="#asset-manager">Asset Manager</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="using-anim_stitcher"><a class="header" href="#using-anim_stitcher">Using anim_stitcher</a></h1>
+<p><code>anim_stitcher</code> is a Python utility designed to allow artists to automatically convert their frames into sprite sheets with metadata.</p>
+<h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
+<p>To launch <code>anim_stitcher</code>, you must first have all the Python dependencies installed. This means installing Python and pip, then running the following in the root of the project:</p>
+<pre><code class="language-sh">python3 -m pip install -r requirements.txt
+</code></pre>
+<p><em>For help with this, contact Evan.</em></p>
+<h3 id="launching-the-tool"><a class="header" href="#launching-the-tool">Launching the tool</a></h3>
+<p>If you are on a Linux system, you can launch the tool with <code>./launch_anim_stitcher.sh</code>. </p>
+<p>Otherwise, open the project root folder, and run the <code>launch_anim_stitcher.bat</code> script. This will show a window similar to the following:</p>
+<p><img src="./anim_stitcher_gui.png" alt="Anim Stitcher GUI" /></p>
+<p>As you can see, I have already filled everything out for the <code>testFox</code> asset. </p>
+<p><strong>When selecting PNGs:</strong> Make sure you shift-click to select multiple files. You don't want a spritesheet with only one frame in it.</p>
+<h2 id="technical-information"><a class="header" href="#technical-information">Technical information</a></h2>
+<p><code>anim_stitcher</code> exports spritesheets to <code>game/dist/assets/anm/...</code>. Each spritesheet also has a metadata JSON file beside it. The filepaths are automatically chosen based on input in the GUI.</p>
+<p>An example output would be for an asset named <code>testFox</code> with the <code>Character</code> type.</p>
+<pre><code class="language-text">...
+game/dist/assets/anm/chr/chr_testFox:
+     - chr_testFox.png
+     - chr_testFox.anim_meta.json
+...
+</code></pre>
 
                     </main>
 

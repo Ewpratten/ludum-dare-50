@@ -85,7 +85,6 @@
 <span id="83">83</span>
 <span id="84">84</span>
 <span id="85">85</span>
-<span id="86">86</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
 
 <span class="kw">use</span> <span class="ident">directories::ProjectDirs</span>;
@@ -97,14 +96,13 @@
 <span class="doccomment">/// Please don&#39;t add anything relating to gameplay though (no coins, health, etc.).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PersistentGameSettings</span> {
-    <span class="doccomment">/// The target framerate for the game</span>
-    <span class="kw">pub</span> <span class="ident">target_fps</span>: <span class="ident">u32</span>,
+    <span class="comment">// TODO: Add data here.</span>
 }
 
 <span class="comment">// Add any default values here.</span>
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">PersistentGameSettings</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> { <span class="ident">target_fps</span>: <span class="number">60</span> }
+        <span class="self">Self</span> {}
     }
 }
 

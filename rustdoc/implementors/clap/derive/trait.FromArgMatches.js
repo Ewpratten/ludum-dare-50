@@ -1,3 +1,0 @@
-(function() {var implementors = {};
-implementors["desktop_wrapper"] = [{"text":"impl <a class=\"trait\" href=\"clap/derive/trait.FromArgMatches.html\" title=\"trait clap::derive::FromArgMatches\">FromArgMatches</a> for <a class=\"struct\" href=\"desktop_wrapper/cli/struct.Args.html\" title=\"struct desktop_wrapper::cli::Args\">Args</a>","synthetic":false,"types":["desktop_wrapper::cli::Args"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

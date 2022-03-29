@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DiscordError",""]],"struct":[["DiscordRpcClient","The client wrapper for Discord RPC"]]});

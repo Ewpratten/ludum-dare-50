@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["InputMode",""]],"mod":[["events",""],["state",""]],"struct":[["VoiceSettingsSelf","Settings for the local user’s voice connection"]]});

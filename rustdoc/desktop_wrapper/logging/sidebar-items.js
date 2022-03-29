@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["LoggingSystemInitError","Error definitions for setting up the logging system"]],"fn":[["init_logging_system","Sets up global logging for an application"]]});

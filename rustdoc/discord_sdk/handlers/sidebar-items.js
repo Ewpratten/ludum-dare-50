@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Forwarder","Forwards messages to a receiver"],["Printer","Prints events at [`tracing::Level::DEBUG`] and errors at [`tracing::Level::WARN`]"]]});

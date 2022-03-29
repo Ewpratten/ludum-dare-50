@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["event_loop",""]]});
+initSidebarItems({"mod":[["core_renderer_sm","This module contains state machine definitions for the backend rendering system."],["event_loop","The Event Loop module"],["screens",""],["utilities",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["load_known_sprite_types","Loads a list of all known sprite types from the definitions file"]],"struct":[["KnownSpriteType","The structure backing the `dist/known-sprite-types.json` file"]]});

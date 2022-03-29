@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["test_fox","This “scene” is used only for testing animation and resource loading It should be removed once the game is being worked on"]],"struct":[["SceneRenderDelegate","Delegate for handling rendering. This is a struct to allow for stateful data (like sub-screens) to be set up"]]});

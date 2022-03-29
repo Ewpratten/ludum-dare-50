@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DiscordRpcSignal","Definitions of signals that can be sent to the Discord RPC thread to control how discord displays game status."]],"struct":[["StatefulDiscordRpcSignalHandler","A struct that can keep track of incoming signals and their effect on Discord"]]});

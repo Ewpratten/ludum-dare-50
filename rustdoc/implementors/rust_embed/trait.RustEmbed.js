@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["game_logic"] = [{"text":"impl <a class=\"trait\" href=\"rust_embed/trait.RustEmbed.html\" title=\"trait rust_embed::RustEmbed\">RustEmbed</a> for <a class=\"struct\" href=\"game_logic/asset_manager/datastore/struct.InternalData.html\" title=\"struct game_logic::asset_manager::datastore::InternalData\">InternalData</a>","synthetic":false,"types":["game_logic::asset_manager::datastore::InternalData"]}];
+implementors["game_logic"] = [{"text":"impl RustEmbed for <a class=\"struct\" href=\"game_logic/asset_manager/datastore/struct.InternalData.html\" title=\"struct game_logic::asset_manager::datastore::InternalData\">InternalData</a>","synthetic":false,"types":["game_logic::asset_manager::datastore::InternalData"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,1 +1,0 @@
-initSidebarItems({"macro":[["flate","This macro is like `include_bytes!` or `include_str!`, but compresses at compile time and lazily decompresses at runtime."]]});
