@@ -73,7 +73,7 @@ pub async fn entrypoint(force_recreate_savefiles: bool) {
         |builder| {
             builder
                 .msaa_4x()
-                .vsync()
+                // .vsync()
                 .title(project_constants.game_name.as_str())
                 .height(project_constants.base_window_size.1 as i32)
                 .width(project_constants.base_window_size.0 as i32);

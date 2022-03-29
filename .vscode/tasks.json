@@ -20,6 +20,18 @@
 		},
 		{
 			"type": "cargo",
+			"command": "run",
+			"args": [
+				"--",
+				"--verbose"
+			],
+			"problemMatcher": [
+				"$rustc"
+			],
+			"label": "Launch Game [DEBUG LOGS]"
+		},
+		{
+			"type": "cargo",
 			"command": "doc",
 			"args": [
 				"-p",

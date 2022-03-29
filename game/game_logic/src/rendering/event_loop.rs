@@ -15,6 +15,8 @@ use crate::rendering::core_renderer_sm::{PreloadState, RenderBackendStates};
 use crate::rendering::screens::sm_failure_screen;
 use crate::scenes::SceneRenderDelegate;
 use raylib::RaylibBuilder;
+use raylib::consts::KeyboardKey;
+use raylib::prelude::RaylibDraw;
 
 /// Will begin rendering graphics. Returns when the window closes
 pub async fn handle_graphics_blocking<ConfigBuilder>(
@@ -45,7 +47,8 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
     let mut sm_failure_screen = sm_failure_screen::SmFailureScreen::new();
 
     // Set up the main render delegate
-    let mut render_delegate = SceneRenderDelegate::on_game_start();
+    let mut render_delegate =
+        SceneRenderDelegate::on_game_start(&mut raylib_handle, &raylib_thread);
 
     // Handle loading the resources and rendering the loading screen
     log::trace!("Running event loop");
@@ -74,12 +77,15 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
         // Tell the profiler that we ended the frame
         profiling::finish_frame!();
     }
-    log::trace!("Finished loading game");
+    log::info!("Finished loading game");
 
     // Get access to the global resources
     let global_resources = loading_screen
         .resources
         .expect("Failed to get global resources");
+
+    // Tracker for if we are showing the FPS counter
+    let mut show_fps_counter = false;
 
     // Run the event loop
     while !raylib_handle.window_should_close() {
@@ -105,6 +111,16 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
             }
             _ => backend_sm = RenderBackendStates::sm_failed(),
         };
+
+        // Check for F3 being pressed
+        if raylib_handle.is_key_pressed(KeyboardKey::KEY_F3) {
+            show_fps_counter = !show_fps_counter;
+        }
+
+        // Show the FPS counter
+        if show_fps_counter {
+            raylib_handle.begin_drawing(&raylib_thread).draw_fps(10, 10);
+        }
 
         // Tell the profiler that we ended the frame
         profiling::finish_frame!();

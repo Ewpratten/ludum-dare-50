@@ -1,7 +1,8 @@
 //! This "scene" is used only for testing animation and resource loading
 //! It should be removed once the game is being worked on
 
-use raylib::{RaylibHandle, RaylibThread};
+use raylib::prelude::*;
+use nalgebra as na;
 
 use crate::{
     discord::DiscordChannel, global_resource_package::GlobalResources,
@@ -15,9 +16,9 @@ pub struct TestFoxScene {
 
 impl TestFoxScene {
     /// Construct a new `TestFoxScene`
-    pub fn new() -> Self {
+    pub fn new(raylib_handle: &mut RaylibHandle, thread: &RaylibThread) -> Self {
         // Load the fox texture
-        let fox = AnimatedTexture::new();
+        let fox = AnimatedTexture::new(raylib_handle, thread, "test", "debugTexture").unwrap();
 
         Self { fox_animation: fox }
     }
@@ -30,5 +31,21 @@ impl TestFoxScene {
         discord: &DiscordChannel,
         global_resources: &GlobalResources,
     ) {
+        // Get a drawing handle
+        let mut draw = raylib.begin_drawing(rl_thread);
+
+        // Clear the screen
+        draw.clear_background(Color::WHITE);
+
+        // Render the fox
+        self.fox_animation.render_frame_by_index(
+            &mut draw,
+            0,
+            na::Vector2::new(0.0, 0.0),
+            None,
+            None,
+            None,
+            None,
+        );
     }
 }

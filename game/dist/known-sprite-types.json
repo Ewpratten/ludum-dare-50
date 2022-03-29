@@ -14,5 +14,9 @@
     {
         "short": "cut",
         "friendly": "Cutscene"
+    },
+    {
+        "short": "test",
+        "friendly": "Test"
     }
 ]

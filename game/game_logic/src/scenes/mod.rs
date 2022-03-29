@@ -19,11 +19,11 @@ pub struct SceneRenderDelegate {
 
 impl SceneRenderDelegate {
     /// This is called when the game first loads
-    pub fn on_game_start() -> Self {
+    pub fn on_game_start(raylib: &mut RaylibHandle, rl_thread: &RaylibThread) -> Self {
         // TODO: Stick any init code you want here.
 
         // Init some scenes
-        let scene_test_fox = TestFoxScene::new();
+        let scene_test_fox = TestFoxScene::new(raylib, rl_thread);
 
         Self { scene_test_fox }
     }

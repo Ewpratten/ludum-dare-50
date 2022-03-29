@@ -21,3 +21,7 @@ mod datastore;
 pub use datastore::InternalData;
 mod json;
 pub use json::{InternalJsonLoadError, load_json_structure};
+mod sprite_types;
+pub use sprite_types::{KnownSpriteType, load_known_sprite_types};
+mod texture;
+pub use texture::{load_texture_from_internal_data, ResourceLoadError};
