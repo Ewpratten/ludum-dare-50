@@ -95,6 +95,15 @@ class AnimStitcherWindow(QtWidgets.QWidget):
         self.fps_layout.addWidget(self.fps_input)
         self.layout().addLayout(self.fps_layout)
 
+        # Add a checkbox to reverse the image order
+        self.reverse_layout = QtWidgets.QHBoxLayout()
+        self.reverse_label = QtWidgets.QLabel("Reverse Image Order")
+        self.reverse_layout.addWidget(self.reverse_label)
+        self.reverse_checkbox = QtWidgets.QCheckBox()
+        self.reverse_checkbox.setEnabled(False)
+        self.reverse_layout.addWidget(self.reverse_checkbox)
+        self.layout().addLayout(self.reverse_layout)
+
         # Add a seperator
         self.layout().addWidget(qt_lines.QHLine())
 
@@ -133,6 +142,7 @@ class AnimStitcherWindow(QtWidgets.QWidget):
             self.stitch_button.setEnabled(True)
             self.optimization_dropdown.setEnabled(True)
             self.fps_input.setEnabled(True)
+            self.reverse_checkbox.setEnabled(True)
 
             # Save the selected files
             self.selected_files = file_dialog.selectedFiles()
@@ -194,7 +204,7 @@ class AnimStitcherWindow(QtWidgets.QWidget):
 
         # Perform the actual stitching action
         stitcher.stitch_images_and_write_to_disk(
-            sprite_type, sprite_name, self.selected_files, self.optimization_dropdown.currentText() == "Size", float(self.fps_input.text()))
+            sprite_type, sprite_name, self.selected_files, self.optimization_dropdown.currentText() == "Size", float(self.fps_input.text()), self.reverse_checkbox.isChecked())
 
         # Close the window
         self.close()

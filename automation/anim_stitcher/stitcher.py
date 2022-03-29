@@ -33,7 +33,7 @@ def check_sprite_exists(sprite_type: str, sprite_name: str) -> bool:
     return os.path.isdir(sprite_path)
 
 
-def stitch_images_and_write_to_disk(sprite_type: str, sprite_name: str, images: List[str], quantize: bool, fps: float) -> None:
+def stitch_images_and_write_to_disk(sprite_type: str, sprite_name: str, images: List[str], quantize: bool, fps: float, reverse_order: bool) -> None:
 
     # Load all the images
     images_to_stitch = []
@@ -70,8 +70,13 @@ def stitch_images_and_write_to_disk(sprite_type: str, sprite_name: str, images: 
         "sheet_width": total_width,
         "published_at": time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()),
         "published_by": getpass.getuser(),
+        "fps": fps,
         "frames": []
     }
+
+    # Handle reverse order
+    if reverse_order:
+        images_to_stitch.reverse()
 
     # Add the metadata for each image
     x_offset = 0
