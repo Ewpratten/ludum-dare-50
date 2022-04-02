@@ -1,0 +1,8 @@
+[
+    {
+        "type":"env",
+        "name":"env_testObject",
+        "position": [0,0],
+        "rotation_radians": 0.5
+    }
+]
