@@ -6,7 +6,7 @@ pub struct PossiblyAnimatedTexture {
     /// Signal if the texture is animated or static
     pub animated: bool,
     /// Relative file path from `dist` to the texture
-    pub rel_file_path: String,
+    pub file_path: String,
 }
 
 
