@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="128" tileheight="128" infinite="1" nextlayerid="2" nextobjectid="1">
- <tileset firstgid="1" source="../assets/env/env_beachTile/beachTile.tsx"/>
- <tileset firstgid="2" source="../assets/env/env_beachTile/beachTileSwirly.tsx"/>
+ <tileset firstgid="1" source="assets/env/env_beachTile/beachTile.tsx"/>
+ <tileset firstgid="2" source="assets/env/env_beachTile/beachTileSwirly.tsx"/>
  <layer id="1" name="Tile Layer 1" width="30" height="20">
   <data encoding="csv">
    <chunk x="-16" y="-16" width="16" height="16">
