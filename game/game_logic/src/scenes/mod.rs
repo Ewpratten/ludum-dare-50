@@ -10,19 +10,23 @@ use crate::{
     project_constants::ProjectConstants,
 };
 
-use self::{player_interaction::PlayableScene, test_fox::TestFoxScene, main_menu::MainMenu};
+use self::{
+    main_menu::{MainMenu, MenuStateSignal},
+    player_interaction::PlayableScene,
+    test_fox::TestFoxScene,
+};
+mod main_menu;
 mod player_interaction;
 mod test_fox;
-mod main_menu;
 
 /// Delegate for handling rendering.
 /// This is a struct to allow for stateful data (like sub-screens) to be set up
 pub struct SceneRenderDelegate {
-    is_in_main_menu: bool,
+    menu_control_signal: MenuStateSignal,
     /* Scenes */
     scene_test_fox: TestFoxScene,
     scene_playable: PlayableScene,
-    scene_main_menu: MainMenu
+    scene_main_menu: MainMenu,
 }
 
 impl SceneRenderDelegate {
@@ -40,7 +44,7 @@ impl SceneRenderDelegate {
         let scene_main_menu = MainMenu::new(raylib, rl_thread, constants);
 
         Self {
-            is_in_main_menu: true,
+            menu_control_signal: MenuStateSignal::DoMainMenu,
             scene_test_fox,
             scene_playable,
             scene_main_menu,
@@ -59,14 +63,37 @@ impl SceneRenderDelegate {
         constants: &ProjectConstants,
     ) {
         // Render the main menu if in it, otherwise, render the game
-        if self.is_in_main_menu {
-            self.is_in_main_menu = !self.scene_main_menu
-                .render_frame(raylib, rl_thread, discord, global_resources, constants)
-                .await;
-        }else {
-            self.scene_playable
-                .render_frame(raylib, rl_thread, &discord, global_resources, constants)
-                .await;
+        match self.menu_control_signal {
+            MenuStateSignal::StartGame => {
+                self.scene_playable
+                    .render_frame(raylib, rl_thread, &discord, global_resources, constants)
+                    .await;
+            }
+            MenuStateSignal::QuitGame => unimplemented!(),
+            MenuStateSignal::DoMainMenu => {
+                self.menu_control_signal = self
+                    .scene_main_menu
+                    .render_main_menu_frame(raylib, rl_thread, discord, global_resources, constants)
+                    .await
+            }
+            MenuStateSignal::DoOptions => {
+                self.menu_control_signal = self
+                    .scene_main_menu
+                    .render_options_frame(raylib, rl_thread, discord, global_resources, constants)
+                    .await
+            },
+            MenuStateSignal::DoCredits => {
+                self.menu_control_signal = self
+                    .scene_main_menu
+                    .render_credits_frame(raylib, rl_thread, discord, global_resources, constants)
+                    .await
+            },
+            MenuStateSignal::DoLeaderboard => {
+                self.menu_control_signal = self
+                    .scene_main_menu
+                    .render_leaderboard_frame(raylib, rl_thread, discord, global_resources, constants)
+                    .await
+            },
         }
     }
 }
