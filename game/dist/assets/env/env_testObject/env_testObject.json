@@ -6,15 +6,7 @@
     "top_texture": {
         "file_path": "assets/env/env_testObject/env_testObjectTop.png"
     },
-    "footprint": [
-        {
-            "position": [
-                0,
-                0
-            ],
-            "radius": 256.0
-        }
-    ],
+    "footprint_radius": 128.0,
     "physics_colliders": [
         {
             "position": [

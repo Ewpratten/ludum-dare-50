@@ -37,7 +37,8 @@ pub struct WorldObject {
     /// The object's top texture
     pub top_texture: Option<PossiblyAnimatedTexture>,
     /// colliders describing the object's footprint
-    pub footprint: Vec<ObjectCollider>,
+    // pub footprint: Vec<ObjectCollider>,
+    pub footprint_radius: Option<f32>,
     /// Colliders for physics
     pub physics_colliders: Vec<ObjectCollider>,
     /// Temperature
@@ -54,7 +55,7 @@ pub struct WorldObjectRef {
     pub kind: String,
     /// Object name
     pub name: String,
-    /// Object position. 1,1 being up and to the right
+    /// Object position (tile-space *not* pixel-space). 1,1 being up and to the right
     pub position: na::Vector2<f32>,
     /// Object rotation, positive is clockwise
     pub rotation_radians: f32,

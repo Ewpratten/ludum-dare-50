@@ -36,8 +36,8 @@ impl TestFoxScene {
         let camera = Camera2D {
             target: Vector2 { x: 0.0, y: 0.0 },
             offset: Vector2 {
-                x: raylib_handle.get_screen_width() as f32,
-                y: (raylib_handle.get_screen_height() as f32) * -0.5,
+                x: raylib_handle.get_screen_width() as f32 * 0.5,
+                y: (raylib_handle.get_screen_height() as f32) * 0.5,
             },
             rotation: 0.0,
             zoom: 1.0,
@@ -64,15 +64,15 @@ impl TestFoxScene {
         // Clear the screen
         draw.clear_background(Color::WHITE);
 
-        // Render the fox
-        self.fox_animation.render_automatic(
-            &mut draw,
-            na::Vector2::new(0.0, 0.0),
-            None,
-            None,
-            None,
-            None,
-        );
+        // // Render the fox
+        // self.fox_animation.render_automatic(
+        //     &mut draw,
+        //     na::Vector2::new(0.0, 0.0),
+        //     None,
+        //     None,
+        //     None,
+        //     None,
+        // );
 
         // Allow the camera to be moved with wasd
         if draw.is_key_down(KeyboardKey::KEY_W) {
@@ -93,7 +93,19 @@ impl TestFoxScene {
             let mut ctx2d = draw.begin_mode2D(self.camera);
 
             // Render the map
-            self.world_map.render_map(&mut ctx2d, &self.camera, true);
+            self.world_map.render_map(
+                &mut ctx2d,
+                &self.camera,
+                true,
+                na::Vector2::new(self.camera.target.x, self.camera.target.y).into(),
+            );
         }
+
+        draw.draw_circle(
+            draw.get_screen_width() / 2,
+            draw.get_screen_height() / 2,
+            4.0,
+            Color::RED,
+        );
     }
 }

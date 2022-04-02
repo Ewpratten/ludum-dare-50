@@ -131,19 +131,30 @@ impl MapRenderer {
         })
     }
 
-    pub fn sample_friction_at(&self, position: na::Vector2<f32>) -> f32 {
+    pub fn sample_friction_at(&self, world_position: na::Vector2<f32>) -> f32 {
+        // Convert to a tile position
+        let tile_position = na::Vector2::new(
+            (world_position.x / 128.0).floor() as i32,
+            (world_position.y / 128.0).floor() as i32,
+        );
         todo!()
     }
 
-    pub fn sample_temperature_at(&self, position: na::Vector2<f32>) -> f32 {
+    pub fn sample_temperature_at(&self, world_position: na::Vector2<f32>) -> f32 {
+        // Convert to a tile position
+        let tile_position = na::Vector2::new(
+            (world_position.x / 128.0).floor() as i32,
+            (world_position.y / 128.0).floor() as i32,
+        );
         todo!()
     }
 
     pub fn render_map(
-        &self,
+        &mut self,
         draw_handle: &mut RaylibMode2D<RaylibDrawHandle>,
         camera: &Camera2D,
         show_debug_grid: bool,
+        player_position: na::Vector2<f32>,
     ) {
         // Get the window corners in world space
         let screen_width = draw_handle.get_screen_width();
@@ -204,6 +215,108 @@ impl MapRenderer {
                                             tile_y * tile_height as i32,
                                             Color::WHITE,
                                         );
+                                    }
+
+                                    // Check if there is an object at this tile
+                                    for obj_ref in &self.world_objects.object_references {
+                                        if obj_ref.position.x == sampler_x as f32
+                                            && obj_ref.position.y == sampler_y as f32
+                                        {
+                                            // Get access to the actual object definition
+                                            let object_key =
+                                                format!("{}:{}", obj_ref.kind, obj_ref.name);
+                                            let obj_def = self
+                                                .world_objects
+                                                .object_definitions
+                                                .get(&object_key)
+                                                .unwrap();
+
+                                            // We need to render the base layer of the object
+                                            if obj_def.bottom_texture.animated.unwrap_or(false) {
+                                                let tex = self
+                                                    .world_objects
+                                                    .bottom_animated_textures
+                                                    .get_mut(&object_key)
+                                                    .unwrap();
+                                                tex.render_automatic(
+                                                    draw_handle,
+                                                    obj_ref.position - (tex.size() / 2.0),
+                                                    None,
+                                                    None,
+                                                    Some(obj_ref.rotation_radians),
+                                                    None,
+                                                );
+                                            } else {
+                                                let tex = self
+                                                    .world_objects
+                                                    .bottom_static_textures
+                                                    .get_mut(&object_key)
+                                                    .unwrap();
+                                                let p: Vector2 = obj_ref.position.into();
+                                                draw_handle.draw_texture_ex(
+                                                    &tex,
+                                                    p - Vector2::new(
+                                                        tex.width as f32 / 2.0,
+                                                        tex.height as f32 / 2.0,
+                                                    ),
+                                                    obj_ref.rotation_radians,
+                                                    1.0,
+                                                    Color::WHITE,
+                                                );
+                                            }
+
+                                            // If needed we can render the top layer of the object
+                                            if let Some(top_texture) = &obj_def.top_texture {
+                                                // We need to detect if the player is in the footprint of the object
+                                                let mut tint = Color::WHITE;
+                                                if let Some(footprint_radius) =
+                                                    obj_def.footprint_radius
+                                                {
+                                                    let player_dist_to_object =
+                                                        (obj_ref.position - player_position).norm();
+                                                    // debug!(
+                                                    //     "Player dist to object: {}",
+                                                    //     player_dist_to_object
+                                                    // );
+                                                    if player_dist_to_object <= footprint_radius {
+                                                        tint.a = 128;
+                                                    }
+                                                }
+
+                                                if top_texture.animated.unwrap_or(false) {
+                                                    let tex = self
+                                                        .world_objects
+                                                        .top_animated_textures
+                                                        .get_mut(&object_key)
+                                                        .unwrap();
+                                                    tex.render_automatic(
+                                                        draw_handle,
+                                                        obj_ref.position - (tex.size() / 2.0),
+                                                        None,
+                                                        None,
+                                                        Some(obj_ref.rotation_radians),
+                                                        Some(tint),
+                                                    );
+                                                } else {
+                                                    let tex = self
+                                                        .world_objects
+                                                        .top_static_textures
+                                                        .get_mut(&object_key)
+                                                        .unwrap();
+                                                    let p: Vector2 = obj_ref.position.into();
+                                                    draw_handle.draw_texture_ex(
+                                                        &tex,
+                                                        p - Vector2::new(
+                                                            tex.width as f32 / 2.0,
+                                                            tex.height as f32 / 2.0,
+                                                        ),
+                                                        obj_ref.rotation_radians,
+                                                        1.0,
+                                                        tint,
+                                                    );
+                                                }
+                                            }
+                                        }
                                     }
 
                                     if show_debug_grid {
