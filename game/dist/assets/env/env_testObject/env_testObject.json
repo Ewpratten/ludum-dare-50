@@ -1,0 +1,23 @@
+{
+    "name": "env_testObject",
+    "bottom_texture": {
+        "file_path": "assets/env/env_testObject/env_testObjectBottom.png"
+    },
+    "top_texture": {
+        "file_path": "assets/env/env_testObject/env_testObjectTop.png"
+    },
+    "footprint_radius": 128.0,
+    "physics_colliders": [
+        {
+            "position": [
+                -118,
+                -60
+            ],
+            "size": [
+                230,
+                127
+            ]
+        }
+    ],
+    "temperature": 5.0
+}
