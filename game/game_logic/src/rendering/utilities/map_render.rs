@@ -1,9 +1,14 @@
-use std::{collections::HashMap, sync::Arc};
+use std::{collections::HashMap, path::PathBuf, sync::Arc};
 
 use crate::asset_manager::{load_texture_from_internal_data, InternalData};
 use nalgebra as na;
 use raylib::{
-    camera::Camera2D, prelude::RaylibDrawHandle, texture::Texture2D, RaylibHandle, RaylibThread,
+    camera::Camera2D,
+    color::Color,
+    math::Vector2,
+    prelude::{RaylibDraw, RaylibDrawHandle, RaylibMode2D},
+    texture::Texture2D,
+    RaylibHandle, RaylibThread,
 };
 use tiled::{Loader, Map, ResourceCache, ResourcePath, ResourcePathBuf, Tileset};
 
@@ -69,7 +74,7 @@ impl ResourceCache for ProgramDataTileCache {
 #[derive(Debug)]
 pub struct MapRenderer {
     map: Map,
-    tile_textures: HashMap<String, HashMap<u32, Texture2D>>,
+    tile_textures: HashMap<PathBuf, Texture2D>,
 }
 
 impl MapRenderer {
@@ -93,9 +98,9 @@ impl MapRenderer {
         let mut tile_textures = HashMap::new();
         for tileset in map.tilesets() {
             for (idx, tile) in tileset.tiles() {
-                if let Some(image) = tile.data.image {
+                if let Some(image) = &tile.data.image {
                     // We now have a path to an image
-                    let image_path = image.source;
+                    let image_path = image.source.clone();
 
                     // Load the texture
                     let texture = load_texture_from_internal_data(
@@ -106,10 +111,7 @@ impl MapRenderer {
                     .unwrap();
 
                     // Store the texture in the cache
-                    tile_textures
-                        .entry(tileset.name)
-                        .or_insert_with(HashMap::new)
-                        .insert(idx, texture);
+                    tile_textures.insert(image_path, texture);
                 }
             }
         }
@@ -125,5 +127,87 @@ impl MapRenderer {
         todo!()
     }
 
-    pub fn render_map(&self, draw_handle: &RaylibDrawHandle, camera: &Camera2D) {}
+    pub fn render_map(&self, draw_handle: &mut RaylibMode2D<RaylibDrawHandle>, camera: &Camera2D, show_debug_grid:bool) {
+        // Get the window corners in world space
+        let screen_width = draw_handle.get_screen_width();
+        let screen_height = draw_handle.get_screen_height();
+        let world_win_top_left = draw_handle.get_screen_to_world2D(Vector2::new(0.0, 0.0), camera);
+        let world_win_bottom_right = draw_handle.get_screen_to_world2D(
+            Vector2::new(screen_width as f32, screen_height as f32),
+            camera,
+        );
+
+        // Handle each layer from the bottom up
+        for layer in self.map.layers() {
+            // Handle different layer types
+            match layer.layer_type() {
+                tiled::LayerType::TileLayer(layer) => {
+                    // Keep track of our sampler X and Y values
+                    let mut sampler_x = 0;
+                    let mut sampler_y = 0;
+
+                    // Get the tile width and height
+                    let tile_width = 128;
+                    let tile_height = 128;
+
+                    // Loop until we have covered all tiles on the screen
+                    for y in (world_win_top_left.y as i64)..(world_win_bottom_right.y as i64) {
+                        // Convert the pixel coordinates to tile coordinates
+                        let tile_y = (y as f32 / tile_height as f32).floor() as i32;
+
+                        // If we are looking at a new tile, update the sampler
+                        if sampler_y != tile_y {
+                            sampler_y = tile_y;
+
+                            for x in
+                                (world_win_top_left.x as i64)..(world_win_bottom_right.x as i64)
+                            {
+                                // Convert the pixel coordinates to tile coordinates
+                                let tile_x = (x as f32 / tile_width as f32).floor() as i32;
+                                // debug!("Tile: ({}, {})", tile_x, tile_y);
+
+                                // If we are looking at a new tile, update the sampler
+                                if sampler_x != tile_x {
+                                    sampler_x = tile_x;
+
+                                    // Get the tile at this coordinate
+                                    if let Some(tile) = layer.get_tile(sampler_x, sampler_y) {
+                                        // debug!("Tile: ({}, {})", tile_x, tile_y);
+                                        // Fetch the texture for this tile
+                                        let real_tile = tile.get_tile().unwrap();
+                                        let texture = self
+                                            .tile_textures
+                                            .get(&real_tile.image.as_ref().unwrap().source)
+                                            .unwrap();
+
+                                        // Draw the tile
+                                        draw_handle.draw_texture(
+                                            texture,
+                                            tile_x * tile_width as i32,
+                                            tile_y * tile_height as i32,
+                                            Color::WHITE,
+                                        );
+                                    } 
+                                    
+                                    if show_debug_grid {
+                                        draw_handle.draw_rectangle_lines(
+                                            tile_x * tile_width as i32,
+                                            tile_y * tile_height as i32,
+                                            self.map.tile_width as i32,
+                                            self.map.tile_height as i32,
+                                            Color::RED,
+                                        );
+                                        draw_handle.draw_pixel(x as i32, y as i32, Color::BLUE);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                tiled::LayerType::ObjectLayer(_) => todo!(),
+                tiled::LayerType::ImageLayer(_) => todo!(),
+                tiled::LayerType::GroupLayer(_) => todo!(),
+            }
+        }
+    }
 }

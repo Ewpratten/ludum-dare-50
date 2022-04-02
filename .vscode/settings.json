@@ -1,6 +1,7 @@
 {
     "git.detectSubmodules": false,
     "cSpell.words": [
+        "leaderboard",
         "msaa",
         "raylib",
         "repr",
