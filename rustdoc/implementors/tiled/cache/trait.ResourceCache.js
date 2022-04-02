@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["game_logic"] = [{"text":"impl ResourceCache for <a class=\"struct\" href=\"game_logic/rendering/utilities/map_render/struct.ProgramDataTileCache.html\" title=\"struct game_logic::rendering::utilities::map_render::ProgramDataTileCache\">ProgramDataTileCache</a>","synthetic":false,"types":["game_logic::rendering::utilities::map_render::ProgramDataTileCache"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

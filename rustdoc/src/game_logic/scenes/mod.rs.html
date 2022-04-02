@@ -104,6 +104,17 @@
 <span id="102">102</span>
 <span id="103">103</span>
 <span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The render code for various scenes</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Overview</span>
@@ -171,8 +182,13 @@
         <span class="comment">// Render the main menu if in it, otherwise, render the game</span>
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">menu_control_signal</span> {
             <span class="ident">MenuStateSignal::StartGame</span> =&gt; {
-                <span class="self">self</span>.<span class="ident">scene_playable</span>
-                    .<span class="ident">render_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="kw-2">&amp;</span><span class="ident">discord</span>, <span class="ident">global_resources</span>, <span class="ident">constants</span>)
+                <span class="comment">// self.scene_playable</span>
+                <span class="comment">//     .render_frame(raylib, rl_thread, &amp;discord, global_resources, constants)</span>
+                <span class="comment">//     .await;</span>
+
+                <span class="comment">// TODO: remove this test scene</span>
+                <span class="self">self</span>.<span class="ident">scene_test_fox</span>
+                    .<span class="ident">render_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="kw-2">&amp;</span><span class="ident">discord</span>, <span class="ident">global_resources</span>)
                     .<span class="kw">await</span>;
             }
             <span class="ident">MenuStateSignal::QuitGame</span> =&gt; <span class="macro">unimplemented!</span>(),
@@ -187,19 +203,25 @@
                     .<span class="ident">scene_main_menu</span>
                     .<span class="ident">render_options_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">discord</span>, <span class="ident">global_resources</span>, <span class="ident">constants</span>)
                     .<span class="kw">await</span>
-            },
+            }
             <span class="ident">MenuStateSignal::DoCredits</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">menu_control_signal</span> <span class="op">=</span> <span class="self">self</span>
                     .<span class="ident">scene_main_menu</span>
                     .<span class="ident">render_credits_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">discord</span>, <span class="ident">global_resources</span>, <span class="ident">constants</span>)
                     .<span class="kw">await</span>
-            },
+            }
             <span class="ident">MenuStateSignal::DoLeaderboard</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">menu_control_signal</span> <span class="op">=</span> <span class="self">self</span>
                     .<span class="ident">scene_main_menu</span>
-                    .<span class="ident">render_leaderboard_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">discord</span>, <span class="ident">global_resources</span>, <span class="ident">constants</span>)
+                    .<span class="ident">render_leaderboard_frame</span>(
+                        <span class="ident">raylib</span>,
+                        <span class="ident">rl_thread</span>,
+                        <span class="ident">discord</span>,
+                        <span class="ident">global_resources</span>,
+                        <span class="ident">constants</span>,
+                    )
                     .<span class="kw">await</span>
-            },
+            }
         }
     }
 }
