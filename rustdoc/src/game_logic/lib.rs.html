@@ -97,6 +97,7 @@
 <span id="95">95</span>
 <span id="96">96</span>
 <span id="97">97</span>
+<span id="98">98</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This file is the main entry point for the game logic.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Overview</span>
@@ -174,6 +175,7 @@
         <span class="op">|</span><span class="ident">builder</span><span class="op">|</span> {
             <span class="ident">builder</span>
                 .<span class="ident">msaa_4x</span>()
+                .<span class="ident">resizable</span>()
                 <span class="comment">// .vsync()</span>
                 .<span class="ident">title</span>(<span class="ident">project_constants</span>.<span class="ident">game_name</span>.<span class="ident">as_str</span>())
                 .<span class="ident">height</span>(<span class="ident">project_constants</span>.<span class="ident">base_window_size</span>.<span class="number">1</span> <span class="kw">as</span> <span class="ident">i32</span>)
