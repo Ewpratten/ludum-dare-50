@@ -42,6 +42,8 @@ pub struct WorldObject {
     pub physics_colliders: Vec<ObjectCollider>,
     /// Temperature
     pub temperature: Option<f32>,
+    /// Friction
+    pub friction: Option<f32>,
 }
 
 /// Used to reference an object in the world definition

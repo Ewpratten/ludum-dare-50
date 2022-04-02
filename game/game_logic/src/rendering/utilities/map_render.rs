@@ -1,6 +1,9 @@
 use std::{collections::HashMap, path::PathBuf, sync::Arc};
 
-use crate::asset_manager::{load_texture_from_internal_data, InternalData};
+use crate::{
+    asset_manager::{load_texture_from_internal_data, InternalData},
+    model::world_object_package::WorldObjectPackage,
+};
 use nalgebra as na;
 use raylib::{
     camera::Camera2D,
@@ -75,12 +78,14 @@ impl ResourceCache for ProgramDataTileCache {
 pub struct MapRenderer {
     map: Map,
     tile_textures: HashMap<PathBuf, Texture2D>,
+    world_objects: WorldObjectPackage,
 }
 
 impl MapRenderer {
     /// Construct a new MapRenderer.
     pub fn new(
         tmx_path: &str,
+        objects_path: &str,
         raylib: &mut RaylibHandle,
         raylib_thread: &RaylibThread,
     ) -> Result<Self, MapRenderError> {
@@ -116,7 +121,14 @@ impl MapRenderer {
             }
         }
 
-        Ok(Self { map, tile_textures })
+        // Load the world objects
+        let world_objects = WorldObjectPackage::load(raylib, raylib_thread, objects_path).unwrap();
+
+        Ok(Self {
+            map,
+            tile_textures,
+            world_objects,
+        })
     }
 
     pub fn sample_friction_at(&self, position: na::Vector2<f32>) -> f32 {
@@ -127,7 +139,12 @@ impl MapRenderer {
         todo!()
     }
 
-    pub fn render_map(&self, draw_handle: &mut RaylibMode2D<RaylibDrawHandle>, camera: &Camera2D, show_debug_grid:bool) {
+    pub fn render_map(
+        &self,
+        draw_handle: &mut RaylibMode2D<RaylibDrawHandle>,
+        camera: &Camera2D,
+        show_debug_grid: bool,
+    ) {
         // Get the window corners in world space
         let screen_width = draw_handle.get_screen_width();
         let screen_height = draw_handle.get_screen_height();
@@ -187,8 +204,8 @@ impl MapRenderer {
                                             tile_y * tile_height as i32,
                                             Color::WHITE,
                                         );
-                                    } 
-                                    
+                                    }
+
                                     if show_debug_grid {
                                         draw_handle.draw_rectangle_lines(
                                             tile_x * tile_width as i32,
