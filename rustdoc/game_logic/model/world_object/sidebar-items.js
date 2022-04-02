@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ObjectCollider","Defines a collider in object space."],["PossiblyAnimatedTexture",""],["WorldObject","Definition of an object. Only one of these should exist per object, and they will be GPU instanced."],["WorldObjectRef","Used to reference an object in the world definition"]]});
