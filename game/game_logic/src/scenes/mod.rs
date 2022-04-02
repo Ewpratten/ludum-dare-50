@@ -53,8 +53,8 @@ impl SceneRenderDelegate {
         constants: &ProjectConstants,
     ) {
         // For now, we will just render the game scene
-        self.scene_playable
-            .render_frame(raylib, rl_thread, &discord, global_resources, constants)
+        self.scene_test_fox
+            .render_frame(raylib, rl_thread, &discord, global_resources)
             .await;
     }
 }

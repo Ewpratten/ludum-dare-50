@@ -6,12 +6,13 @@ use nalgebra as na;
 
 use crate::{
     discord::DiscordChannel, global_resource_package::GlobalResources,
-    rendering::utilities::anim_texture::AnimatedTexture,
+    rendering::utilities::{anim_texture::AnimatedTexture, map_render::MapRenderer},
 };
 
 #[derive(Debug)]
 pub struct TestFoxScene {
     fox_animation: AnimatedTexture,
+    world_map: MapRenderer
 }
 
 impl TestFoxScene {
@@ -20,11 +21,14 @@ impl TestFoxScene {
         // Load the fox texture
         let fox = AnimatedTexture::new(raylib_handle, thread, "chr", "testFox").unwrap();
 
-        Self { fox_animation: fox }
+        // Load the map
+        let map_renderer = MapRenderer::new("map_gameMap.tmx").unwrap();
+
+        Self { fox_animation: fox, world_map: map_renderer }
     }
 
     /// Handler for each frame
-    pub fn render_frame(
+    pub async fn render_frame(
         &mut self,
         raylib: &mut RaylibHandle,
         rl_thread: &RaylibThread,
