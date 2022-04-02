@@ -52,6 +52,7 @@
     "openFiles": [
     ],
     "project": "game.tiled-project",
+    "property.type": "float",
     "recentFiles": [
         "game/dist/assets/env/env_beachTile/beachTile.tsx",
         "game/dist/map_gameMap.tmx",

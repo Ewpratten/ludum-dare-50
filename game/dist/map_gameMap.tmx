@@ -3,9 +3,17 @@
  <tileset firstgid="1" name="env_beachTile" tilewidth="128" tileheight="128" tilecount="2" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">
+   <properties>
+    <property name="friction" type="float" value="1"/>
+    <property name="temperature" type="float" value="10"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_beachTile/env_beachTile.png"/>
   </tile>
   <tile id="1">
+   <properties>
+    <property name="friction" type="float" value="5"/>
+    <property name="temperature" type="float" value="1"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_beachTile/env_beachTileSwirly.png"/>
   </tile>
  </tileset>
