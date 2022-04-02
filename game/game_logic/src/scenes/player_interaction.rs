@@ -102,24 +102,45 @@ impl PlayableScene {
     pub async fn update_physics(
         &mut self,
         raylib: & raylib::RaylibHandle,
+        constants: &ProjectConstants,
     ) {
+
+        // Get time since last physics update
         let time = SystemTime::now();
-        if time
-            .duration_since(self.last_update)
-            .expect("Time Appears to Have Moved Backwards!")
-            .as_millis() < 16 
-        {
-            return
-        }
-            
+        let elapsed = time.duration_since(self.last_update).expect("Time Appears to Have Moved Backwards!");
         self.last_update = time;
+        let delta_time = elapsed.as_millis() as f32 / 1000.0; // Physics will be scaled by this value
 
         let player = &mut self.player;
+
+        // Get input direction components
         let h_axis = raylib.is_key_down(KeyboardKey::KEY_D) as i8 - raylib.is_key_down(KeyboardKey::KEY_A) as i8;
         let v_axis = raylib.is_key_down(KeyboardKey::KEY_W) as i8 - raylib.is_key_down(KeyboardKey::KEY_S) as i8;
-        let direction = na::Vector2::new(h_axis as f32, v_axis as f32);
-        player.velocity += &direction;
-        player.position += &player.velocity;
+        if h_axis != 0 || v_axis != 0 {
+            // Normalize input and accelerate in desired direction
+            let direction = na::Vector2::new(h_axis as f32, v_axis as f32).normalize();
+            player.velocity += &direction.xy() 
+                * constants.player.acceleration as f32
+                * constants.tile_size as f32 
+                * delta_time;
+        }
+
+        if player.velocity.magnitude() != 0.0 {
+            player.velocity -= player.velocity.normalize() 
+                * constants.player.deceleration as f32 
+                * constants.tile_size as f32 
+                * delta_time;
+            if player.velocity.magnitude() < 0.01 {
+                player.velocity.set_magnitude(0.0);
+            }
+        }
+
+        if ((constants.player.max_velocity * constants.tile_size) as f32) 
+            < player.velocity.magnitude() {
+            player.velocity.set_magnitude((constants.player.max_velocity * constants.tile_size) as f32);
+        }
+
+        player.position += &player.velocity * delta_time;
     }
 }
 
