@@ -65,8 +65,13 @@ impl SceneRenderDelegate {
         // Render the main menu if in it, otherwise, render the game
         match self.menu_control_signal {
             MenuStateSignal::StartGame => {
-                self.scene_playable
-                    .render_frame(raylib, rl_thread, &discord, global_resources, constants)
+                // self.scene_playable
+                //     .render_frame(raylib, rl_thread, &discord, global_resources, constants)
+                //     .await;
+
+                // TODO: remove this test scene
+                self.scene_test_fox
+                    .render_frame(raylib, rl_thread, &discord, global_resources)
                     .await;
             }
             MenuStateSignal::QuitGame => unimplemented!(),
@@ -81,19 +86,25 @@ impl SceneRenderDelegate {
                     .scene_main_menu
                     .render_options_frame(raylib, rl_thread, discord, global_resources, constants)
                     .await
-            },
+            }
             MenuStateSignal::DoCredits => {
                 self.menu_control_signal = self
                     .scene_main_menu
                     .render_credits_frame(raylib, rl_thread, discord, global_resources, constants)
                     .await
-            },
+            }
             MenuStateSignal::DoLeaderboard => {
                 self.menu_control_signal = self
                     .scene_main_menu
-                    .render_leaderboard_frame(raylib, rl_thread, discord, global_resources, constants)
+                    .render_leaderboard_frame(
+                        raylib,
+                        rl_thread,
+                        discord,
+                        global_resources,
+                        constants,
+                    )
                     .await
-            },
+            }
         }
     }
 }

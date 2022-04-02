@@ -6,3 +6,6 @@
 	path = third_party/sm
 	url = https://github.com/Ewpratten/sm
 	ignore = dirty
+[submodule "third_party/rs-tiled"]
+	path = third_party/rs-tiled
+	url = https://github.com/Ewpratten/rs-tiled

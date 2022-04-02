@@ -1,0 +1,65 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "#env_beachTile": {
+            "dynamicWrapping": false
+        },
+        "game/dist/assets/env/env_beachTile/beachTile.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "game/dist/assets/env/env_beachTile/beachTileSwirly.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "game/dist/map/map_gameMap.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 200,
+                "y": -148.4848484848485
+            }
+        },
+        "game/dist/map_gameMap.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 224,
+                "y": -80
+            }
+        },
+        "game/dist/map_gameMap.tmx#env_beachTile": {
+            "dynamicWrapping": false
+        }
+    },
+    "last.imagePath": "/home/ewpratten/projects/ludum-dare-50/game/dist/assets/env/env_beachTile",
+    "map.fixedSize": false,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 128,
+    "map.tileWidth": 128,
+    "openFiles": [
+    ],
+    "project": "game.tiled-project",
+    "property.type": "float",
+    "recentFiles": [
+        "game/dist/assets/env/env_beachTile/beachTile.tsx",
+        "game/dist/map_gameMap.tmx",
+        "game/dist/assets/env/env_beachTile/beachTileSwirly.tsx",
+        "game/dist/map/map_gameMap.tmx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
+}

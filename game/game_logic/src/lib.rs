@@ -40,6 +40,7 @@ pub(crate) mod project_constants;
 pub(crate) mod rendering;
 pub(crate) mod scenes;
 pub(crate) mod model;
+pub(crate) mod coord_convert;
 
 /// This is the game logic entrypoint. Despite being async,
 /// this is expected to block the main thread for rendering and stuff.
@@ -74,6 +75,7 @@ pub async fn entrypoint(force_recreate_savefiles: bool) {
         |builder| {
             builder
                 .msaa_4x()
+                .resizable()
                 // .vsync()
                 .title(project_constants.game_name.as_str())
                 .height(project_constants.base_window_size.1 as i32)
