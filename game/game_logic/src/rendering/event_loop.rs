@@ -111,6 +111,11 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
                         constants,
                     )
                     .await;
+
+                // Handle exiting the game
+                if render_delegate.needs_exit {
+                    break;
+                }
             }
             _ => backend_sm = RenderBackendStates::sm_failed(),
         };
