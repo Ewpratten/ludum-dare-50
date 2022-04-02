@@ -39,6 +39,7 @@ pub(crate) mod persistent;
 pub(crate) mod project_constants;
 pub(crate) mod rendering;
 pub(crate) mod scenes;
+pub(crate) mod model;
 
 /// This is the game logic entrypoint. Despite being async,
 /// this is expected to block the main thread for rendering and stuff.

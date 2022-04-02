@@ -7,7 +7,8 @@ use raylib::prelude::*;
 
 use crate::{discord::DiscordChannel, global_resource_package::GlobalResources};
 
-use self::test_fox::TestFoxScene;
+use self::{player_interaction::PlayableScene, test_fox::TestFoxScene};
+mod player_interaction;
 mod test_fox;
 
 /// Delegate for handling rendering.
@@ -15,6 +16,7 @@ mod test_fox;
 pub struct SceneRenderDelegate {
     /* Scenes */
     scene_test_fox: TestFoxScene,
+    scene_playable: PlayableScene,
 }
 
 impl SceneRenderDelegate {
@@ -24,23 +26,27 @@ impl SceneRenderDelegate {
 
         // Init some scenes
         let scene_test_fox = TestFoxScene::new(raylib, rl_thread);
+        let scene_playable = PlayableScene::new(raylib, rl_thread);
 
-        Self { scene_test_fox }
+        Self {
+            scene_test_fox,
+            scene_playable,
+        }
     }
 
     /// This is called every frame once the game has started.
     ///
     /// Keep in mind everything you do here will block the main thread (no loading files plz)
-    pub fn process_ingame_frame(
+    pub async fn process_ingame_frame(
         &mut self,
         raylib: &mut RaylibHandle,
         rl_thread: &RaylibThread,
         discord: &DiscordChannel,
         global_resources: &GlobalResources,
     ) {
-        // For now, we will just render the test fox scene
-        self.scene_test_fox
-            .render_frame(raylib, rl_thread, &discord, global_resources);
+        // For now, we will just render the game scene
+        self.scene_playable
+            .render_frame(raylib, rl_thread, &discord, global_resources).await;
     }
 }
 

@@ -107,7 +107,7 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
                     &raylib_thread,
                     &discord_signaling,
                     &global_resources,
-                );
+                ).await;
             }
             _ => backend_sm = RenderBackendStates::sm_failed(),
         };
