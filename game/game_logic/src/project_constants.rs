@@ -42,4 +42,7 @@ pub struct ProjectConstants {
 
     /// The target framerate of the game
     pub target_fps: u32,
+
+    /// The size of the game tiles
+    pub tile_size: u8,
 }

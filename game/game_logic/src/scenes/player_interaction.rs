@@ -61,7 +61,17 @@ impl PlayableScene {
         // Clear the screen
         draw.clear_background(Color::WHITE);
 
+        draw.draw_rectangle_lines(
+            0, 
+            0,
+            (constants.tile_size as f32 * self.player.size) as i32, 
+            (constants.tile_size as f32 * self.player.size) as i32, 
+            Color::GREEN
+        );
+
         // TODO: Render stuff
         // self.player. <whatever>
     }
 }
+
+
