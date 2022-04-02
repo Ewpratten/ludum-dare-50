@@ -29,7 +29,7 @@ impl PlayableScene {
         constants: &ProjectConstants,
     ) -> Self {
 
-        let map_renderer = MapRenderer::new("map_gameMap.tmx", raylib_handle, thread).unwrap();
+        let map_renderer = MapRenderer::new("map_gameMap.tmx", "map_gameMap.objects.json", raylib_handle, thread).unwrap();
 
         Self {
             has_updated_discord_rpc: false,
@@ -96,7 +96,7 @@ impl PlayableScene {
         let mut ctx2d = draw.begin_mode2D(self.camera);
 
         // Render the map
-        self.world_map.render_map(&mut ctx2d, &self.camera, true);
+        self.world_map.render_map(&mut ctx2d, &self.camera, true, self.player.position);
        
         let player_size = (constants.tile_size as f32 * constants.player.start_size * self.player.size) as i32;
 
