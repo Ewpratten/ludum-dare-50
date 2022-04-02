@@ -10,16 +10,19 @@ use crate::{
     project_constants::ProjectConstants,
 };
 
-use self::{player_interaction::PlayableScene, test_fox::TestFoxScene};
+use self::{player_interaction::PlayableScene, test_fox::TestFoxScene, main_menu::MainMenu};
 mod player_interaction;
 mod test_fox;
+mod main_menu;
 
 /// Delegate for handling rendering.
 /// This is a struct to allow for stateful data (like sub-screens) to be set up
 pub struct SceneRenderDelegate {
+    is_in_main_menu: bool,
     /* Scenes */
     scene_test_fox: TestFoxScene,
     scene_playable: PlayableScene,
+    scene_main_menu: MainMenu
 }
 
 impl SceneRenderDelegate {
@@ -34,10 +37,13 @@ impl SceneRenderDelegate {
         // Init some scenes
         let scene_test_fox = TestFoxScene::new(raylib, rl_thread);
         let scene_playable = PlayableScene::new(raylib, rl_thread, constants);
+        let scene_main_menu = MainMenu::new(raylib, rl_thread, constants);
 
         Self {
+            is_in_main_menu: true,
             scene_test_fox,
             scene_playable,
+            scene_main_menu,
         }
     }
 
@@ -52,10 +58,16 @@ impl SceneRenderDelegate {
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
     ) {
-        // For now, we will just render the game scene
-        self.scene_playable
-            .render_frame(raylib, rl_thread, &discord, global_resources, constants)
-            .await;
+        // Render the main menu if in it, otherwise, render the game
+        if self.is_in_main_menu {
+            self.is_in_main_menu = !self.scene_main_menu
+                .render_frame(raylib, rl_thread, discord, global_resources, constants)
+                .await;
+        }else {
+            self.scene_playable
+                .render_frame(raylib, rl_thread, &discord, global_resources, constants)
+                .await;
+        }
     }
 }
 
