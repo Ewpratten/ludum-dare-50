@@ -5,7 +5,10 @@
 //! This will probably become a messy module over time. Stick your rendering code here
 use raylib::prelude::*;
 
-use crate::{discord::DiscordChannel, global_resource_package::GlobalResources};
+use crate::{
+    discord::DiscordChannel, global_resource_package::GlobalResources,
+    project_constants::ProjectConstants,
+};
 
 use self::{player_interaction::PlayableScene, test_fox::TestFoxScene};
 mod player_interaction;
@@ -21,12 +24,16 @@ pub struct SceneRenderDelegate {
 
 impl SceneRenderDelegate {
     /// This is called when the game first loads
-    pub fn on_game_start(raylib: &mut RaylibHandle, rl_thread: &RaylibThread) -> Self {
+    pub fn on_game_start(
+        raylib: &mut RaylibHandle,
+        rl_thread: &RaylibThread,
+        constants: &ProjectConstants,
+    ) -> Self {
         // TODO: Stick any init code you want here.
 
         // Init some scenes
         let scene_test_fox = TestFoxScene::new(raylib, rl_thread);
-        let scene_playable = PlayableScene::new(raylib, rl_thread);
+        let scene_playable = PlayableScene::new(raylib, rl_thread, constants);
 
         Self {
             scene_test_fox,
@@ -43,10 +50,12 @@ impl SceneRenderDelegate {
         rl_thread: &RaylibThread,
         discord: &DiscordChannel,
         global_resources: &GlobalResources,
+        constants: &ProjectConstants,
     ) {
         // For now, we will just render the game scene
         self.scene_playable
-            .render_frame(raylib, rl_thread, &discord, global_resources).await;
+            .render_frame(raylib, rl_thread, &discord, global_resources, constants)
+            .await;
     }
 }
 

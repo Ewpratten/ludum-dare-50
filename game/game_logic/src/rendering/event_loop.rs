@@ -14,9 +14,9 @@ use crate::project_constants::ProjectConstants;
 use crate::rendering::core_renderer_sm::{PreloadState, RenderBackendStates};
 use crate::rendering::screens::sm_failure_screen;
 use crate::scenes::SceneRenderDelegate;
-use raylib::RaylibBuilder;
 use raylib::consts::KeyboardKey;
 use raylib::prelude::RaylibDraw;
+use raylib::RaylibBuilder;
 
 /// Will begin rendering graphics. Returns when the window closes
 pub async fn handle_graphics_blocking<ConfigBuilder>(
@@ -48,7 +48,7 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
 
     // Set up the main render delegate
     let mut render_delegate =
-        SceneRenderDelegate::on_game_start(&mut raylib_handle, &raylib_thread);
+        SceneRenderDelegate::on_game_start(&mut raylib_handle, &raylib_thread, constants);
 
     // Handle loading the resources and rendering the loading screen
     log::trace!("Running event loop");
@@ -102,12 +102,15 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
                     .await;
             }
             RenderBackendStates::RenderGame(ref m) => {
-                render_delegate.process_ingame_frame(
-                    &mut raylib_handle,
-                    &raylib_thread,
-                    &discord_signaling,
-                    &global_resources,
-                ).await;
+                render_delegate
+                    .process_ingame_frame(
+                        &mut raylib_handle,
+                        &raylib_thread,
+                        &discord_signaling,
+                        &global_resources,
+                        constants,
+                    )
+                    .await;
             }
             _ => backend_sm = RenderBackendStates::sm_failed(),
         };
