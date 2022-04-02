@@ -90,7 +90,7 @@ impl MainMenu {
             //Insides while make a lil shade for it to look cool
             draw.draw_text("Start Game", 103, 191, 34, Color::GRAY);
             draw.draw_text("Start Game", 100, 190, 34, Color::BLACK);
-            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+            if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
                 return MenuStateSignal::StartGame;
             }
         }
@@ -98,7 +98,7 @@ impl MainMenu {
         if mouse_x >= 100 && mouse_y >= 250 && mouse_x <= 222 && mouse_y <= 275 {
             draw.draw_text("Options", 103, 251, 34, Color::GRAY);
             draw.draw_text("Options", 100, 250, 34, Color::BLACK);
-            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+            if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
                 return MenuStateSignal::DoOptions;
             }
         }
@@ -106,14 +106,14 @@ impl MainMenu {
         if mouse_x >= 100 && mouse_y >= 410 && mouse_x <= 222 && mouse_y <= 437 {
             draw.draw_text("Credits", 103, 411, 34, Color::GRAY);
             draw.draw_text("Credits", 100, 410, 34, Color::BLACK);
-            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+            if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
                 return MenuStateSignal::DoCredits;
             }
         }
         if mouse_x >= 100 && mouse_y >= 470 && mouse_x <= 316 && mouse_y <= 496 {
             draw.draw_text("Leaderboard", 103, 471, 34, Color::GRAY);
             draw.draw_text("Leaderboard", 100, 470, 34, Color::BLACK);
-            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+            if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
                 return MenuStateSignal::DoLeaderboard;
             }
         }
@@ -121,7 +121,7 @@ impl MainMenu {
         if mouse_x >= 100 && mouse_y >= 300 && mouse_x <= 215 && mouse_y <= 330 {
             draw.draw_text("Volume", 103, 301, 34, Color::GRAY);
             draw.draw_text("Volume", 100, 300, 34, Color::BLACK);
-            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+            if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
                 //Function for Volume here
             }
         }
@@ -130,6 +130,9 @@ impl MainMenu {
         if mouse_x >= 100 && mouse_y >= 550 && mouse_x <= 162 && mouse_y <= 575 {
             draw.draw_text("Exit", 103, 551, 34, Color::GRAY);
             draw.draw_text("Exit", 100, 550, 34, Color::BLACK);
+            if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
+                return MenuStateSignal::QuitGame;
+            }
         }
 
           
@@ -161,16 +164,22 @@ impl MainMenu {
         //Top Label
         draw.draw_text("Options", 25, 30, 55, Color::BLACK);    
 
-        //Return Button
-        draw.draw_text("Return", 100, 550, 34, Color::BLACK);
-        if mouse_x >= 100 && mouse_y >= 550 && mouse_x <= 216 && mouse_y <= 576 {
-            draw.draw_text("Return", 103, 551, 34, Color::GRAY);
-            draw.draw_text("Return", 100, 550, 34, Color::BLACK);
+        //Window size storing variables
+        let window_height = draw.get_screen_height();
+        let window_width = draw.get_screen_width();
+
+        //Return button variables
+        let button_pos_x = 100; //116 Wide
+        let button_pos_y = window_height - (window_height/5); //26 height
+
+        draw.draw_text("Return", button_pos_x, button_pos_y, 34, Color::BLACK);
+        if mouse_x >= 100 && mouse_y >= button_pos_y && mouse_x <= 216 && mouse_y <= (window_height - (window_height/5)) + 26 {
+            draw.draw_text("Return", button_pos_x + 3, button_pos_y + 1, 34, Color::GRAY);
+            draw.draw_text("Return", button_pos_x, button_pos_y, 34, Color::BLACK);
             if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
                 return MenuStateSignal::DoMainMenu; //Goes back to main menu
             }
         }
-        
         return MenuStateSignal::DoOptions;
     }
 
@@ -192,28 +201,31 @@ impl MainMenu {
         draw.draw_text(&mouse_y.to_string(), 70, 5, 20, Color::BLACK);
 
         //Screen Size
-        // let window_height = draw.get_screen_height();
+        let window_height = draw.get_screen_height();
         let window_width = draw.get_screen_width();
 
         draw.draw_text("Credits", (window_width/2) - 100, 30, 55, Color::BLACK);
 
-        draw.draw_text("Carter Tomlenovich", (window_width/2) - 170, 280, 40, Color::DARKBLUE);
-        draw.draw_text("Emilia Firas", (window_width/2) - 170, 120, 40, Color::DARKBLUE);
-        draw.draw_text("Emmet Logue", (window_width/2) - 170, 320, 40, Color::DARKBLUE);
-        draw.draw_text("Evan Pratten", (window_width/2) - 170, 160, 40, Color::DARKBLUE);
-        draw.draw_text("James Nickoli", (window_width/2) - 170, 240, 40, Color::DARKBLUE);
-        draw.draw_text("Marcelo Geldres", (window_width/2) - 170, 440, 40, Color::DARKBLUE);
-        draw.draw_text("Percy", (window_width/2) - 170, 400, 40, Color::DARKBLUE);
-        draw.draw_text("Silas Bartha", (window_width/2) - 170, 200, 40, Color::DARKBLUE);
-        draw.draw_text("Taya Armstrong", (window_width/2) - 170, 360, 40, Color::DARKBLUE);
+        draw.draw_text("Carter Tomlenovich", (window_width/2) - 170, 120, 40, Color::DARKBLUE);
+        draw.draw_text("Emilia Firas", (window_width/2) - 170, 160, 40, Color::DARKBLUE);
+        draw.draw_text("Emmet Logue", (window_width/2) - 170, 200, 40, Color::DARKBLUE);
+        draw.draw_text("Evan Pratten", (window_width/2) - 170, 240, 40, Color::DARKBLUE);
+        draw.draw_text("James Nickoli", (window_width/2) - 170, 280, 40, Color::DARKBLUE);
+        draw.draw_text("Marcelo Geldres", (window_width/2) - 170, 320, 40, Color::DARKBLUE);
+        draw.draw_text("Percy", (window_width/2) - 170, 360, 40, Color::DARKBLUE);
+        draw.draw_text("Silas Bartha", (window_width/2) - 170, 400, 40, Color::DARKBLUE);
+        draw.draw_text("Taya Armstrong", (window_width/2) - 170, 440, 40, Color::DARKBLUE);
 
-        //Return Button
-        draw.draw_text("Return", 100, 550, 34, Color::BLACK);
-        if mouse_x >= 100 && mouse_y >= 550 && mouse_x <= 216 && mouse_y <= 576 {
-            draw.draw_text("Return", 103, 551, 34, Color::GRAY);
-            draw.draw_text("Return", 100, 550, 34, Color::BLACK);
+        //Return button variables
+        let button_pos_x = 100; //116 Wide
+        let button_pos_y = window_height - (window_height/5); //26 height
+
+        draw.draw_text("Return", button_pos_x, button_pos_y, 34, Color::BLACK);
+        if mouse_x >= 100 && mouse_y >= button_pos_y && mouse_x <= 216 && mouse_y <= (window_height - (window_height/5)) + 26 {
+            draw.draw_text("Return", button_pos_x + 3, button_pos_y + 1, 34, Color::GRAY);
+            draw.draw_text("Return", button_pos_x, button_pos_y, 34, Color::BLACK);
             if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
-                return MenuStateSignal::DoMainMenu;
+                return MenuStateSignal::DoMainMenu; //Goes back to main menu
             }
         }
 
@@ -234,6 +246,10 @@ impl MainMenu {
         let mouse_x = draw.get_mouse_x();
         let mouse_y = draw.get_mouse_y();
 
+        //Window size storing variables
+        let window_height = draw.get_screen_height();
+        let window_width = draw.get_screen_width();
+
         //Show mouse position
         draw.draw_text(&mouse_x.to_string(), 20, 5, 20, Color::BLACK);
         draw.draw_text(&mouse_y.to_string(), 70, 5, 20, Color::BLACK);
@@ -241,13 +257,16 @@ impl MainMenu {
         let window_width = draw.get_screen_width();
         draw.draw_text("Leaderboard", (window_width/2) - 176, 30, 55, Color::BLACK);
 
-        //Return Button
-        draw.draw_text("Return", 100, 550, 34, Color::BLACK);
-        if mouse_x >= 100 && mouse_y >= 550 && mouse_x <= 216 && mouse_y <= 576 {
-            draw.draw_text("Return", 103, 551, 34, Color::GRAY);
-            draw.draw_text("Return", 100, 550, 34, Color::BLACK);
+        //Return button variables
+        let button_pos_x = 100; //116 Wide
+        let button_pos_y = window_height - (window_height/5); //26 height
+
+        draw.draw_text("Return", button_pos_x, button_pos_y, 34, Color::BLACK);
+        if mouse_x >= 100 && mouse_y >= button_pos_y && mouse_x <= 216 && mouse_y <= (window_height - (window_height/5)) + 26 {
+            draw.draw_text("Return", button_pos_x + 3, button_pos_y + 1, 34, Color::GRAY);
+            draw.draw_text("Return", button_pos_x, button_pos_y, 34, Color::BLACK);
             if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
-                return MenuStateSignal::DoMainMenu;
+                return MenuStateSignal::DoMainMenu; //Goes back to main menu
             }
         }
 

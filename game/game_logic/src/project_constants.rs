@@ -28,6 +28,23 @@ pub struct DiscordConstants {
     pub strings: HashMap<String, String>,
 }
 
+/// Constants relating to the Player
+#[derive(Debug, Deserialize)]
+pub struct PlayerConstants {
+
+    /// Maximum velocity, tiles per second
+    pub max_velocity: u32,
+
+    /// Acceleration, tiles per second per second
+    pub acceleration: u32,
+
+    /// Deceleration, tiles per second per second
+    pub deceleration: u32,
+
+    /// Starting size of player in tiles
+    pub start_size: f32,
+}
+
 /// This structure is filled with the contents of `dist/project-constants.json` at runtime
 #[derive(Debug, Deserialize)]
 pub struct ProjectConstants {
@@ -40,6 +57,12 @@ pub struct ProjectConstants {
     /// The Discord constants
     pub discord: DiscordConstants,
 
+    /// The Player constants
+    pub player: PlayerConstants,
+
     /// The target framerate of the game
     pub target_fps: u32,
+
+    /// The size of the game tiles
+    pub tile_size: u32,
 }
