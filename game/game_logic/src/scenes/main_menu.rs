@@ -90,7 +90,7 @@ impl MainMenu {
             //Insides while make a lil shade for it to look cool
             draw.draw_text("Start Game", 103, 191, 34, Color::GRAY);
             draw.draw_text("Start Game", 100, 190, 34, Color::BLACK);
-            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+            if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
                 return MenuStateSignal::StartGame;
             }
         }
@@ -98,7 +98,7 @@ impl MainMenu {
         if mouse_x >= 100 && mouse_y >= 250 && mouse_x <= 222 && mouse_y <= 275 {
             draw.draw_text("Options", 103, 251, 34, Color::GRAY);
             draw.draw_text("Options", 100, 250, 34, Color::BLACK);
-            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+            if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
                 return MenuStateSignal::DoOptions;
             }
         }
@@ -106,14 +106,14 @@ impl MainMenu {
         if mouse_x >= 100 && mouse_y >= 410 && mouse_x <= 222 && mouse_y <= 437 {
             draw.draw_text("Credits", 103, 411, 34, Color::GRAY);
             draw.draw_text("Credits", 100, 410, 34, Color::BLACK);
-            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+            if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
                 return MenuStateSignal::DoCredits;
             }
         }
         if mouse_x >= 100 && mouse_y >= 470 && mouse_x <= 316 && mouse_y <= 496 {
             draw.draw_text("Leaderboard", 103, 471, 34, Color::GRAY);
             draw.draw_text("Leaderboard", 100, 470, 34, Color::BLACK);
-            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+            if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
                 return MenuStateSignal::DoLeaderboard;
             }
         }
@@ -121,7 +121,7 @@ impl MainMenu {
         if mouse_x >= 100 && mouse_y >= 300 && mouse_x <= 215 && mouse_y <= 330 {
             draw.draw_text("Volume", 103, 301, 34, Color::GRAY);
             draw.draw_text("Volume", 100, 300, 34, Color::BLACK);
-            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+            if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
                 //Function for Volume here
             }
         }
@@ -130,7 +130,7 @@ impl MainMenu {
         if mouse_x >= 100 && mouse_y >= 550 && mouse_x <= 162 && mouse_y <= 575 {
             draw.draw_text("Exit", 103, 551, 34, Color::GRAY);
             draw.draw_text("Exit", 100, 550, 34, Color::BLACK);
-            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+            if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
                 return MenuStateSignal::QuitGame;
             }
         }
