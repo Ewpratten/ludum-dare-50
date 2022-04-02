@@ -16,5 +16,10 @@
             "details.sm_failure": "Game went FUBAR",
             "details.main_menu": "In the main menu"
         }
+    },
+    "player": {
+        "max_velocity": 3,
+        "acceleration": 2,
+        "deceleration": 1
     }
 }

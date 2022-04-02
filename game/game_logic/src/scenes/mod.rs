@@ -57,7 +57,7 @@ impl SceneRenderDelegate {
             .render_frame(raylib, rl_thread, &discord, global_resources, constants)
             .await;
         self.scene_playable
-            .update_physics(raylib)
+            .update_physics(raylib, constants)
             .await;
     }
 }
