@@ -58,16 +58,11 @@ impl MainMenu {
         draw.clear_background(Color::WHITE);
 
         //I wanna see where mouseeee
-        let mouse_x;
-        let mouse_y;
-
-        unsafe{
-            mouse_x = GetMouseX();
-            mouse_y = GetMouseY();
-        }
-
-            draw.draw_text((&mouse_x.to_string()), 20, 5, 20, Color::BLACK);
-            draw.draw_text((&mouse_y.to_string()), 70, 5, 20, Color::BLACK);
+            let mouse_x = draw.get_mouse_x();
+            let mouse_y = draw.get_mouse_y();
+        
+            draw.draw_text(&mouse_x.to_string(), 20, 5, 20, Color::BLACK);
+            draw.draw_text(&mouse_y.to_string(), 70, 5, 20, Color::BLACK);
 
         // TODO: Render stuff
         //Initial Option placeholder words in the main menu
@@ -83,11 +78,9 @@ impl MainMenu {
                 //Insides while make a lil shade for it to look cool
                 draw.draw_text("Start Game", 103, 191, 34, Color::GRAY);
                 draw.draw_text("Start Game", 100, 190, 34, Color::BLACK);
-                unsafe{ //I think I still need unsafe here
-                    if IsMouseButtonDown(0) {
+                    if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
                         return true;
                     }
-                }
             }
 
             if mouse_x >= 100 && mouse_y >= 250 && mouse_x <= 222 && mouse_y <= 275{
