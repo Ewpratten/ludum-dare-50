@@ -9,6 +9,17 @@ pub struct PossiblyAnimatedTexture {
     pub rel_file_path: String,
 }
 
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ObjectCollider {
+    /// Position, relative to the object's center (north east is 1,1 south west is -1,-1)
+    pub position: na::Vector2<f32>,
+    /// Possible sizing
+    pub size: Option<na::Vector2<f32>>,
+    /// Possible radius
+    pub radius: Option<f32>,
+}
+
 #[derive(Debug, Clone, Deserialize)]
 pub struct WorldObject {
     /// Object name. Must match the name of the texture
@@ -23,4 +34,10 @@ pub struct WorldObject {
     pub bottom_texture: PossiblyAnimatedTexture,
     /// The object's top texture
     pub top_texture: Option<PossiblyAnimatedTexture>,
+    /// colliders describing the object's footprint
+    pub footprint: Vec<ObjectCollider>,
+    /// Colliders for physics
+    pub physics_colliders: Vec<ObjectCollider>,
+    /// Temperature
+    pub temperature: Option<f32>,
 }
