@@ -8,7 +8,7 @@ use nalgebra as na;
 use raylib::{
     camera::Camera2D,
     color::Color,
-    math::Vector2,
+    math::{Rectangle, Vector2},
     prelude::{RaylibDraw, RaylibDrawHandle, RaylibMode2D},
     texture::Texture2D,
     RaylibHandle, RaylibThread,
@@ -242,8 +242,8 @@ impl MapRenderer {
                                                     draw_handle,
                                                     obj_ref.position - (tex.size() / 2.0),
                                                     None,
-                                                    None,
-                                                    Some(obj_ref.rotation_radians),
+                                                    Some(tex.size() / 2.0),
+                                                    Some(obj_ref.rotation_radians.to_degrees()),
                                                     None,
                                                 );
                                             } else {
@@ -253,14 +253,28 @@ impl MapRenderer {
                                                     .get_mut(&object_key)
                                                     .unwrap();
                                                 let p: Vector2 = obj_ref.position.into();
-                                                draw_handle.draw_texture_ex(
+                                                let r1 = Rectangle {
+                                                    x: 0.0,
+                                                    y: 0.0,
+                                                    width: tex.width as f32,
+                                                    height: tex.height as f32,
+                                                };
+                                                let r2 = Rectangle {
+                                                    x: p.x,
+                                                    y: p.y,
+                                                    width: tex.width as f32,
+                                                    height: tex.height as f32,
+                                                };
+
+                                                draw_handle.draw_texture_pro(
                                                     &tex,
-                                                    p - Vector2::new(
+                                                    r1,
+                                                    r2,
+                                                    Vector2::new(
                                                         tex.width as f32 / 2.0,
                                                         tex.height as f32 / 2.0,
                                                     ),
-                                                    obj_ref.rotation_radians,
-                                                    1.0,
+                                                    obj_ref.rotation_radians.to_degrees(),
                                                     Color::WHITE,
                                                 );
                                             }
@@ -293,8 +307,8 @@ impl MapRenderer {
                                                         draw_handle,
                                                         obj_ref.position - (tex.size() / 2.0),
                                                         None,
-                                                        None,
-                                                        Some(obj_ref.rotation_radians),
+                                                        Some(tex.size() / 2.0),
+                                                        Some(obj_ref.rotation_radians.to_degrees()),
                                                         Some(tint),
                                                     );
                                                 } else {
@@ -304,14 +318,28 @@ impl MapRenderer {
                                                         .get_mut(&object_key)
                                                         .unwrap();
                                                     let p: Vector2 = obj_ref.position.into();
-                                                    draw_handle.draw_texture_ex(
+                                                    let r1 = Rectangle {
+                                                        x: 0.0,
+                                                        y: 0.0,
+                                                        width: tex.width as f32,
+                                                        height: tex.height as f32,
+                                                    };
+                                                    let r2 = Rectangle {
+                                                        x: p.x,
+                                                        y: p.y,
+                                                        width: tex.width as f32,
+                                                        height: tex.height as f32,
+                                                    };
+    
+                                                    draw_handle.draw_texture_pro(
                                                         &tex,
-                                                        p - Vector2::new(
+                                                        r1,
+                                                        r2,
+                                                        Vector2::new(
                                                             tex.width as f32 / 2.0,
                                                             tex.height as f32 / 2.0,
                                                         ),
-                                                        obj_ref.rotation_radians,
-                                                        1.0,
+                                                        obj_ref.rotation_radians.to_degrees(),
                                                         tint,
                                                     );
                                                 }
