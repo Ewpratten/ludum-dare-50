@@ -9,13 +9,14 @@ use crate::{
     global_resource_package::GlobalResources,
     model::player::Player,
     project_constants::ProjectConstants,
-    rendering::utilities::anim_texture::AnimatedTexture,
+    rendering::utilities::{anim_texture::AnimatedTexture, map_render::MapRenderer},
 };
 
 #[derive(Debug)]
 pub struct PlayableScene {
     has_updated_discord_rpc: bool,
     player: Player,
+    world_map: MapRenderer,
     camera: raylib::camera::Camera2D,
     last_update: SystemTime,
 }
@@ -27,9 +28,13 @@ impl PlayableScene {
         thread: & raylib::RaylibThread,
         constants: &ProjectConstants,
     ) -> Self {
+
+        let map_renderer = MapRenderer::new("map_gameMap.tmx", raylib_handle, thread).unwrap();
+
         Self {
             has_updated_discord_rpc: false,
             player: Player::new(na::Vector2::new(10.0, 10.0)),
+            world_map: map_renderer,
             camera: raylib::camera::Camera2D {
                 target: raylib::math::Vector2 { 
                     x: 0.0, 
@@ -76,6 +81,14 @@ impl PlayableScene {
 
         // Clear the screen
         draw.clear_background(Color::WHITE);
+
+        {
+            // Begin camera mode
+            let mut ctx2d = draw.begin_mode2D(self.camera);
+
+            // Render the map
+            self.world_map.render_map(&mut ctx2d, &self.camera, true);
+        }       
 
         for i in 0..100 {
             for j in 0..100 {

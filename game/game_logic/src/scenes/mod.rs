@@ -65,13 +65,8 @@ impl SceneRenderDelegate {
         // Render the main menu if in it, otherwise, render the game
         match self.menu_control_signal {
             MenuStateSignal::StartGame => {
-                // self.scene_playable
-                //     .render_frame(raylib, rl_thread, &discord, global_resources, constants)
-                //     .await;
-
-                // TODO: remove this test scene
-                self.scene_test_fox
-                    .render_frame(raylib, rl_thread, &discord, global_resources)
+                self.scene_playable
+                    .render_frame(raylib, rl_thread, &discord, global_resources, constants)
                     .await;
                 self.scene_playable
                     .update_physics(raylib, constants)
