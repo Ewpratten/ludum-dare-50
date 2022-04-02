@@ -81,33 +81,43 @@ impl PlayableScene {
 
         // Clear the screen
         draw.clear_background(Color::WHITE);
+        
+        self.draw_world(&mut draw, constants);
 
-        {
-            // Begin camera mode
-            let mut ctx2d = draw.begin_mode2D(self.camera);
+        self.draw_ui(&mut draw, constants);
+    }
 
-            // Render the map
-            self.world_map.render_map(&mut ctx2d, &self.camera, true);
-        }       
+    pub fn draw_world(
+        &mut self,
+        draw: &mut RaylibDrawHandle,
+        constants: &ProjectConstants,
+    ) {
+        // Begin camera mode
+        let mut ctx2d = draw.begin_mode2D(self.camera);
 
-        for i in 0..100 {
-            for j in 0..100 {
-                draw.draw_rectangle(
-                    constants.tile_size as i32 * (i * 2),
-                    constants.tile_size as i32 * (j * 2) * -1,
-                    constants.tile_size as i32,
-                    constants.tile_size as i32,
-                    Color::RED
-                )
-            }
-        }    
-
-        draw.draw_rectangle(
+        // Render the map
+        self.world_map.render_map(&mut ctx2d, &self.camera, true);
+        
+        ctx2d.draw_rectangle(
             self.player.position[0] as i32, 
             self.player.position[1] as i32 * -1,
-            (constants.tile_size as f32 * self.player.size) as i32, 
-            (constants.tile_size as f32 * self.player.size) as i32, 
+            (constants.tile_size as f32 * constants.player.start_size * self.player.size) as i32, 
+            (constants.tile_size as f32 * constants.player.start_size * self.player.size) as i32, 
             Color::GREEN
+        );
+
+    }
+
+    pub fn draw_ui(
+        &mut self,
+        draw: &mut RaylibDrawHandle,
+        constants: &ProjectConstants,
+    ) {
+        draw.draw_fps(0, 0); 
+        draw.draw_text(
+           "Poo Text",
+           10, 100, 144, 
+           Color::BROWN
         );
     }
         

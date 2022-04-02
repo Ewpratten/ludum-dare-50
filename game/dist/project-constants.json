@@ -20,6 +20,7 @@
     "player": {
         "max_velocity": 3,
         "acceleration": 2,
-        "deceleration": 1
+        "deceleration": 1,
+        "start_size": 0.8
     }
 }

@@ -40,6 +40,9 @@ pub struct PlayerConstants {
 
     /// Deceleration, tiles per second per second
     pub deceleration: u32,
+
+    /// Starting size of player in tiles
+    pub start_size: f32,
 }
 
 /// This structure is filled with the contents of `dist/project-constants.json` at runtime
