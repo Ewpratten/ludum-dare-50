@@ -56,6 +56,15 @@
 <span id="54">54</span>
 <span id="55">55</span>
 <span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The render code for various scenes</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Overview</span>
@@ -63,7 +72,10 @@
 <span class="doccomment">//! This will probably become a messy module over time. Stick your rendering code here</span>
 <span class="kw">use</span> <span class="ident">raylib::prelude</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">discord::DiscordChannel</span>, <span class="ident">global_resource_package::GlobalResources</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">discord::DiscordChannel</span>, <span class="ident">global_resource_package::GlobalResources</span>,
+    <span class="ident">project_constants::ProjectConstants</span>,
+};
 
 <span class="kw">use</span> <span class="self">self</span>::{<span class="ident">player_interaction::PlayableScene</span>, <span class="ident">test_fox::TestFoxScene</span>};
 <span class="kw">mod</span> <span class="ident">player_interaction</span>;
@@ -79,12 +91,16 @@
 
 <span class="kw">impl</span> <span class="ident">SceneRenderDelegate</span> {
     <span class="doccomment">/// This is called when the game first loads</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on_game_start</span>(<span class="ident">raylib</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibHandle</span>, <span class="ident">rl_thread</span>: <span class="kw-2">&amp;</span><span class="ident">RaylibThread</span>) -&gt; <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on_game_start</span>(
+        <span class="ident">raylib</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibHandle</span>,
+        <span class="ident">rl_thread</span>: <span class="kw-2">&amp;</span><span class="ident">RaylibThread</span>,
+        <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
+    ) -&gt; <span class="self">Self</span> {
         <span class="comment">// TODO: Stick any init code you want here.</span>
 
         <span class="comment">// Init some scenes</span>
         <span class="kw">let</span> <span class="ident">scene_test_fox</span> <span class="op">=</span> <span class="ident">TestFoxScene::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>);
-        <span class="kw">let</span> <span class="ident">scene_playable</span> <span class="op">=</span> <span class="ident">PlayableScene::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>);
+        <span class="kw">let</span> <span class="ident">scene_playable</span> <span class="op">=</span> <span class="ident">PlayableScene::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">constants</span>);
 
         <span class="self">Self</span> {
             <span class="ident">scene_test_fox</span>,
@@ -101,10 +117,12 @@
         <span class="ident">rl_thread</span>: <span class="kw-2">&amp;</span><span class="ident">RaylibThread</span>,
         <span class="ident">discord</span>: <span class="kw-2">&amp;</span><span class="ident">DiscordChannel</span>,
         <span class="ident">global_resources</span>: <span class="kw-2">&amp;</span><span class="ident">GlobalResources</span>,
+        <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
     ) {
         <span class="comment">// For now, we will just render the game scene</span>
         <span class="self">self</span>.<span class="ident">scene_playable</span>
-            .<span class="ident">render_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="kw-2">&amp;</span><span class="ident">discord</span>, <span class="ident">global_resources</span>).<span class="kw">await</span>;
+            .<span class="ident">render_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="kw-2">&amp;</span><span class="ident">discord</span>, <span class="ident">global_resources</span>, <span class="ident">constants</span>)
+            .<span class="kw">await</span>;
     }
 }
 
