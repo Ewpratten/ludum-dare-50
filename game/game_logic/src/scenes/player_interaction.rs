@@ -103,9 +103,8 @@ impl PlayableScene {
             self.player.position[1] as i32 * -1,
             (constants.tile_size as f32 * constants.player.start_size * self.player.size) as i32, 
             (constants.tile_size as f32 * constants.player.start_size * self.player.size) as i32, 
-            Color::GREEN
+            Color::LIGHTBLUE
         );
-
     }
 
     pub fn draw_ui(
@@ -113,11 +112,15 @@ impl PlayableScene {
         draw: &mut RaylibDrawHandle,
         constants: &ProjectConstants,
     ) {
-        draw.draw_fps(0, 0); 
+        draw.draw_rectangle(
+            draw.get_screen_width() / 2 - 225, 0, 
+            450, 40,
+            Color::WHITE
+        );
         draw.draw_text(
-           "Poo Text",
-           10, 100, 144, 
-           Color::BROWN
+           "Unregistered HyperCam 2",
+           draw.get_screen_width() / 2 - 215, 0, 
+           32, Color::BLACK
         );
     }
         
@@ -153,7 +156,7 @@ impl PlayableScene {
                 * constants.player.deceleration as f32 
                 * constants.tile_size as f32 
                 * delta_time;
-            if player.velocity.magnitude() < 0.01 {
+            if player.velocity.magnitude() < 1.0 {
                 player.velocity.set_magnitude(0.0);
             }
         }
@@ -164,6 +167,18 @@ impl PlayableScene {
         }
 
         player.position += &player.velocity * delta_time;
+
+        self.update_camera(raylib);
+    }
+
+    pub fn update_camera(
+        &mut self, 
+        raylib: & raylib::RaylibHandle,
+    ) {
+        self.camera.target = self.player.position.into();
+        self.camera.target.y *= -1.0;
+        self.camera.offset.x = raylib.get_screen_width() as f32 / 2.0;
+        self.camera.offset.y = raylib.get_screen_height() as f32 / 2.0;
     }
 }
 
