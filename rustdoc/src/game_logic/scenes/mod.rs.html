@@ -50,6 +50,12 @@
 <span id="48">48</span>
 <span id="49">49</span>
 <span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The render code for various scenes</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Overview</span>
@@ -59,7 +65,8 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">discord::DiscordChannel</span>, <span class="ident">global_resource_package::GlobalResources</span>};
 
-<span class="kw">use</span> <span class="ident"><span class="self">self</span>::test_fox::TestFoxScene</span>;
+<span class="kw">use</span> <span class="self">self</span>::{<span class="ident">player_interaction::PlayableScene</span>, <span class="ident">test_fox::TestFoxScene</span>};
+<span class="kw">mod</span> <span class="ident">player_interaction</span>;
 <span class="kw">mod</span> <span class="ident">test_fox</span>;
 
 <span class="doccomment">/// Delegate for handling rendering.</span>
@@ -67,6 +74,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SceneRenderDelegate</span> {
     <span class="comment">/* Scenes */</span>
     <span class="ident">scene_test_fox</span>: <span class="ident">TestFoxScene</span>,
+    <span class="ident">scene_playable</span>: <span class="ident">PlayableScene</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">SceneRenderDelegate</span> {
@@ -76,23 +84,27 @@
 
         <span class="comment">// Init some scenes</span>
         <span class="kw">let</span> <span class="ident">scene_test_fox</span> <span class="op">=</span> <span class="ident">TestFoxScene::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>);
+        <span class="kw">let</span> <span class="ident">scene_playable</span> <span class="op">=</span> <span class="ident">PlayableScene::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>);
 
-        <span class="self">Self</span> { <span class="ident">scene_test_fox</span> }
+        <span class="self">Self</span> {
+            <span class="ident">scene_test_fox</span>,
+            <span class="ident">scene_playable</span>,
+        }
     }
 
     <span class="doccomment">/// This is called every frame once the game has started.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Keep in mind everything you do here will block the main thread (no loading files plz)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">process_ingame_frame</span>(
+    <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">process_ingame_frame</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">raylib</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibHandle</span>,
         <span class="ident">rl_thread</span>: <span class="kw-2">&amp;</span><span class="ident">RaylibThread</span>,
         <span class="ident">discord</span>: <span class="kw-2">&amp;</span><span class="ident">DiscordChannel</span>,
         <span class="ident">global_resources</span>: <span class="kw-2">&amp;</span><span class="ident">GlobalResources</span>,
     ) {
-        <span class="comment">// For now, we will just render the test fox scene</span>
-        <span class="self">self</span>.<span class="ident">scene_test_fox</span>
-            .<span class="ident">render_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="kw-2">&amp;</span><span class="ident">discord</span>, <span class="ident">global_resources</span>);
+        <span class="comment">// For now, we will just render the game scene</span>
+        <span class="self">self</span>.<span class="ident">scene_playable</span>
+            .<span class="ident">render_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="kw-2">&amp;</span><span class="ident">discord</span>, <span class="ident">global_resources</span>).<span class="kw">await</span>;
     }
 }
 
