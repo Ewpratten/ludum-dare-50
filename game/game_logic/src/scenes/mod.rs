@@ -73,6 +73,9 @@ impl SceneRenderDelegate {
                 self.scene_test_fox
                     .render_frame(raylib, rl_thread, &discord, global_resources)
                     .await;
+                self.scene_playable
+                    .update_physics(raylib, constants)
+                    .await;
             }
             MenuStateSignal::QuitGame => unimplemented!(),
             MenuStateSignal::DoMainMenu => {
