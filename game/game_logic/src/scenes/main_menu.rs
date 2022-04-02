@@ -96,6 +96,9 @@ impl MainMenu {
         if mouse_x >= 100 && mouse_y >= 250 && mouse_x <= 222 && mouse_y <= 275 {
             draw.draw_text("Options", 103, 251, 34, Color::GRAY);
             draw.draw_text("Options", 100, 250, 34, Color::BLACK);
+            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+                return MenuStateSignal::DoOptions;
+            }
         }
 
         if mouse_x >= 100 && mouse_y >= 410 && mouse_x <= 222 && mouse_y <= 437 {
