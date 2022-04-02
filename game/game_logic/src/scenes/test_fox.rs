@@ -7,7 +7,8 @@ use raylib::prelude::*;
 use crate::{
     discord::DiscordChannel,
     global_resource_package::GlobalResources,
-    rendering::utilities::{anim_texture::AnimatedTexture, map_render::MapRenderer}, model::world_object::WorldObjectPackage,
+    model::world_object_package::WorldObjectPackage,
+    rendering::utilities::{anim_texture::AnimatedTexture, map_render::MapRenderer},
 };
 
 #[derive(Debug)]
@@ -15,7 +16,7 @@ pub struct TestFoxScene {
     fox_animation: AnimatedTexture,
     world_map: MapRenderer,
     camera: Camera2D,
-    objects: WorldObjectPackage
+    objects: WorldObjectPackage,
 }
 
 impl TestFoxScene {
@@ -26,7 +27,8 @@ impl TestFoxScene {
 
         // Load the map
         let map_renderer = MapRenderer::new("map_gameMap.tmx", raylib_handle, thread).unwrap();
-        let objects = WorldObjectPackage::load("map_gameMap.objects.json").unwrap();
+        let objects =
+            WorldObjectPackage::load(raylib_handle, thread, "map_gameMap.objects.json").unwrap();
 
         // Create a camera
         let camera = Camera2D {
@@ -39,12 +41,11 @@ impl TestFoxScene {
             zoom: 1.0,
         };
 
-
         Self {
             fox_animation: fox,
             world_map: map_renderer,
             camera,
-            objects
+            objects,
         }
     }
 

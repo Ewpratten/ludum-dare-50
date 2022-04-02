@@ -3,7 +3,10 @@ use std::collections::HashMap;
 use nalgebra as na;
 use serde::Deserialize;
 
-use crate::asset_manager::{load_json_structure, InternalJsonLoadError};
+use crate::{
+    asset_manager::{load_json_structure, InternalJsonLoadError},
+    rendering::utilities::anim_texture::AnimatedTexture,
+};
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct PossiblyAnimatedTexture {
@@ -55,53 +58,4 @@ pub struct WorldObjectRef {
     pub rotation_radians: f32,
 }
 
-/// A simply interface for the madness
-#[derive(Debug, Clone)]
-pub struct WorldObjectPackage {
-    /// The object definitions
-    pub object_definitions: HashMap<String, WorldObject>,
-    /// The object references
-    pub object_references: Vec<WorldObjectRef>,
-    /// Bottom static textures
-    pub bottom_static_textures: HashMap<String, AnimatedTexture>,
-    /// Top static textures
-    pub top_static_textures: HashMap<String, AnimatedTexture>,
-    /// Bottom animated textures
-    pub bottom_animated_textures: HashMap<String, AnimatedTexture>,
-    /// Top animated textures
-    pub top_animated_textures: HashMap<String, AnimatedTexture>,
-}
 
-impl WorldObjectPackage {
-    pub fn load(map_objects_file_path: &str) -> Result<Self, InternalJsonLoadError> {
-        // Attempt to load the object reference list
-        let object_references: Vec<WorldObjectRef> = load_json_structure(map_objects_file_path)?;
-
-        // We also need to load the object definitions
-        let mut object_definitions = HashMap::new();
-        for reference in &object_references {
-            // If this is a new object, load it.
-            let object_key = format!("{}:{}", reference.kind, reference.name);
-            if !object_definitions.contains_key(object_key.as_str()) {
-                // Construct the file path from the data we know about the reference
-                let path = format!(
-                    "assets/{}/{}/{}.json",
-                    reference.kind, reference.name, reference.name
-                );
-
-                // Attempt to load the object definition
-                let object_definition: WorldObject = load_json_structure(&path)?;
-
-                // Store the object definition
-                object_definitions.insert(object_key.to_string(), object_definition);
-            }
-        }
-
-        Ok(Self {
-            object_definitions,
-            object_references,
-        })
-    }
-
-
-}
