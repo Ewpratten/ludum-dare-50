@@ -160,6 +160,33 @@
 <span id="158">158</span>
 <span id="159">159</span>
 <span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses all of the game where the player can walk around.</span>
 
 <span class="kw">use</span> <span class="ident">nalgebra</span> <span class="kw">as</span> <span class="ident">na</span>;
@@ -243,33 +270,48 @@
 
         <span class="comment">// Clear the screen</span>
         <span class="ident">draw</span>.<span class="ident">clear_background</span>(<span class="ident">Color::WHITE</span>);
+        
+        <span class="self">self</span>.<span class="ident">draw_world</span>(<span class="kw-2">&amp;mut</span> <span class="ident">draw</span>, <span class="ident">constants</span>);
 
-        {
-            <span class="comment">// Begin camera mode</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx2d</span> <span class="op">=</span> <span class="ident">draw</span>.<span class="ident">begin_mode2D</span>(<span class="self">self</span>.<span class="ident">camera</span>);
+        <span class="self">self</span>.<span class="ident">draw_ui</span>(<span class="kw-2">&amp;mut</span> <span class="ident">draw</span>, <span class="ident">constants</span>);
+    }
 
-            <span class="comment">// Render the map</span>
-            <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">render_map</span>(<span class="kw-2">&amp;mut</span> <span class="ident">ctx2d</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">camera</span>, <span class="bool-val">true</span>);
-        }       
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_world</span>(
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+        <span class="ident">draw</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibDrawHandle</span>,
+        <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
+    ) {
+        <span class="comment">// Begin camera mode</span>
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx2d</span> <span class="op">=</span> <span class="ident">draw</span>.<span class="ident">begin_mode2D</span>(<span class="self">self</span>.<span class="ident">camera</span>);
 
-        <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">100</span> {
-            <span class="kw">for</span> <span class="ident">j</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">100</span> {
-                <span class="ident">draw</span>.<span class="ident">draw_rectangle</span>(
-                    <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">i32</span> <span class="op">*</span> (<span class="ident">i</span> <span class="op">*</span> <span class="number">2</span>),
-                    <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">i32</span> <span class="op">*</span> (<span class="ident">j</span> <span class="op">*</span> <span class="number">2</span>) <span class="op">*</span> <span class="op">-</span><span class="number">1</span>,
-                    <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">i32</span>,
-                    <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">i32</span>,
-                    <span class="ident">Color::RED</span>
-                )
-            }
-        }    
+        <span class="comment">// Render the map</span>
+        <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">render_map</span>(<span class="kw-2">&amp;mut</span> <span class="ident">ctx2d</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">camera</span>, <span class="bool-val">true</span>);
+       
+        <span class="kw">let</span> <span class="ident">player_size</span> <span class="op">=</span> (<span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">start_size</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">size</span>) <span class="kw">as</span> <span class="ident">i32</span>;
 
+        <span class="ident">ctx2d</span>.<span class="ident">draw_rectangle</span>(
+            <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>[<span class="number">0</span>] <span class="kw">as</span> <span class="ident">i32</span> <span class="op">-</span> <span class="ident">player_size</span> <span class="op">/</span> <span class="number">2</span>, 
+            <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>[<span class="number">1</span>] <span class="kw">as</span> <span class="ident">i32</span> <span class="op">*</span> <span class="op">-</span><span class="number">1</span> <span class="op">-</span> <span class="ident">player_size</span> <span class="op">/</span> <span class="number">2</span>,
+            <span class="ident">player_size</span>,
+            <span class="ident">player_size</span>,
+            <span class="ident">Color::LIGHTBLUE</span>
+        );
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_ui</span>(
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
+        <span class="ident">draw</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibDrawHandle</span>,
+        <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
+    ) {
         <span class="ident">draw</span>.<span class="ident">draw_rectangle</span>(
-            <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>[<span class="number">0</span>] <span class="kw">as</span> <span class="ident">i32</span>, 
-            <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>[<span class="number">1</span>] <span class="kw">as</span> <span class="ident">i32</span> <span class="op">*</span> <span class="op">-</span><span class="number">1</span>,
-            (<span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">size</span>) <span class="kw">as</span> <span class="ident">i32</span>, 
-            (<span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">size</span>) <span class="kw">as</span> <span class="ident">i32</span>, 
-            <span class="ident">Color::GREEN</span>
+            <span class="ident">draw</span>.<span class="ident">get_screen_width</span>() <span class="op">/</span> <span class="number">2</span> <span class="op">-</span> <span class="number">225</span>, <span class="number">0</span>, 
+            <span class="number">450</span>, <span class="number">40</span>,
+            <span class="ident">Color::WHITE</span>
+        );
+        <span class="ident">draw</span>.<span class="ident">draw_text</span>(
+           <span class="string">&quot;Unregistered HyperCam 2&quot;</span>,
+           <span class="ident">draw</span>.<span class="ident">get_screen_width</span>() <span class="op">/</span> <span class="number">2</span> <span class="op">-</span> <span class="number">215</span>, <span class="number">0</span>, 
+           <span class="number">32</span>, <span class="ident">Color::BLACK</span>
         );
     }
         
@@ -305,7 +347,7 @@
                 <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">deceleration</span> <span class="kw">as</span> <span class="ident">f32</span> 
                 <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span> 
                 <span class="op">*</span> <span class="ident">delta_time</span>;
-            <span class="kw">if</span> <span class="ident">player</span>.<span class="ident">velocity</span>.<span class="ident">magnitude</span>() <span class="op">&lt;</span> <span class="number">0.01</span> {
+            <span class="kw">if</span> <span class="ident">player</span>.<span class="ident">velocity</span>.<span class="ident">magnitude</span>() <span class="op">&lt;</span> <span class="number">1.0</span> {
                 <span class="ident">player</span>.<span class="ident">velocity</span>.<span class="ident">set_magnitude</span>(<span class="number">0.0</span>);
             }
         }
@@ -316,6 +358,18 @@
         }
 
         <span class="ident">player</span>.<span class="ident">position</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">player</span>.<span class="ident">velocity</span> <span class="op">*</span> <span class="ident">delta_time</span>;
+
+        <span class="self">self</span>.<span class="ident">update_camera</span>(<span class="ident">raylib</span>);
+    }
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_camera</span>(
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>, 
+        <span class="ident">raylib</span>: <span class="op">&amp;</span> <span class="ident">raylib::RaylibHandle</span>,
+    ) {
+        <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">target</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>.<span class="ident">into</span>();
+        <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">target</span>.<span class="ident">y</span> <span class="kw-2">*</span><span class="op">=</span> <span class="op">-</span><span class="number">1.0</span>;
+        <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">offset</span>.<span class="ident">x</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">get_screen_width</span>() <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>;
+        <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">offset</span>.<span class="ident">y</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">get_screen_height</span>() <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>;
     }
 }
 
