@@ -130,6 +130,9 @@ impl MainMenu {
         if mouse_x >= 100 && mouse_y >= 550 && mouse_x <= 162 && mouse_y <= 575 {
             draw.draw_text("Exit", 103, 551, 34, Color::GRAY);
             draw.draw_text("Exit", 100, 550, 34, Color::BLACK);
+            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+                return MenuStateSignal::QuitGame;
+            }
         }
 
           
