@@ -113,6 +113,19 @@
 <span id="111">111</span>
 <span id="112">112</span>
 <span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The render code for various scenes</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Overview</span>
@@ -138,6 +151,8 @@
 <span class="doccomment">/// This is a struct to allow for stateful data (like sub-screens) to be set up</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SceneRenderDelegate</span> {
     <span class="ident">menu_control_signal</span>: <span class="ident">MenuStateSignal</span>,
+    <span class="kw">pub</span> <span class="ident">needs_exit</span>: <span class="ident">bool</span>,
+    <span class="ident">audio_subsystem</span>: <span class="ident">RaylibAudio</span>,
     <span class="comment">/* Scenes */</span>
     <span class="ident">scene_test_fox</span>: <span class="ident">TestFoxScene</span>,
     <span class="ident">scene_playable</span>: <span class="ident">PlayableScene</span>,
@@ -151,7 +166,9 @@
         <span class="ident">rl_thread</span>: <span class="kw-2">&amp;</span><span class="ident">RaylibThread</span>,
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
     ) -&gt; <span class="self">Self</span> {
-        <span class="comment">// TODO: Stick any init code you want here.</span>
+        <span class="comment">// Set up audio</span>
+        <span class="kw">let</span> <span class="ident">audio_subsystem</span> <span class="op">=</span> <span class="ident">RaylibAudio::init_audio_device</span>();
+        <span class="ident">audio_subsystem</span>.<span class="ident">set_master_volume</span>(<span class="number">0.4</span>);
 
         <span class="comment">// Init some scenes</span>
         <span class="kw">let</span> <span class="ident">scene_test_fox</span> <span class="op">=</span> <span class="ident">TestFoxScene::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>);
@@ -160,6 +177,8 @@
 
         <span class="self">Self</span> {
             <span class="ident">menu_control_signal</span>: <span class="ident">MenuStateSignal::DoMainMenu</span>,
+            <span class="ident">needs_exit</span>: <span class="bool-val">false</span>,
+            <span class="ident">audio_subsystem</span>,
             <span class="ident">scene_test_fox</span>,
             <span class="ident">scene_playable</span>,
             <span class="ident">scene_main_menu</span>,
@@ -177,22 +196,29 @@
         <span class="ident">global_resources</span>: <span class="kw-2">&amp;</span><span class="ident">GlobalResources</span>,
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
     ) {
+
         <span class="comment">// Render the main menu if in it, otherwise, render the game</span>
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">menu_control_signal</span> {
             <span class="ident">MenuStateSignal::StartGame</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">scene_playable</span>
-                    .<span class="ident">render_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="kw-2">&amp;</span><span class="ident">discord</span>, <span class="ident">global_resources</span>, <span class="ident">constants</span>)
+                    .<span class="ident">render_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="kw-2">&amp;</span><span class="ident">discord</span>, <span class="ident">global_resources</span>, <span class="ident">constants</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">audio_subsystem</span>)
                     .<span class="kw">await</span>;
-                <span class="self">self</span>.<span class="ident">scene_playable</span>
-                    .<span class="ident">update_physics</span>(<span class="ident">raylib</span>, <span class="ident">constants</span>)
-                    .<span class="kw">await</span>;
+                <span class="self">self</span>.<span class="ident">scene_playable</span>.<span class="ident">update_physics</span>(<span class="ident">raylib</span>, <span class="ident">constants</span>).<span class="kw">await</span>;
+
+                <span class="comment">// Clear the menu system discord status</span>
+                <span class="self">self</span>.<span class="ident">scene_main_menu</span>.<span class="ident">has_updated_discord_rpc</span> <span class="op">=</span> <span class="bool-val">false</span>;
             }
-            <span class="ident">MenuStateSignal::QuitGame</span> =&gt; <span class="macro">unimplemented!</span>(),
+            <span class="ident">MenuStateSignal::QuitGame</span> =&gt; {
+                <span class="self">self</span>.<span class="ident">needs_exit</span> <span class="op">=</span> <span class="bool-val">true</span>;
+            }
             <span class="ident">MenuStateSignal::DoMainMenu</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">menu_control_signal</span> <span class="op">=</span> <span class="self">self</span>
                     .<span class="ident">scene_main_menu</span>
                     .<span class="ident">render_main_menu_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">discord</span>, <span class="ident">global_resources</span>, <span class="ident">constants</span>)
-                    .<span class="kw">await</span>
+                    .<span class="kw">await</span>;
+
+                <span class="comment">// Clear the ingame discord status</span>
+                <span class="self">self</span>.<span class="ident">scene_playable</span>.<span class="ident">has_updated_discord_rpc</span> <span class="op">=</span> <span class="bool-val">false</span>;
             }
             <span class="ident">MenuStateSignal::DoOptions</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">menu_control_signal</span> <span class="op">=</span> <span class="self">self</span>

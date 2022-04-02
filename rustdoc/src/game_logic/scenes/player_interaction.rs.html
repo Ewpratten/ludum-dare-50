@@ -187,6 +187,11 @@
 <span id="185">185</span>
 <span id="186">186</span>
 <span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses all of the game where the player can walk around.</span>
 
 <span class="kw">use</span> <span class="ident">nalgebra</span> <span class="kw">as</span> <span class="ident">na</span>;
@@ -194,6 +199,7 @@
 <span class="kw">use</span> <span class="ident">std::time::SystemTime</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">asset_manager</span>::{<span class="ident">load_music_from_internal_data</span>, <span class="ident">load_sound_from_internal_data</span>},
     <span class="ident">discord</span>::{<span class="ident">DiscordChannel</span>, <span class="ident">DiscordRpcSignal</span>},
     <span class="ident">global_resource_package::GlobalResources</span>,
     <span class="ident">model::player::Player</span>,
@@ -203,40 +209,43 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PlayableScene</span> {
-    <span class="ident">has_updated_discord_rpc</span>: <span class="ident">bool</span>,
+    <span class="kw">pub</span> <span class="ident">has_updated_discord_rpc</span>: <span class="ident">bool</span>,
     <span class="ident">player</span>: <span class="ident">Player</span>,
     <span class="ident">world_map</span>: <span class="ident">MapRenderer</span>,
     <span class="ident">camera</span>: <span class="ident">raylib::camera::Camera2D</span>,
     <span class="ident">last_update</span>: <span class="ident">SystemTime</span>,
+    <span class="ident">game_soundtrack</span>: <span class="ident">Music</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">PlayableScene</span> {
     <span class="doccomment">/// Construct a new `PlayableScene`</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">raylib_handle</span>: <span class="kw-2">&amp;mut</span> <span class="ident">raylib::RaylibHandle</span>,
-        <span class="ident">thread</span>: <span class="op">&amp;</span> <span class="ident">raylib::RaylibThread</span>,
+        <span class="ident">thread</span>: <span class="kw-2">&amp;</span><span class="ident">raylib::RaylibThread</span>,
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
     ) -&gt; <span class="self">Self</span> {
 
         <span class="kw">let</span> <span class="ident">map_renderer</span> <span class="op">=</span> <span class="ident">MapRenderer::new</span>(<span class="string">&quot;map_gameMap.tmx&quot;</span>, <span class="string">&quot;map_gameMap.objects.json&quot;</span>, <span class="ident">raylib_handle</span>, <span class="ident">thread</span>).<span class="ident">unwrap</span>();
+
+        <span class="comment">// Load the game music</span>
+        <span class="kw">let</span> <span class="ident">game_soundtrack</span> <span class="op">=</span>
+            <span class="ident">load_music_from_internal_data</span>(<span class="ident">thread</span>, <span class="string">&quot;assets/audio/gameSoundtrack.mp3&quot;</span>).<span class="ident">unwrap</span>();
 
         <span class="self">Self</span> {
             <span class="ident">has_updated_discord_rpc</span>: <span class="bool-val">false</span>,
             <span class="ident">player</span>: <span class="ident">Player::new</span>(<span class="ident">na::Vector2::new</span>(<span class="number">10.0</span>, <span class="number">10.0</span>)),
             <span class="ident">world_map</span>: <span class="ident">map_renderer</span>,
             <span class="ident">camera</span>: <span class="ident">raylib::camera::Camera2D</span> {
-                <span class="ident">target</span>: <span class="ident">raylib::math::Vector2</span> { 
-                    <span class="ident">x</span>: <span class="number">0.0</span>, 
-                    <span class="ident">y</span>: <span class="number">0.0</span>,
-                },
-                <span class="ident">offset</span>: <span class="ident">raylib::math::Vector2</span> { 
+                <span class="ident">target</span>: <span class="ident">raylib::math::Vector2</span> { <span class="ident">x</span>: <span class="number">0.0</span>, <span class="ident">y</span>: <span class="number">0.0</span> },
+                <span class="ident">offset</span>: <span class="ident">raylib::math::Vector2</span> {
                     <span class="ident">x</span>: (<span class="ident">constants</span>.<span class="ident">base_window_size</span>.<span class="number">0</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>),
-                    <span class="ident">y</span>: (<span class="ident">constants</span>.<span class="ident">base_window_size</span>.<span class="number">1</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>) 
+                    <span class="ident">y</span>: (<span class="ident">constants</span>.<span class="ident">base_window_size</span>.<span class="number">1</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>),
                 },
                 <span class="ident">rotation</span>: <span class="number">0.0</span>,
-                <span class="ident">zoom</span>: <span class="number">1.0</span>
+                <span class="ident">zoom</span>: <span class="number">1.0</span>,
             },
-            <span class="ident">last_update</span>: <span class="ident">SystemTime::UNIX_EPOCH</span>
+            <span class="ident">last_update</span>: <span class="ident">SystemTime::UNIX_EPOCH</span>,
+            <span class="ident">game_soundtrack</span>,
         }
     }
 
@@ -248,6 +257,7 @@
         <span class="ident">discord</span>: <span class="kw-2">&amp;</span><span class="ident">DiscordChannel</span>,
         <span class="ident">global_resources</span>: <span class="kw-2">&amp;</span><span class="ident">GlobalResources</span>,
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
+        <span class="ident">audio_subsystem</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibAudio</span>,
     ) {
         <span class="comment">// Handle updating discord RPC</span>
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">has_updated_discord_rpc</span> {
@@ -265,96 +275,101 @@
             <span class="self">self</span>.<span class="ident">has_updated_discord_rpc</span> <span class="op">=</span> <span class="bool-val">true</span>;
         }
 
+        <span class="comment">// Ensure the game soundtrack is playing</span>
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">audio_subsystem</span>.<span class="ident">is_music_playing</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">game_soundtrack</span>) {
+            <span class="macro">debug!</span>(<span class="string">&quot;Playing game soundtrack&quot;</span>);
+            <span class="ident">audio_subsystem</span>.<span class="ident">play_music_stream</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">game_soundtrack</span>);
+        } <span class="kw">else</span> {
+            <span class="ident">audio_subsystem</span>.<span class="ident">update_music_stream</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">game_soundtrack</span>);
+        }
+
         <span class="comment">// Get a drawing handle</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">draw</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">begin_drawing</span>(<span class="ident">rl_thread</span>);
 
         <span class="comment">// Clear the screen</span>
         <span class="ident">draw</span>.<span class="ident">clear_background</span>(<span class="ident">Color::WHITE</span>);
-        
+
         <span class="self">self</span>.<span class="ident">draw_world</span>(<span class="kw-2">&amp;mut</span> <span class="ident">draw</span>, <span class="ident">constants</span>);
 
         <span class="self">self</span>.<span class="ident">draw_ui</span>(<span class="kw-2">&amp;mut</span> <span class="ident">draw</span>, <span class="ident">constants</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_world</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">draw</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibDrawHandle</span>,
-        <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
-    ) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_world</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">draw</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibDrawHandle</span>, <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>) {
         <span class="comment">// Begin camera mode</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx2d</span> <span class="op">=</span> <span class="ident">draw</span>.<span class="ident">begin_mode2D</span>(<span class="self">self</span>.<span class="ident">camera</span>);
 
         <span class="comment">// Render the map</span>
+
         <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">render_map</span>(<span class="kw-2">&amp;mut</span> <span class="ident">ctx2d</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">camera</span>, <span class="bool-val">true</span>, <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>);
        
         <span class="kw">let</span> <span class="ident">player_size</span> <span class="op">=</span> (<span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">start_size</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">size</span>) <span class="kw">as</span> <span class="ident">i32</span>;
 
         <span class="ident">ctx2d</span>.<span class="ident">draw_rectangle</span>(
-            <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>[<span class="number">0</span>] <span class="kw">as</span> <span class="ident">i32</span> <span class="op">-</span> <span class="ident">player_size</span> <span class="op">/</span> <span class="number">2</span>, 
+            <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>[<span class="number">0</span>] <span class="kw">as</span> <span class="ident">i32</span> <span class="op">-</span> <span class="ident">player_size</span> <span class="op">/</span> <span class="number">2</span>,
             <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>[<span class="number">1</span>] <span class="kw">as</span> <span class="ident">i32</span> <span class="op">*</span> <span class="op">-</span><span class="number">1</span> <span class="op">-</span> <span class="ident">player_size</span> <span class="op">/</span> <span class="number">2</span>,
             <span class="ident">player_size</span>,
             <span class="ident">player_size</span>,
-            <span class="ident">Color::LIGHTBLUE</span>
+            <span class="ident">Color::LIGHTBLUE</span>,
         );
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_ui</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">draw</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibDrawHandle</span>,
-        <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
-    ) {
-        <span class="ident">draw</span>.<span class="ident">draw_rectangle</span>(
-            <span class="ident">draw</span>.<span class="ident">get_screen_width</span>() <span class="op">/</span> <span class="number">2</span> <span class="op">-</span> <span class="number">225</span>, <span class="number">0</span>, 
-            <span class="number">450</span>, <span class="number">40</span>,
-            <span class="ident">Color::WHITE</span>
-        );
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_ui</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">draw</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibDrawHandle</span>, <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>) {
+        <span class="ident">draw</span>.<span class="ident">draw_rectangle</span>(<span class="ident">draw</span>.<span class="ident">get_screen_width</span>() <span class="op">/</span> <span class="number">2</span> <span class="op">-</span> <span class="number">225</span>, <span class="number">0</span>, <span class="number">450</span>, <span class="number">40</span>, <span class="ident">Color::WHITE</span>);
         <span class="ident">draw</span>.<span class="ident">draw_text</span>(
-           <span class="string">&quot;Unregistered HyperCam 2&quot;</span>,
-           <span class="ident">draw</span>.<span class="ident">get_screen_width</span>() <span class="op">/</span> <span class="number">2</span> <span class="op">-</span> <span class="number">215</span>, <span class="number">0</span>, 
-           <span class="number">32</span>, <span class="ident">Color::BLACK</span>
+            <span class="string">&quot;Unregistered HyperCam 2&quot;</span>,
+            <span class="ident">draw</span>.<span class="ident">get_screen_width</span>() <span class="op">/</span> <span class="number">2</span> <span class="op">-</span> <span class="number">215</span>,
+            <span class="number">0</span>,
+            <span class="number">32</span>,
+            <span class="ident">Color::BLACK</span>,
         );
     }
-        
+
     <span class="comment">// Physics</span>
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_physics</span>(
         <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
-        <span class="ident">raylib</span>: <span class="op">&amp;</span> <span class="ident">raylib::RaylibHandle</span>,
+        <span class="ident">raylib</span>: <span class="kw-2">&amp;</span><span class="ident">raylib::RaylibHandle</span>,
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
     ) {
-
         <span class="comment">// Get time since last physics update</span>
         <span class="kw">let</span> <span class="ident">time</span> <span class="op">=</span> <span class="ident">SystemTime::now</span>();
-        <span class="kw">let</span> <span class="ident">elapsed</span> <span class="op">=</span> <span class="ident">time</span>.<span class="ident">duration_since</span>(<span class="self">self</span>.<span class="ident">last_update</span>).<span class="ident">expect</span>(<span class="string">&quot;Time Appears to Have Moved Backwards!&quot;</span>);
+        <span class="kw">let</span> <span class="ident">elapsed</span> <span class="op">=</span> <span class="ident">time</span>
+            .<span class="ident">duration_since</span>(<span class="self">self</span>.<span class="ident">last_update</span>)
+            .<span class="ident">expect</span>(<span class="string">&quot;Time Appears to Have Moved Backwards!&quot;</span>);
         <span class="self">self</span>.<span class="ident">last_update</span> <span class="op">=</span> <span class="ident">time</span>;
         <span class="kw">let</span> <span class="ident">delta_time</span> <span class="op">=</span> <span class="ident">elapsed</span>.<span class="ident">as_millis</span>() <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">1000.0</span>; <span class="comment">// Physics will be scaled by this value</span>
 
         <span class="kw">let</span> <span class="ident">player</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">player</span>;
 
         <span class="comment">// Get input direction components</span>
-        <span class="kw">let</span> <span class="ident">h_axis</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">is_key_down</span>(<span class="ident">KeyboardKey::KEY_D</span>) <span class="kw">as</span> <span class="ident">i8</span> <span class="op">-</span> <span class="ident">raylib</span>.<span class="ident">is_key_down</span>(<span class="ident">KeyboardKey::KEY_A</span>) <span class="kw">as</span> <span class="ident">i8</span>;
-        <span class="kw">let</span> <span class="ident">v_axis</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">is_key_down</span>(<span class="ident">KeyboardKey::KEY_W</span>) <span class="kw">as</span> <span class="ident">i8</span> <span class="op">-</span> <span class="ident">raylib</span>.<span class="ident">is_key_down</span>(<span class="ident">KeyboardKey::KEY_S</span>) <span class="kw">as</span> <span class="ident">i8</span>;
+        <span class="kw">let</span> <span class="ident">h_axis</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">is_key_down</span>(<span class="ident">KeyboardKey::KEY_D</span>) <span class="kw">as</span> <span class="ident">i8</span>
+            <span class="op">-</span> <span class="ident">raylib</span>.<span class="ident">is_key_down</span>(<span class="ident">KeyboardKey::KEY_A</span>) <span class="kw">as</span> <span class="ident">i8</span>;
+        <span class="kw">let</span> <span class="ident">v_axis</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">is_key_down</span>(<span class="ident">KeyboardKey::KEY_W</span>) <span class="kw">as</span> <span class="ident">i8</span>
+            <span class="op">-</span> <span class="ident">raylib</span>.<span class="ident">is_key_down</span>(<span class="ident">KeyboardKey::KEY_S</span>) <span class="kw">as</span> <span class="ident">i8</span>;
         <span class="kw">if</span> <span class="ident">h_axis</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">v_axis</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
             <span class="comment">// Normalize input and accelerate in desired direction</span>
             <span class="kw">let</span> <span class="ident">direction</span> <span class="op">=</span> <span class="ident">na::Vector2::new</span>(<span class="ident">h_axis</span> <span class="kw">as</span> <span class="ident">f32</span>, <span class="ident">v_axis</span> <span class="kw">as</span> <span class="ident">f32</span>).<span class="ident">normalize</span>();
-            <span class="ident">player</span>.<span class="ident">velocity</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">direction</span>.<span class="ident">xy</span>() 
+            <span class="ident">player</span>.<span class="ident">velocity</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">direction</span>.<span class="ident">xy</span>()
                 <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">acceleration</span> <span class="kw">as</span> <span class="ident">f32</span>
-                <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span> 
+                <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span>
                 <span class="op">*</span> <span class="ident">delta_time</span>;
         }
 
         <span class="kw">if</span> <span class="ident">player</span>.<span class="ident">velocity</span>.<span class="ident">magnitude</span>() <span class="op">!</span><span class="op">=</span> <span class="number">0.0</span> {
-            <span class="ident">player</span>.<span class="ident">velocity</span> <span class="op">-</span><span class="op">=</span> <span class="ident">player</span>.<span class="ident">velocity</span>.<span class="ident">normalize</span>() 
-                <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">deceleration</span> <span class="kw">as</span> <span class="ident">f32</span> 
-                <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span> 
+            <span class="ident">player</span>.<span class="ident">velocity</span> <span class="op">-</span><span class="op">=</span> <span class="ident">player</span>.<span class="ident">velocity</span>.<span class="ident">normalize</span>()
+                <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">deceleration</span> <span class="kw">as</span> <span class="ident">f32</span>
+                <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span>
                 <span class="op">*</span> <span class="ident">delta_time</span>;
             <span class="kw">if</span> <span class="ident">player</span>.<span class="ident">velocity</span>.<span class="ident">magnitude</span>() <span class="op">&lt;</span> <span class="number">1.0</span> {
                 <span class="ident">player</span>.<span class="ident">velocity</span>.<span class="ident">set_magnitude</span>(<span class="number">0.0</span>);
             }
         }
 
-        <span class="kw">if</span> ((<span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">max_velocity</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span>) <span class="kw">as</span> <span class="ident">f32</span>) 
-            <span class="op">&lt;</span> <span class="ident">player</span>.<span class="ident">velocity</span>.<span class="ident">magnitude</span>() {
-            <span class="ident">player</span>.<span class="ident">velocity</span>.<span class="ident">set_magnitude</span>((<span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">max_velocity</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span>) <span class="kw">as</span> <span class="ident">f32</span>);
+        <span class="kw">if</span> ((<span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">max_velocity</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span>) <span class="kw">as</span> <span class="ident">f32</span>)
+            <span class="op">&lt;</span> <span class="ident">player</span>.<span class="ident">velocity</span>.<span class="ident">magnitude</span>()
+        {
+            <span class="ident">player</span>
+                .<span class="ident">velocity</span>
+                .<span class="ident">set_magnitude</span>((<span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">max_velocity</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span>) <span class="kw">as</span> <span class="ident">f32</span>);
         }
 
         <span class="ident">player</span>.<span class="ident">position</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">player</span>.<span class="ident">velocity</span> <span class="op">*</span> <span class="ident">delta_time</span>;
@@ -362,18 +377,13 @@
         <span class="self">self</span>.<span class="ident">update_camera</span>(<span class="ident">raylib</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_camera</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>, 
-        <span class="ident">raylib</span>: <span class="op">&amp;</span> <span class="ident">raylib::RaylibHandle</span>,
-    ) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_camera</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">raylib</span>: <span class="kw-2">&amp;</span><span class="ident">raylib::RaylibHandle</span>) {
         <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">target</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>.<span class="ident">into</span>();
         <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">target</span>.<span class="ident">y</span> <span class="kw-2">*</span><span class="op">=</span> <span class="op">-</span><span class="number">1.0</span>;
         <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">offset</span>.<span class="ident">x</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">get_screen_width</span>() <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>;
         <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">offset</span>.<span class="ident">y</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">get_screen_height</span>() <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>;
     }
 }
-
-
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="game_logic" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
 </body></html>

@@ -132,6 +132,11 @@
 <span id="130">130</span>
 <span id="131">131</span>
 <span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The Event Loop module</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Overview</span>
@@ -245,6 +250,11 @@
                         <span class="ident">constants</span>,
                     )
                     .<span class="kw">await</span>;
+
+                <span class="comment">// Handle exiting the game</span>
+                <span class="kw">if</span> <span class="ident">render_delegate</span>.<span class="ident">needs_exit</span> {
+                    <span class="kw">break</span>;
+                }
             }
             <span class="kw">_</span> =&gt; <span class="ident">backend_sm</span> <span class="op">=</span> <span class="ident">RenderBackendStates::sm_failed</span>(),
         };
