@@ -4,22 +4,29 @@ use nalgebra as na;
 use raylib::prelude::*;
 
 use crate::{
-    discord::{DiscordChannel, DiscordRpcSignal}, global_resource_package::GlobalResources,
-    rendering::utilities::anim_texture::AnimatedTexture, model::player::Player,
+    discord::{DiscordChannel, DiscordRpcSignal},
+    global_resource_package::GlobalResources,
+    model::player::Player,
+    project_constants::ProjectConstants,
+    rendering::utilities::anim_texture::AnimatedTexture,
 };
 
 #[derive(Debug)]
 pub struct PlayableScene {
     has_updated_discord_rpc: bool,
-    player: Player
+    player: Player,
 }
 
 impl PlayableScene {
     /// Construct a new `PlayableScene`
-    pub fn new(raylib_handle: &mut RaylibHandle, thread: &RaylibThread) -> Self {
+    pub fn new(
+        raylib_handle: &mut RaylibHandle,
+        thread: &RaylibThread,
+        constants: &ProjectConstants,
+    ) -> Self {
         Self {
             has_updated_discord_rpc: false,
-            player: Player::new(na::Vector2::new(10.0, 10.0))
+            player: Player::new(na::Vector2::new(10.0, 10.0)),
         }
     }
 
@@ -30,12 +37,21 @@ impl PlayableScene {
         rl_thread: &RaylibThread,
         discord: &DiscordChannel,
         global_resources: &GlobalResources,
+        constants: &ProjectConstants,
     ) {
-
         // Handle updating discord RPC
         if !self.has_updated_discord_rpc {
-            discord.send(DiscordRpcSignal::BeginGameTimer).await.unwrap();
-            discord.send(DiscordRpcSignal::ChangeDetails { details: "Playing the game".to_string(), party_status: None }).await.unwrap();
+            discord
+                .send(DiscordRpcSignal::BeginGameTimer)
+                .await
+                .unwrap();
+            discord
+                .send(DiscordRpcSignal::ChangeDetails {
+                    details: "Playing the game".to_string(),
+                    party_status: None,
+                })
+                .await
+                .unwrap();
             self.has_updated_discord_rpc = true;
         }
 
