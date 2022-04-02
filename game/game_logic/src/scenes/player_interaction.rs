@@ -97,12 +97,14 @@ impl PlayableScene {
 
         // Render the map
         self.world_map.render_map(&mut ctx2d, &self.camera, true);
-        
+       
+        let player_size = (constants.tile_size as f32 * constants.player.start_size * self.player.size) as i32;
+
         ctx2d.draw_rectangle(
-            self.player.position[0] as i32, 
-            self.player.position[1] as i32 * -1,
-            (constants.tile_size as f32 * constants.player.start_size * self.player.size) as i32, 
-            (constants.tile_size as f32 * constants.player.start_size * self.player.size) as i32, 
+            self.player.position[0] as i32 - player_size / 2, 
+            self.player.position[1] as i32 * -1 - player_size / 2,
+            player_size,
+            player_size,
             Color::LIGHTBLUE
         );
     }
