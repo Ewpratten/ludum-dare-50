@@ -142,19 +142,6 @@
 <span id="140">140</span>
 <span id="141">141</span>
 <span id="142">142</span>
-<span id="143">143</span>
-<span id="144">144</span>
-<span id="145">145</span>
-<span id="146">146</span>
-<span id="147">147</span>
-<span id="148">148</span>
-<span id="149">149</span>
-<span id="150">150</span>
-<span id="151">151</span>
-<span id="152">152</span>
-<span id="153">153</span>
-<span id="154">154</span>
-<span id="155">155</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The Event Loop module</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Overview</span>
@@ -185,7 +172,7 @@
     <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
     <span class="ident">discord_signaling</span>: <span class="ident">DiscordChannel</span>,
     <span class="ident">game_settings</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PersistentGameSettings</span>,
-    <span class="ident">save_state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">GameSaveState</span>
+    <span class="ident">save_state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">GameSaveState</span>,
 ) <span class="kw">where</span>
     <span class="ident">ConfigBuilder</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;mut</span> <span class="ident">RaylibBuilder</span>),
 {
@@ -257,9 +244,6 @@
         .<span class="ident">resources</span>
         .<span class="ident">expect</span>(<span class="string">&quot;Failed to get global resources&quot;</span>);
 
-    <span class="comment">// Tracker for if we are showing the FPS counter</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">show_fps_counter</span> <span class="op">=</span> <span class="bool-val">false</span>;
-
     <span class="comment">// Run the event loop</span>
     <span class="kw">while</span> <span class="op">!</span><span class="ident">raylib_handle</span>.<span class="ident">window_should_close</span>() {
         <span class="comment">// Handle state machine updates</span>
@@ -294,16 +278,6 @@
             }
             <span class="kw">_</span> =&gt; <span class="ident">backend_sm</span> <span class="op">=</span> <span class="ident">RenderBackendStates::sm_failed</span>(),
         };
-
-        <span class="comment">// Check for F3 being pressed</span>
-        <span class="kw">if</span> <span class="ident">raylib_handle</span>.<span class="ident">is_key_pressed</span>(<span class="ident">KeyboardKey::KEY_F3</span>) {
-            <span class="ident">show_fps_counter</span> <span class="op">=</span> <span class="op">!</span><span class="ident">show_fps_counter</span>;
-        }
-
-        <span class="comment">// Show the FPS counter</span>
-        <span class="kw">if</span> <span class="ident">show_fps_counter</span> {
-            <span class="ident">raylib_handle</span>.<span class="ident">begin_drawing</span>(<span class="kw-2">&amp;</span><span class="ident">raylib_thread</span>).<span class="ident">draw_fps</span>(<span class="number">10</span>, <span class="number">10</span>);
-        }
 
         <span class="comment">// Tell the profiler that we ended the frame</span>
         <span class="macro">profiling::finish_frame!</span>();

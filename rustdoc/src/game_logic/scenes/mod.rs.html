@@ -149,6 +149,26 @@
 <span id="147">147</span>
 <span id="148">148</span>
 <span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The render code for various scenes</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Overview</span>
@@ -157,16 +177,20 @@
 <span class="kw">use</span> <span class="ident">raylib::prelude</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">discord::DiscordChannel</span>, <span class="ident">global_resource_package::GlobalResources</span>,
-    <span class="ident">project_constants::ProjectConstants</span>, <span class="ident">persistent</span>::{<span class="ident">save_state::GameSaveState</span>, <span class="ident">settings::PersistentGameSettings</span>},
+    <span class="ident">discord::DiscordChannel</span>,
+    <span class="ident">global_resource_package::GlobalResources</span>,
+    <span class="ident">persistent</span>::{<span class="ident">save_state::GameSaveState</span>, <span class="ident">settings::PersistentGameSettings</span>},
+    <span class="ident">project_constants::ProjectConstants</span>,
 };
 
 <span class="kw">use</span> <span class="self">self</span>::{
     <span class="ident">main_menu</span>::{<span class="ident">MainMenu</span>, <span class="ident">MenuStateSignal</span>},
+    <span class="ident">pause_menu::PauseMenu</span>,
     <span class="ident">player_interaction::PlayableScene</span>,
     <span class="ident">test_fox::TestFoxScene</span>,
 };
 <span class="kw">mod</span> <span class="ident">main_menu</span>;
+<span class="kw">mod</span> <span class="ident">pause_menu</span>;
 <span class="kw">mod</span> <span class="ident">player_interaction</span>;
 <span class="kw">mod</span> <span class="ident">test_fox</span>;
 
@@ -180,6 +204,7 @@
     <span class="ident">scene_test_fox</span>: <span class="ident">TestFoxScene</span>,
     <span class="ident">scene_playable</span>: <span class="ident">PlayableScene</span>,
     <span class="ident">scene_main_menu</span>: <span class="ident">MainMenu</span>,
+    <span class="ident">scene_pause_menu</span>: <span class="ident">PauseMenu</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">SceneRenderDelegate</span> {
@@ -190,12 +215,13 @@
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
         <span class="ident">audio_subsystem</span>: <span class="ident">RaylibAudio</span>,
         <span class="ident">game_settings</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PersistentGameSettings</span>,
-        <span class="ident">save_state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">GameSaveState</span>
+        <span class="ident">save_state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">GameSaveState</span>,
     ) -&gt; <span class="self">Self</span> {
         <span class="comment">// Init some scenes</span>
         <span class="kw">let</span> <span class="ident">scene_test_fox</span> <span class="op">=</span> <span class="ident">TestFoxScene::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>);
         <span class="kw">let</span> <span class="ident">scene_playable</span> <span class="op">=</span> <span class="ident">PlayableScene::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">constants</span>);
         <span class="kw">let</span> <span class="ident">scene_main_menu</span> <span class="op">=</span> <span class="ident">MainMenu::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">constants</span>, <span class="ident">game_settings</span>);
+        <span class="kw">let</span> <span class="ident">scene_pause_menu</span> <span class="op">=</span> <span class="ident">PauseMenu::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">constants</span>, <span class="ident">game_settings</span>);
 
         <span class="self">Self</span> {
             <span class="ident">menu_control_signal</span>: <span class="ident">MenuStateSignal::DoMainMenu</span>,
@@ -204,6 +230,7 @@
             <span class="ident">scene_test_fox</span>,
             <span class="ident">scene_playable</span>,
             <span class="ident">scene_main_menu</span>,
+            <span class="ident">scene_pause_menu</span>,
         }
     }
 
@@ -218,12 +245,12 @@
         <span class="ident">global_resources</span>: <span class="kw-2">&amp;</span><span class="ident">GlobalResources</span>,
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
         <span class="ident">game_settings</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PersistentGameSettings</span>,
-        <span class="ident">save_state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">GameSaveState</span>
+        <span class="ident">save_state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">GameSaveState</span>,
     ) {
         <span class="comment">// Render the main menu if in it, otherwise, render the game</span>
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">menu_control_signal</span> {
             <span class="ident">MenuStateSignal::StartGame</span> =&gt; {
-                <span class="self">self</span>.<span class="ident">scene_playable</span>
+                <span class="self">self</span>.<span class="ident">menu_control_signal</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">scene_playable</span>
                     .<span class="ident">render_frame</span>(
                         <span class="ident">raylib</span>,
                         <span class="ident">rl_thread</span>,
@@ -251,7 +278,7 @@
                         <span class="ident">global_resources</span>,
                         <span class="ident">constants</span>,
                         <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">audio_subsystem</span>,
-                        <span class="ident">game_settings</span>
+                        <span class="ident">game_settings</span>,
                     )
                     .<span class="kw">await</span>;
 
@@ -289,6 +316,19 @@
                         <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">audio_subsystem</span>,
                     )
                     .<span class="kw">await</span>
+            }
+            <span class="ident">MenuStateSignal::DoPauseMenu</span> =&gt; {
+                <span class="self">self</span>.<span class="ident">menu_control_signal</span> <span class="op">=</span> <span class="self">self</span>
+                    .<span class="ident">scene_pause_menu</span>
+                    .<span class="ident">render_pause_menu_frame</span>(
+                        <span class="ident">raylib</span>,
+                        <span class="ident">rl_thread</span>,
+                        <span class="ident">discord</span>,
+                        <span class="ident">global_resources</span>,
+                        <span class="ident">constants</span>,
+                        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">audio_subsystem</span>,
+                    )
+                    .<span class="kw">await</span>;
             }
         }
     }

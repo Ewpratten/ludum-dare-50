@@ -545,6 +545,8 @@
 <span id="543">543</span>
 <span id="544">544</span>
 <span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses the main menu system</span>
 
 <span class="kw">use</span> <span class="ident">na::Vector1</span>;
@@ -557,7 +559,8 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">discord</span>::{<span class="ident">DiscordChannel</span>, <span class="ident">DiscordRpcSignal</span>},
     <span class="ident">global_resource_package::GlobalResources</span>,
-    <span class="ident">project_constants::ProjectConstants</span>, <span class="ident">persistent::settings::PersistentGameSettings</span>,
+    <span class="ident">persistent::settings::PersistentGameSettings</span>,
+    <span class="ident">project_constants::ProjectConstants</span>,
 };
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
@@ -568,6 +571,7 @@
     <span class="ident">DoOptions</span>,
     <span class="ident">DoCredits</span>,
     <span class="ident">DoLeaderboard</span>,
+    <span class="ident">DoPauseMenu</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -582,7 +586,7 @@
         <span class="ident">raylib_handle</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibHandle</span>,
         <span class="ident">thread</span>: <span class="kw-2">&amp;</span><span class="ident">RaylibThread</span>,
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
-        <span class="ident">game_settings</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PersistentGameSettings</span>
+        <span class="ident">game_settings</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PersistentGameSettings</span>,
     ) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">has_updated_discord_rpc</span>: <span class="bool-val">false</span>,
@@ -598,7 +602,7 @@
         <span class="ident">global_resources</span>: <span class="kw-2">&amp;</span><span class="ident">GlobalResources</span>,
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
         <span class="ident">audio_subsystem</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibAudio</span>,
-        <span class="ident">game_settings</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PersistentGameSettings</span>
+        <span class="ident">game_settings</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PersistentGameSettings</span>,
     ) -&gt; <span class="ident">MenuStateSignal</span> {
         <span class="comment">// Handle updating discord RPC</span>
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">has_updated_discord_rpc</span> {
@@ -637,7 +641,7 @@
         <span class="kw">let</span> <span class="ident">label_shadow_colors</span> <span class="op">=</span> <span class="ident">Color::GRAY</span>;
 
         <span class="comment">//Initial Option placeholder words in the main menu</span>
-        <span class="ident">draw</span>.<span class="ident">draw_text</span>(<span class="string">&quot;Game Title&quot;</span>, <span class="number">100</span>, <span class="number">90</span>, <span class="number">60</span>, <span class="ident">label_colors</span>);
+        <span class="ident">draw</span>.<span class="ident">draw_text</span>(<span class="kw-2">&amp;</span><span class="ident">constants</span>.<span class="ident">game_name</span>, <span class="number">100</span>, <span class="number">90</span>, <span class="number">60</span>, <span class="ident">label_colors</span>);
         <span class="ident">draw</span>.<span class="ident">draw_text</span>(<span class="string">&quot;Start Game&quot;</span>, <span class="number">100</span>, <span class="number">190</span>, <span class="number">34</span>, <span class="ident">label_colors</span>);
         <span class="ident">draw</span>.<span class="ident">draw_text</span>(<span class="string">&quot;Credits&quot;</span>, <span class="number">100</span>, <span class="number">410</span>, <span class="number">34</span>, <span class="ident">label_colors</span>);
         <span class="ident">draw</span>.<span class="ident">draw_text</span>(<span class="string">&quot;Leaderboard&quot;</span>, <span class="number">100</span>, <span class="number">470</span>, <span class="number">34</span>, <span class="ident">label_colors</span>);

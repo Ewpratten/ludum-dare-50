@@ -249,6 +249,15 @@
 <span id="247">247</span>
 <span id="248">248</span>
 <span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses all of the game where the player can walk around.</span>
 
 <span class="kw">use</span> <span class="ident">nalgebra</span> <span class="kw">as</span> <span class="ident">na</span>;
@@ -263,6 +272,8 @@
     <span class="ident">project_constants::ProjectConstants</span>,
     <span class="ident">rendering::utilities</span>::{<span class="ident">anim_texture::AnimatedTexture</span>, <span class="ident">map_render::MapRenderer</span>},
 };
+
+<span class="kw">use</span> <span class="ident"><span class="kw">super</span>::main_menu::MenuStateSignal</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PlayableScene</span> {
@@ -323,7 +334,7 @@
         <span class="ident">global_resources</span>: <span class="kw-2">&amp;</span><span class="ident">GlobalResources</span>,
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
         <span class="ident">audio_subsystem</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibAudio</span>,
-    ) {
+    ) -&gt; <span class="ident">MenuStateSignal</span> {
         <span class="comment">// Handle updating discord RPC</span>
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">has_updated_discord_rpc</span> {
             <span class="ident">discord</span>
@@ -357,6 +368,13 @@
         <span class="self">self</span>.<span class="ident">draw_world</span>(<span class="kw-2">&amp;mut</span> <span class="ident">draw</span>, <span class="ident">constants</span>);
 
         <span class="self">self</span>.<span class="ident">draw_ui</span>(<span class="kw-2">&amp;mut</span> <span class="ident">draw</span>, <span class="ident">constants</span>);
+
+        <span class="comment">// A little hack to make pausing work</span>
+        <span class="kw">if</span> <span class="ident">draw</span>.<span class="ident">is_key_pressed</span>(<span class="ident">KeyboardKey::KEY_ESCAPE</span>) {
+            <span class="kw">return</span> <span class="ident">MenuStateSignal::DoPauseMenu</span>;
+        } <span class="kw">else</span> {
+            <span class="kw">return</span> <span class="ident">MenuStateSignal::StartGame</span>;
+        }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_world</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">draw</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibDrawHandle</span>, <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>) {
