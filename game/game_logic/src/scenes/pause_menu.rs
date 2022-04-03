@@ -46,8 +46,16 @@ impl PauseMenu {
         // Get a drawing handle
         let mut draw = raylib.begin_drawing(rl_thread);
 
+        //Screen Size
+        let window_height = draw.get_screen_height();
+        let window_width = draw.get_screen_width();
+
         // Clear the screen
         draw.clear_background(Color::WHITE);
+
+        //Color Pallette
+        let label_colors = Color::BLACK;
+        let label_shadow_colors = Color::GRAY;
 
         //Obtain mouse position
         let mouse_x = draw.get_mouse_x();
@@ -70,7 +78,69 @@ impl PauseMenu {
         }
 
         // Title
-        draw.draw_text("Paused", 100, 90, 60, Color::BLACK);
+        draw.draw_text("Paused", 100, 90, 60, label_colors);
+
+        //Return to Main Menu button variables
+        let return_button_pos_x = 100; //116 Wide
+        let return_button_pos_y = 400; //26 height
+        //Return to Main Menu Button
+        draw.draw_text("Return to Main Menu", return_button_pos_x, return_button_pos_y, 34, label_colors);
+        if mouse_x >= return_button_pos_x
+            && mouse_y >= return_button_pos_y
+            && mouse_x <= return_button_pos_x + 352
+            && mouse_y <= return_button_pos_y + 23
+        {
+            draw.draw_text(
+                "Return to Main Menu",
+                return_button_pos_x + 3,
+                return_button_pos_y + 1,
+                34,
+                label_shadow_colors,
+            );
+            draw.draw_text(
+                "Return to Main Menu",
+                return_button_pos_x, 
+                return_button_pos_y, 
+                34, 
+                label_colors
+            );
+
+            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+                audio_subsystem.play_sound(&global_resources.button_click_sound);
+                return MenuStateSignal::DoMainMenu; //Goes back to main menu
+            }
+        }
+
+        //Return to Game button variables
+        let to_game_button_pos_x = 100; //116 Wide
+        let to_game_button_pos_y = 300; //26 height
+
+        draw.draw_text("Return to Game", to_game_button_pos_x, to_game_button_pos_y, 34, label_colors);
+        if mouse_x >= to_game_button_pos_x
+            && mouse_y >= to_game_button_pos_y
+            && mouse_x <= to_game_button_pos_x + 262
+            && mouse_y <= to_game_button_pos_y + 23
+        {
+            draw.draw_text(
+                "Return to Game",
+                to_game_button_pos_x + 3,
+                to_game_button_pos_y + 1,
+                34,
+                label_shadow_colors,
+            );
+            draw.draw_text(
+                "Return to Game",
+                to_game_button_pos_x, 
+                to_game_button_pos_y, 
+                34, 
+                label_colors
+            );
+
+            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+                audio_subsystem.play_sound(&global_resources.button_click_sound);
+                return MenuStateSignal::StartGame; //Goes back to Game
+            }
+        }
 
         // Let the user leave this menu by pressing escape
         if draw.is_key_pressed(KeyboardKey::KEY_ESCAPE) {
