@@ -58,10 +58,24 @@ pub struct WorldObjectRef {
     pub kind: String,
     /// Object name
     pub name: String,
+    /// Variant name
+    pub variant: Option<String>,
     /// Object position (tile-space *not* pixel-space). 1,1 being up and to the right
-    pub position: na::Vector2<f32>,
+    position: na::Vector2<f32>,
     /// Object rotation, positive is clockwise
-    pub rotation_radians: f32,
+    pub rotation_degrees: f32,
 }
 
-
+impl WorldObjectRef {
+    pub fn into_key(&self) -> String {
+        format!(
+            "{}:{}:{}",
+            self.kind,
+            self.name,
+            self.variant.as_ref().unwrap_or(&"default".to_string())
+        )
+    }
+    pub fn get_world_space_position(&self)-> na::Vector2<f32> {
+        self.position * 2.0
+    }
+}
