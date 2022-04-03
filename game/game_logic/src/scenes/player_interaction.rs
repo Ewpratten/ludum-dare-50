@@ -13,6 +13,8 @@ use crate::{
     rendering::utilities::{anim_texture::AnimatedTexture, map_render::MapRenderer},
 };
 
+use super::main_menu::MenuStateSignal;
+
 #[derive(Debug)]
 pub struct PlayableScene {
     pub has_updated_discord_rpc: bool,
@@ -72,7 +74,7 @@ impl PlayableScene {
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
         audio_subsystem: &mut RaylibAudio,
-    ) {
+    ) -> MenuStateSignal {
         // Handle updating discord RPC
         if !self.has_updated_discord_rpc {
             discord
@@ -106,6 +108,13 @@ impl PlayableScene {
         self.draw_world(&mut draw, constants);
 
         self.draw_ui(&mut draw, constants);
+
+        // A little hack to make pausing work
+        if draw.is_key_pressed(KeyboardKey::KEY_ESCAPE) {
+            return MenuStateSignal::DoPauseMenu;
+        } else {
+            return MenuStateSignal::StartGame;
+        }
     }
 
     pub fn draw_world(&mut self, draw: &mut RaylibDrawHandle, constants: &ProjectConstants) {
