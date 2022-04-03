@@ -17,7 +17,9 @@ use crate::{
 use super::main_menu::MenuStateSignal;
 
 #[derive(Debug)]
-pub struct PauseMenu {}
+pub struct PauseMenu {
+    show_debug_info: bool,
+}
 
 impl PauseMenu {
     /// Construct a new `PauseMenu`
@@ -27,7 +29,9 @@ impl PauseMenu {
         constants: &ProjectConstants,
         game_settings: &mut PersistentGameSettings,
     ) -> Self {
-        Self {}
+        Self {
+            show_debug_info: false,
+        }
     }
 
     pub async fn render_pause_menu_frame(
@@ -44,6 +48,26 @@ impl PauseMenu {
 
         // Clear the screen
         draw.clear_background(Color::WHITE);
+
+        //Obtain mouse position
+        let mouse_x = draw.get_mouse_x();
+        let mouse_y = draw.get_mouse_y();
+
+        // Optionally display debug info
+        if draw.is_key_pressed(KeyboardKey::KEY_F3) {
+            self.show_debug_info = !self.show_debug_info;
+        }
+        if self.show_debug_info {
+            // Draw FPS and mouse location
+            draw.draw_fps(10, 10);
+            draw.draw_text(
+                format!("Mouse position: ({}, {})", mouse_x, mouse_y).as_str(),
+                10,
+                30,
+                20,
+                Color::GREEN,
+            );
+        }
 
         // Title
         draw.draw_text("Paused", 100, 90, 60, Color::BLACK);
