@@ -18,5 +18,15 @@
             7
         ],
         "rotation_degrees": 180
+    },
+    {
+        "type": "env",
+        "name": "env_towel",
+        "variant": "Red",
+        "position": [
+            6,
+            9
+        ],
+        "rotation_degrees": 0
     }
 ]

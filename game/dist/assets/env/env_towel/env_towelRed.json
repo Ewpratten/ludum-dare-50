@@ -1,0 +1,20 @@
+{
+    "name": "env_towelRed",
+    "bottom_texture": {
+        "file_path": "assets/env/env_towel/env_towelRed.png"
+    },
+    "footprint": [
+        {
+            "position": [
+                -32,
+                -64
+            ],
+            "size": [
+                64,
+                128
+            ]
+        }
+    ],
+    "physics_colliders": [],
+    "temperature": 3.0
+}
