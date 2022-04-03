@@ -10,7 +10,7 @@ use raylib::{
 use crate::{
     discord::{DiscordChannel, DiscordRpcSignal},
     global_resource_package::GlobalResources,
-    project_constants::ProjectConstants,
+    project_constants::ProjectConstants, persistent::settings::PersistentGameSettings,
 };
 
 #[derive(Debug, Clone)]
@@ -35,10 +35,11 @@ impl MainMenu {
         raylib_handle: &mut RaylibHandle,
         thread: &RaylibThread,
         constants: &ProjectConstants,
+        game_settings: &mut PersistentGameSettings
     ) -> Self {
         Self {
             has_updated_discord_rpc: false,
-            volume_percentage: 0.5,
+            volume_percentage: game_settings.volume.unwrap_or(0.5),
         }
     }
 
@@ -50,6 +51,7 @@ impl MainMenu {
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
         audio_subsystem: &mut RaylibAudio,
+        game_settings: &mut PersistentGameSettings
     ) -> MenuStateSignal {
         // Handle updating discord RPC
         if !self.has_updated_discord_rpc {
@@ -296,6 +298,8 @@ impl MainMenu {
                 } else if self.volume_percentage <= 0.0 {
                     self.volume_percentage = 0.0;
                 }
+                audio_subsystem.set_master_volume(self.volume_percentage);
+                game_settings.volume = Some(self.volume_percentage);
             }
         }
 
@@ -330,6 +334,8 @@ impl MainMenu {
                 } else if self.volume_percentage <= 0.0 {
                     self.volume_percentage = 0.0;
                 }
+                audio_subsystem.set_master_volume(self.volume_percentage);
+                game_settings.volume = Some(self.volume_percentage);
             }
         }
 

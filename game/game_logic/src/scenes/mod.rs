@@ -7,7 +7,7 @@ use raylib::prelude::*;
 
 use crate::{
     discord::DiscordChannel, global_resource_package::GlobalResources,
-    project_constants::ProjectConstants,
+    project_constants::ProjectConstants, persistent::{save_state::GameSaveState, settings::PersistentGameSettings},
 };
 
 use self::{
@@ -38,11 +38,13 @@ impl SceneRenderDelegate {
         rl_thread: &RaylibThread,
         constants: &ProjectConstants,
         audio_subsystem: RaylibAudio,
+        game_settings: &mut PersistentGameSettings,
+        save_state: &mut GameSaveState
     ) -> Self {
         // Init some scenes
         let scene_test_fox = TestFoxScene::new(raylib, rl_thread);
         let scene_playable = PlayableScene::new(raylib, rl_thread, constants);
-        let scene_main_menu = MainMenu::new(raylib, rl_thread, constants);
+        let scene_main_menu = MainMenu::new(raylib, rl_thread, constants, game_settings);
 
         Self {
             menu_control_signal: MenuStateSignal::DoMainMenu,
@@ -64,6 +66,8 @@ impl SceneRenderDelegate {
         discord: &DiscordChannel,
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
+        game_settings: &mut PersistentGameSettings,
+        save_state: &mut GameSaveState
     ) {
         // Render the main menu if in it, otherwise, render the game
         match self.menu_control_signal {
@@ -96,6 +100,7 @@ impl SceneRenderDelegate {
                         global_resources,
                         constants,
                         &mut self.audio_subsystem,
+                        game_settings
                     )
                     .await;
 

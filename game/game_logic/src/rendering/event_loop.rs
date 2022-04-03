@@ -10,6 +10,8 @@
 use std::cell::RefCell;
 
 use crate::discord::DiscordChannel;
+use crate::persistent::save_state::GameSaveState;
+use crate::persistent::settings::PersistentGameSettings;
 use crate::project_constants::ProjectConstants;
 use crate::rendering::core_renderer_sm::{PreloadState, RenderBackendStates};
 use crate::rendering::screens::sm_failure_screen;
@@ -25,6 +27,8 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
     target_frames_per_second: u32,
     constants: &ProjectConstants,
     discord_signaling: DiscordChannel,
+    game_settings: &mut PersistentGameSettings,
+    save_state: &mut GameSaveState
 ) where
     ConfigBuilder: FnOnce(&mut RaylibBuilder),
 {
@@ -58,6 +62,8 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
         &raylib_thread,
         constants,
         audio_subsystem,
+        game_settings,
+        save_state,
     );
 
     // Handle loading the resources and rendering the loading screen
@@ -119,6 +125,8 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
                         &discord_signaling,
                         &global_resources,
                         constants,
+                        game_settings,
+                        save_state,
                     )
                     .await;
 

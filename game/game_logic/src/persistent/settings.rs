@@ -10,12 +10,15 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PersistentGameSettings {
     // TODO: Add data here.
+    pub volume: Option<f32>,
 }
 
 // Add any default values here.
 impl Default for PersistentGameSettings {
     fn default() -> Self {
-        Self {}
+        Self {
+            volume: Some(0.5),
+        }
     }
 }
 
