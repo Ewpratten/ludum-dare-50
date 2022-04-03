@@ -280,8 +280,28 @@
 <span id="278">278</span>
 <span id="279">279</span>
 <span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses all of the game where the player can walk around.</span>
 
+<span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">Utc</span>};
 <span class="kw">use</span> <span class="ident">nalgebra</span> <span class="kw">as</span> <span class="ident">na</span>;
 <span class="kw">use</span> <span class="ident">raylib::prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">std::time::SystemTime</span>;
@@ -307,6 +327,7 @@
     <span class="ident">game_soundtrack</span>: <span class="ident">Music</span>,
     <span class="ident">world_colliders</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">WorldSpaceObjectCollider</span><span class="op">&gt;</span>,
     <span class="ident">show_debug_info</span>: <span class="ident">bool</span>,
+    <span class="ident">play_start_time</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">PlayableScene</span> {
@@ -346,6 +367,7 @@
             <span class="ident">game_soundtrack</span>,
             <span class="ident">world_colliders</span>,
             <span class="ident">show_debug_info</span>: <span class="bool-val">false</span>,
+            <span class="ident">play_start_time</span>: <span class="ident">Utc::now</span>(),
         }
     }
 
@@ -373,6 +395,7 @@
                 .<span class="kw">await</span>
                 .<span class="ident">unwrap</span>();
             <span class="self">self</span>.<span class="ident">has_updated_discord_rpc</span> <span class="op">=</span> <span class="bool-val">true</span>;
+            <span class="self">self</span>.<span class="ident">play_start_time</span> <span class="op">=</span> <span class="ident">Utc::now</span>();
         }
 
         <span class="comment">// Ensure the game soundtrack is playing</span>
@@ -393,6 +416,17 @@
 
         <span class="self">self</span>.<span class="ident">draw_ui</span>(<span class="kw-2">&amp;mut</span> <span class="ident">draw</span>, <span class="ident">constants</span>);
 
+        <span class="comment">// NOTE: If you want to trigger a cutscene, do it here by using one of:</span>
+        <span class="comment">// return MenuStateSignal::DoFinishedCutscene {</span>
+        <span class="comment">//     playtime: Utc::now().signed_duration_since(self.play_start_time),</span>
+        <span class="comment">// };</span>
+        <span class="comment">// return MenuStateSignal::DoMeltedDeathCutscene {</span>
+        <span class="comment">//     playtime: Utc::now().signed_duration_since(self.play_start_time),</span>
+        <span class="comment">// };</span>
+        <span class="comment">// return MenuStateSignal::DoOceanCutscene {</span>
+        <span class="comment">//     playtime: Utc::now().signed_duration_since(self.play_start_time),</span>
+        <span class="comment">// };</span>
+
         <span class="comment">// A little hack to make pausing work</span>
         <span class="kw">if</span> <span class="ident">draw</span>.<span class="ident">is_key_pressed</span>(<span class="ident">KeyboardKey::KEY_ESCAPE</span>) {
             <span class="kw">return</span> <span class="ident">MenuStateSignal::DoPauseMenu</span>;
@@ -406,8 +440,12 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx2d</span> <span class="op">=</span> <span class="ident">draw</span>.<span class="ident">begin_mode2D</span>(<span class="self">self</span>.<span class="ident">camera</span>);
 
         <span class="comment">// Render the map</span>
-        <span class="self">self</span>.<span class="ident">world_map</span>
-            .<span class="ident">render_map</span>(<span class="kw-2">&amp;mut</span> <span class="ident">ctx2d</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">camera</span>, <span class="self">self</span>.<span class="ident">show_debug_info</span>, <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>);
+        <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">render_map</span>(
+            <span class="kw-2">&amp;mut</span> <span class="ident">ctx2d</span>,
+            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">camera</span>,
+            <span class="self">self</span>.<span class="ident">show_debug_info</span>,
+            <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>,
+        );
 
         <span class="kw">let</span> <span class="ident">player_size</span> <span class="op">=</span>
             (<span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">start_size</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">size</span>) <span class="kw">as</span> <span class="ident">i32</span>;

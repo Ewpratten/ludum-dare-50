@@ -561,8 +561,14 @@
 <span id="559">559</span>
 <span id="560">560</span>
 <span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses the main menu system</span>
 
+<span class="kw">use</span> <span class="ident">chrono::Duration</span>;
 <span class="kw">use</span> <span class="ident">na::Vector1</span>;
 <span class="kw">use</span> <span class="ident">nalgebra</span> <span class="kw">as</span> <span class="ident">na</span>;
 <span class="kw">use</span> <span class="ident">raylib</span>::{
@@ -586,6 +592,10 @@
     <span class="ident">DoCredits</span>,
     <span class="ident">DoLeaderboard</span>,
     <span class="ident">DoPauseMenu</span>,
+    <span class="ident">DoIntroCutscene</span>,
+    <span class="ident">DoMeltedDeathCutscene</span> { <span class="ident">playtime</span>: <span class="ident">Duration</span> },
+    <span class="ident">DoFinishedCutscene</span> { <span class="ident">playtime</span>: <span class="ident">Duration</span> },
+    <span class="ident">DoOceanCutscene</span> { <span class="ident">playtime</span>: <span class="ident">Duration</span> },
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -682,7 +692,7 @@
             <span class="ident">draw</span>.<span class="ident">draw_text</span>(<span class="string">&quot;Start Game&quot;</span>, <span class="number">100</span>, <span class="number">190</span>, <span class="number">34</span>, <span class="ident">label_colors</span>);
             <span class="kw">if</span> <span class="ident">draw</span>.<span class="ident">is_mouse_button_pressed</span>(<span class="ident">MouseButton::MOUSE_LEFT_BUTTON</span>) {
                 <span class="ident">audio_subsystem</span>.<span class="ident">play_sound</span>(<span class="kw-2">&amp;</span><span class="ident">global_resources</span>.<span class="ident">button_click_sound</span>);
-                <span class="kw">return</span> <span class="ident">MenuStateSignal::StartGame</span>;
+                <span class="kw">return</span> <span class="ident">MenuStateSignal::DoIntroCutscene</span>;
             }
         }
 
@@ -927,7 +937,7 @@
                 <span class="kw">return</span> <span class="ident">MenuStateSignal::QuitGame</span>;
             }
         }
-        <span class="comment">// Return MenuStateSignal::StartGame if you want the game to start.</span>
+        <span class="comment">// Return MenuStateSignal::DoIntroCutscene if you want the game to start.</span>
         <span class="comment">// Otherwise, keep returning MenuStateSignal::DoMainMenu until the player clicks the start button</span>
         <span class="kw">return</span> <span class="ident">MenuStateSignal::DoMainMenu</span>;
     }
