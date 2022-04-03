@@ -1,0 +1,35 @@
+{
+    "name": "env_umbrellaWhiteBlueTowels",
+    "bottom_texture": {
+        "file_path": "assets/env/env_umbrella/env_umbrellaTowels.png"
+    },
+    "top_texture": {
+        "file_path": "assets/env/env_umbrella/env_umbrellaWhiteBlue.png"
+    },
+    "footprint":[
+        {
+            "position": [
+                -108,
+                -108
+            ],
+            "size": [
+                216,
+                216
+            ]
+        }
+    ],
+    "visualization_radius": 256.0,
+    "physics_colliders": [
+        {
+            "position": [
+                -3,
+                -3
+            ],
+            "size": [
+                6,
+                6
+            ]
+        }
+    ],
+    "temperature": 3.0
+}

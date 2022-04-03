@@ -8,5 +8,15 @@
             7
         ],
         "rotation_degrees": 90
+    },
+    {
+        "type": "env",
+        "name": "env_umbrella",
+        "variant": "RedTowels",
+        "position": [
+            7,
+            7
+        ],
+        "rotation_degrees": 180
     }
 ]
