@@ -29,6 +29,7 @@ pub enum MenuStateSignal {
 pub struct MainMenu {
     pub has_updated_discord_rpc: bool,
     volume_percentage: f32,
+    show_debug_info: bool,
 }
 
 impl MainMenu {
@@ -42,6 +43,7 @@ impl MainMenu {
         Self {
             has_updated_discord_rpc: false,
             volume_percentage: game_settings.volume.unwrap_or(0.5),
+            show_debug_info: false,
         }
     }
 
@@ -78,9 +80,21 @@ impl MainMenu {
         let mouse_x = draw.get_mouse_x();
         let mouse_y = draw.get_mouse_y();
 
-        //TODO Errase later
-        draw.draw_text(&mouse_x.to_string(), 20, 5, 20, Color::BLACK);
-        draw.draw_text(&mouse_y.to_string(), 70, 5, 20, Color::BLACK);
+        // Optionally display debug info
+        if draw.is_key_pressed(KeyboardKey::KEY_F3) {
+            self.show_debug_info = !self.show_debug_info;
+        }
+        if self.show_debug_info {
+            // Draw FPS and mouse location
+            draw.draw_fps(10, 10);
+            draw.draw_text(
+                format!("Mouse position: ({}, {})", mouse_x, mouse_y).as_str(),
+                10,
+                30,
+                20,
+                Color::GREEN,
+            );
+        }
 
         //Screen Size
         let window_height = draw.get_screen_height();
