@@ -138,6 +138,26 @@ impl MapRenderer {
             (world_position.y / 128.0).floor() as i32,
         );
 
+        // If there is an object here, let it override the output
+        for obj_ref in &self.world_objects.object_references {
+            if obj_ref.position.x == tile_position.x as f32
+                && obj_ref.position.y == tile_position.y as f32
+            {
+                // Get access to the actual object definition
+                let object_key = format!("{}:{}", obj_ref.kind, obj_ref.name);
+                let obj_def = self
+                    .world_objects
+                    .object_definitions
+                    .get(&object_key)
+                    .unwrap();
+
+                // Check if there is a friction property
+                if let Some(friction) = obj_def.friction {
+                    return Some(friction);
+                }
+            }
+        }
+
         // Get the first layer
         let layer = self.map.layers().next().unwrap();
 
@@ -172,6 +192,26 @@ impl MapRenderer {
             (world_position.x / 128.0).floor() as i32,
             (world_position.y / 128.0).floor() as i32,
         );
+
+        // If there is an object here, let it override the output
+        for obj_ref in &self.world_objects.object_references {
+            if obj_ref.position.x == tile_position.x as f32
+                && obj_ref.position.y == tile_position.y as f32
+            {
+                // Get access to the actual object definition
+                let object_key = format!("{}:{}", obj_ref.kind, obj_ref.name);
+                let obj_def = self
+                    .world_objects
+                    .object_definitions
+                    .get(&object_key)
+                    .unwrap();
+
+                // Check if there is a temperature property
+                if let Some(temperature) = obj_def.temperature {
+                    return Some(temperature);
+                }
+            }
+        }
 
         // Get the first layer
         let layer = self.map.layers().next().unwrap();
