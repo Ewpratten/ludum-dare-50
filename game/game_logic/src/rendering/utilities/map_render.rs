@@ -477,6 +477,7 @@ impl MapRenderer {
 
         // Find the position 1 pixel infront of the player
         let player_position_1_pixel_infront = player_position + player_velocity_unit_vector;
+        let next_player_position = player_position + player_velocity;
 
         // Check if this is in the collision zone of any objects
         for obj_ref in &self.world_objects.object_references {
@@ -497,28 +498,32 @@ impl MapRenderer {
             for collider in &obj_def.physics_colliders {
                 // Handle a radius collider vs a size collider
                 if let Some(radius) = collider.radius {
-                    // if (player_position_1_pixel_infront - obj_ref.position).norm() <= radius {
-                    //     // We are in a collision zone. Only allow the player to move away from the object
-                    //     let player_to_object_vector = obj_ref.position - player_position;
-                    // }
+                    // Check if we are about to collide with the circle
+                    if (next_player_position - obj_ref.position).norm() < radius {
+                        // Get the angle from the player to the center of the collider
+                        let angle_to_center =
+                            (obj_ref.position - player_position).angle(&na::Vector2::new(0.0, 0.0));
+                        if angle_to_center.abs() <= std::f32::consts::FRAC_PI_2 {
+                            // Apply the inverse of the velocity to the player
+                            return na::Vector2::zeros();
+                        }
+                    }
                 } else if let Some(size) = collider.size {
+                    // TODO: make this work for regular and rotated objects
                 }
             }
         }
 
         // Check if the player is about to leave the map
-        let next_player_position = player_position + player_velocity;
         let mut player_velocity = player_velocity;
         if next_player_position.x < 0.0 {
             player_velocity.x = 0.0;
-        } 
-        else if next_player_position.x > self.map.width as f32 * 128.0 {
+        } else if next_player_position.x > self.map.width as f32 * 128.0 {
             player_velocity.x = 0.0;
         }
         if next_player_position.y > 0.0 {
             player_velocity.y = 0.0;
-        } 
-        else if next_player_position.y < self.map.height as f32 * -128.0 {
+        } else if next_player_position.y < self.map.height as f32 * -128.0 {
             player_velocity.y = 0.0;
         }
 
