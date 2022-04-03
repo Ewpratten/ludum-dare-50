@@ -248,6 +248,7 @@
 <span id="246">246</span>
 <span id="247">247</span>
 <span id="248">248</span>
+<span id="249">249</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses all of the game where the player can walk around.</span>
 
 <span class="kw">use</span> <span class="ident">nalgebra</span> <span class="kw">as</span> <span class="ident">na</span>;
@@ -410,6 +411,7 @@
         <span class="kw">let</span> <span class="ident">current_temperature</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">sample_temperature_at</span>(<span class="ident">player</span>.<span class="ident">position</span>);
         <span class="kw">let</span> <span class="ident">map_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">get_map_size</span>();
         <span class="comment">// TODO: You can access the colission list with: self.world_colliders</span>
+        <span class="comment">// like this: self.world_colliders[0].size.x;</span>
 
         <span class="comment">// Get input direction components</span>
         <span class="kw">let</span> <span class="ident">h_axis</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">is_key_down</span>(<span class="ident">KeyboardKey::KEY_D</span>) <span class="kw">as</span> <span class="ident">i8</span>
