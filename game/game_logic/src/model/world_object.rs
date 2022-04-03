@@ -22,7 +22,7 @@ pub struct ObjectCollider {
     /// Position, relative to the object's center (north east is 1,1 south west is -1,-1)
     pub position: na::Vector2<f32>,
     /// Possible sizing
-    pub size: Option<na::Vector2<f32>>,
+    pub size: na::Vector2<f32>,
 }
 
 // Handy aliases

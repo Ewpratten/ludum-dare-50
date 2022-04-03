@@ -160,6 +160,7 @@ impl PlayableScene {
         let current_temperature = self.world_map.sample_temperature_at(player.position);
         let map_size = self.world_map.get_map_size();
         // TODO: You can access the colission list with: self.world_colliders
+        // like this: self.world_colliders[0].size.x;
 
         // Get input direction components
         let h_axis = raylib.is_key_down(KeyboardKey::KEY_D) as i8
