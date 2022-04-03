@@ -23,6 +23,8 @@ mod test_fox;
 /// This is a struct to allow for stateful data (like sub-screens) to be set up
 pub struct SceneRenderDelegate {
     menu_control_signal: MenuStateSignal,
+    pub needs_exit: bool,
+    audio_subsystem: RaylibAudio,
     /* Scenes */
     scene_test_fox: TestFoxScene,
     scene_playable: PlayableScene,
@@ -36,7 +38,9 @@ impl SceneRenderDelegate {
         rl_thread: &RaylibThread,
         constants: &ProjectConstants,
     ) -> Self {
-        // TODO: Stick any init code you want here.
+        // Set up audio
+        let audio_subsystem = RaylibAudio::init_audio_device();
+        audio_subsystem.set_master_volume(0.4);
 
         // Init some scenes
         let scene_test_fox = TestFoxScene::new(raylib, rl_thread);
@@ -45,6 +49,8 @@ impl SceneRenderDelegate {
 
         Self {
             menu_control_signal: MenuStateSignal::DoMainMenu,
+            needs_exit: false,
+            audio_subsystem,
             scene_test_fox,
             scene_playable,
             scene_main_menu,
@@ -62,24 +68,29 @@ impl SceneRenderDelegate {
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
     ) {
+
         // Render the main menu if in it, otherwise, render the game
         match self.menu_control_signal {
             MenuStateSignal::StartGame => {
-                // self.scene_playable
-                //     .render_frame(raylib, rl_thread, &discord, global_resources, constants)
-                //     .await;
-
-                // TODO: remove this test scene
-                self.scene_test_fox
-                    .render_frame(raylib, rl_thread, &discord, global_resources)
+                self.scene_playable
+                    .render_frame(raylib, rl_thread, &discord, global_resources, constants, &mut self.audio_subsystem)
                     .await;
+                self.scene_playable.update_physics(raylib, constants).await;
+
+                // Clear the menu system discord status
+                self.scene_main_menu.has_updated_discord_rpc = false;
             }
-            MenuStateSignal::QuitGame => unimplemented!(),
+            MenuStateSignal::QuitGame => {
+                self.needs_exit = true;
+            }
             MenuStateSignal::DoMainMenu => {
                 self.menu_control_signal = self
                     .scene_main_menu
                     .render_main_menu_frame(raylib, rl_thread, discord, global_resources, constants)
-                    .await
+                    .await;
+
+                // Clear the ingame discord status
+                self.scene_playable.has_updated_discord_rpc = false;
             }
             MenuStateSignal::DoOptions => {
                 self.menu_control_signal = self

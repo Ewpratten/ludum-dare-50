@@ -25,7 +25,7 @@ pub enum MenuStateSignal {
 
 #[derive(Debug)]
 pub struct MainMenu {
-    has_updated_discord_rpc: bool,
+    pub has_updated_discord_rpc: bool,
     volume_percentage: f32,
 }
 

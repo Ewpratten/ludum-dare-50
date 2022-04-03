@@ -5,7 +5,7 @@ use nalgebra::Vector2;
 use raylib::{
     color::Color,
     math::Rectangle,
-    prelude::{RaylibDraw, RaylibDrawHandle},
+    prelude::{RaylibDraw, RaylibDrawHandle, RaylibMode2D},
     texture::Texture2D,
     RaylibHandle, RaylibThread,
 };
@@ -127,7 +127,7 @@ impl AnimatedTexture {
     #[profiling::function]
     pub fn render_frame_by_index(
         &self,
-        draw_handle: &mut RaylibDrawHandle,
+        draw_handle: &mut RaylibMode2D<RaylibDrawHandle>,
         index: usize,
         position: Vector2<f32>,
         percent_scale: Option<Vector2<f32>>,
@@ -186,7 +186,7 @@ impl AnimatedTexture {
     /// Render the animation based on timestamp
     pub fn render_automatic(
         &mut self,
-        draw_handle: &mut RaylibDrawHandle,
+        draw_handle: &mut RaylibMode2D<RaylibDrawHandle>,
         position: Vector2<f32>,
         percent_scale: Option<Vector2<f32>>,
         origin: Option<Vector2<f32>>,
@@ -215,5 +215,12 @@ impl AnimatedTexture {
         } else {
             warn!("We somehow got a frame index of None");
         }
+    }
+
+    pub fn size(&self) -> Vector2<f32>{
+        Vector2::new(
+            self.texture.width as f32,
+            self.texture.height as f32,
+        )
     }
 }

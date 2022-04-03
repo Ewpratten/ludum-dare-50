@@ -5,6 +5,7 @@
         720
     ],
     "target_fps": 60,
+    "tile_size": 128,
     "discord": {
         "app_id": 954413081918857276,
         "artwork": {
@@ -15,5 +16,11 @@
             "details.sm_failure": "Game went FUBAR",
             "details.main_menu": "In the main menu"
         }
+    },
+    "player": {
+        "max_velocity": 3,
+        "acceleration": 2,
+        "deceleration": 1,
+        "start_size": 0.8
     }
 }
