@@ -81,26 +81,26 @@ impl PauseMenu {
         draw.draw_text("Paused", 100, 90, 60, label_colors);
 
         //Return to Main Menu button variables
-        let button_pos_x = 100; //116 Wide
-        let button_pos_y = window_height - (window_height / 5); //26 height
+        let return_button_pos_x = 100; //116 Wide
+        let return_button_pos_y = 400; //26 height
         //Return to Main Menu Button
-        draw.draw_text("Return to Main Menu", button_pos_x, button_pos_y, 34, label_colors);
-        if mouse_x >= button_pos_x
-            && mouse_y >= button_pos_y
-            && mouse_x <= button_pos_x + 352
-            && mouse_y <= button_pos_y + 23
+        draw.draw_text("Return to Main Menu", return_button_pos_x, return_button_pos_y, 34, label_colors);
+        if mouse_x >= return_button_pos_x
+            && mouse_y >= return_button_pos_y
+            && mouse_x <= return_button_pos_x + 352
+            && mouse_y <= return_button_pos_y + 23
         {
             draw.draw_text(
                 "Return to Main Menu",
-                button_pos_x + 3,
-                button_pos_y + 1,
+                return_button_pos_x + 3,
+                return_button_pos_y + 1,
                 34,
                 label_shadow_colors,
             );
             draw.draw_text(
                 "Return to Main Menu",
-                button_pos_x, 
-                button_pos_y, 
+                return_button_pos_x, 
+                return_button_pos_y, 
                 34, 
                 label_colors
             );
@@ -111,8 +111,36 @@ impl PauseMenu {
             }
         }
 
+        //Return to Game button variables
+        let to_game_button_pos_x = 100; //116 Wide
+        let to_game_button_pos_y = 300; //26 height
 
+        draw.draw_text("Return to Game", to_game_button_pos_x, to_game_button_pos_y, 34, label_colors);
+        if mouse_x >= to_game_button_pos_x
+            && mouse_y >= to_game_button_pos_y
+            && mouse_x <= to_game_button_pos_x + 262
+            && mouse_y <= to_game_button_pos_y + 23
+        {
+            draw.draw_text(
+                "Return to Game",
+                to_game_button_pos_x + 3,
+                to_game_button_pos_y + 1,
+                34,
+                label_shadow_colors,
+            );
+            draw.draw_text(
+                "Return to Game",
+                to_game_button_pos_x, 
+                to_game_button_pos_y, 
+                34, 
+                label_colors
+            );
 
+            if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+                audio_subsystem.play_sound(&global_resources.button_click_sound);
+                return MenuStateSignal::StartGame; //Goes back to Game
+            }
+        }
 
         // Let the user leave this menu by pressing escape
         if draw.is_key_pressed(KeyboardKey::KEY_ESCAPE) {
