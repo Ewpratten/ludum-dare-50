@@ -1,0 +1,10 @@
+{
+    "name": "env_chairDark",
+    "bottom_texture": {
+        "file_path": "assets/env/env_chair/env_chairDark.png"
+    },
+    "footprint": [
+    ],
+    "physics_colliders": [],
+    "temperature": 3.0
+}
