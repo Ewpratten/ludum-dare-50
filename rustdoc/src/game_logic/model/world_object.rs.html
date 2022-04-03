@@ -64,6 +64,9 @@
 <span id="62">62</span>
 <span id="63">63</span>
 <span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 
 <span class="kw">use</span> <span class="ident">nalgebra</span> <span class="kw">as</span> <span class="ident">na</span>;
@@ -89,9 +92,11 @@
     <span class="kw">pub</span> <span class="ident">position</span>: <span class="ident">na::Vector2</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Possible sizing</span>
     <span class="kw">pub</span> <span class="ident">size</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">na::Vector2</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Possible radius</span>
-    <span class="kw">pub</span> <span class="ident">radius</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>,
 }
+
+<span class="comment">// Handy aliases</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ObjectSpaceObjectCollider</span> <span class="op">=</span> <span class="ident">ObjectCollider</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WorldSpaceObjectCollider</span> <span class="op">=</span> <span class="ident">ObjectCollider</span>;
 
 <span class="doccomment">/// Definition of an object. Only one of these should exist *per object*, and they will be GPU instanced.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Deserialize</span>)]</span>
@@ -103,10 +108,11 @@
     <span class="doccomment">/// The object&#39;s top texture</span>
     <span class="kw">pub</span> <span class="ident">top_texture</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PossiblyAnimatedTexture</span><span class="op">&gt;</span>,
     <span class="doccomment">/// colliders describing the object&#39;s footprint</span>
-    <span class="comment">// pub footprint: Vec&lt;ObjectCollider&gt;,</span>
-    <span class="kw">pub</span> <span class="ident">footprint_radius</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">footprint</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ObjectSpaceObjectCollider</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A &quot;sphere of influence&quot; for the object. This is used for showing under the roof</span>
+    <span class="kw">pub</span> <span class="ident">visualization_radius</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Colliders for physics</span>
-    <span class="kw">pub</span> <span class="ident">physics_colliders</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ObjectCollider</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">physics_colliders</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ObjectSpaceObjectCollider</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Temperature</span>
     <span class="kw">pub</span> <span class="ident">temperature</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Friction</span>

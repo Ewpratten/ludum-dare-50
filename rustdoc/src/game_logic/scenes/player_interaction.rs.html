@@ -242,6 +242,12 @@
 <span id="240">240</span>
 <span id="241">241</span>
 <span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses all of the game where the player can walk around.</span>
 
 <span class="kw">use</span> <span class="ident">nalgebra</span> <span class="kw">as</span> <span class="ident">na</span>;
@@ -252,7 +258,7 @@
     <span class="ident">asset_manager</span>::{<span class="ident">load_music_from_internal_data</span>, <span class="ident">load_sound_from_internal_data</span>},
     <span class="ident">discord</span>::{<span class="ident">DiscordChannel</span>, <span class="ident">DiscordRpcSignal</span>},
     <span class="ident">global_resource_package::GlobalResources</span>,
-    <span class="ident">model::player::Player</span>,
+    <span class="ident">model</span>::{<span class="ident">player::Player</span>, <span class="ident">world_object::WorldSpaceObjectCollider</span>},
     <span class="ident">project_constants::ProjectConstants</span>,
     <span class="ident">rendering::utilities</span>::{<span class="ident">anim_texture::AnimatedTexture</span>, <span class="ident">map_render::MapRenderer</span>},
 };
@@ -265,6 +271,7 @@
     <span class="ident">camera</span>: <span class="ident">raylib::camera::Camera2D</span>,
     <span class="ident">last_update</span>: <span class="ident">SystemTime</span>,
     <span class="ident">game_soundtrack</span>: <span class="ident">Music</span>,
+    <span class="ident">world_colliders</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">WorldSpaceObjectCollider</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">PlayableScene</span> {
@@ -281,6 +288,7 @@
             <span class="ident">thread</span>,
         )
         .<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">world_colliders</span> <span class="op">=</span> <span class="ident">map_renderer</span>.<span class="ident">get_world_colliders</span>();
 
         <span class="comment">// Load the game music</span>
         <span class="kw">let</span> <span class="ident">game_soundtrack</span> <span class="op">=</span>
@@ -288,22 +296,20 @@
 
         <span class="self">Self</span> {
             <span class="ident">has_updated_discord_rpc</span>: <span class="bool-val">false</span>,
-            <span class="ident">player</span>: <span class="ident">Player::new</span>(<span class="ident">na::Vector2::new</span>(<span class="number">10.0</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span>, <span class="op">-</span><span class="number">10.0</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span>)),
+            <span class="ident">player</span>: <span class="ident">Player::new</span>(<span class="ident">na::Vector2::new</span>(
+                <span class="number">10.0</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span>,
+                <span class="op">-</span><span class="number">10.0</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span>,
+            )),
             <span class="ident">world_map</span>: <span class="ident">map_renderer</span>,
             <span class="ident">camera</span>: <span class="ident">raylib::camera::Camera2D</span> {
-                <span class="ident">target</span>: <span class="ident">raylib::math::Vector2</span> { 
-                    <span class="ident">x</span>: <span class="number">0.0</span>, 
-                    <span class="ident">y</span>: <span class="number">0.0</span>,
-                },
-                <span class="ident">offset</span>: <span class="ident">raylib::math::Vector2</span> { 
-                    <span class="ident">x</span>: <span class="number">0.0</span>,
-                    <span class="ident">y</span>: <span class="number">0.0</span>
-                },
+                <span class="ident">target</span>: <span class="ident">raylib::math::Vector2</span> { <span class="ident">x</span>: <span class="number">0.0</span>, <span class="ident">y</span>: <span class="number">0.0</span> },
+                <span class="ident">offset</span>: <span class="ident">raylib::math::Vector2</span> { <span class="ident">x</span>: <span class="number">0.0</span>, <span class="ident">y</span>: <span class="number">0.0</span> },
                 <span class="ident">rotation</span>: <span class="number">0.0</span>,
                 <span class="ident">zoom</span>: <span class="number">1.0</span>,
             },
             <span class="ident">last_update</span>: <span class="ident">SystemTime::UNIX_EPOCH</span>,
             <span class="ident">game_soundtrack</span>,
+            <span class="ident">world_colliders</span>,
         }
     }
 
@@ -360,10 +366,6 @@
         <span class="self">self</span>.<span class="ident">world_map</span>
             .<span class="ident">render_map</span>(<span class="kw-2">&amp;mut</span> <span class="ident">ctx2d</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">camera</span>, <span class="bool-val">true</span>, <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>);
 
-        <span class="comment">// NOTE: This is how to check friction and temperature</span>
-        <span class="kw">let</span> <span class="ident">current_friction</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">sample_friction_at</span>(<span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>);
-        <span class="kw">let</span> <span class="ident">current_temperature</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">sample_temperature_at</span>(<span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>);
-
         <span class="kw">let</span> <span class="ident">player_size</span> <span class="op">=</span>
             (<span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">start_size</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">size</span>) <span class="kw">as</span> <span class="ident">i32</span>;
 
@@ -403,6 +405,12 @@
 
         <span class="kw">let</span> <span class="ident">player</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">player</span>;
 
+        <span class="comment">// NOTE: This is how to check friction and temperature</span>
+        <span class="kw">let</span> <span class="ident">current_friction</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">sample_friction_at</span>(<span class="ident">player</span>.<span class="ident">position</span>);
+        <span class="kw">let</span> <span class="ident">current_temperature</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">sample_temperature_at</span>(<span class="ident">player</span>.<span class="ident">position</span>);
+        <span class="kw">let</span> <span class="ident">map_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">get_map_size</span>();
+        <span class="comment">// TODO: You can access the colission list with: self.world_colliders</span>
+
         <span class="comment">// Get input direction components</span>
         <span class="kw">let</span> <span class="ident">h_axis</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">is_key_down</span>(<span class="ident">KeyboardKey::KEY_D</span>) <span class="kw">as</span> <span class="ident">i8</span>
             <span class="op">-</span> <span class="ident">raylib</span>.<span class="ident">is_key_down</span>(<span class="ident">KeyboardKey::KEY_A</span>) <span class="kw">as</span> <span class="ident">i8</span>;
@@ -435,38 +443,42 @@
                 .<span class="ident">set_magnitude</span>((<span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">max_velocity</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span>) <span class="kw">as</span> <span class="ident">f32</span>);
         }
 
-        <span class="ident">player</span>.<span class="ident">position</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">player</span>.<span class="ident">velocity</span> <span class="op">*</span> <span class="ident">delta_time</span>;
+        <span class="kw">let</span> <span class="ident">velocity_modifier</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">player</span>.<span class="ident">velocity</span> <span class="op">*</span> <span class="ident">delta_time</span>;
+
+        <span class="ident">player</span>.<span class="ident">position</span> <span class="op">+</span><span class="op">=</span> <span class="ident">velocity_modifier</span>;
 
         <span class="self">self</span>.<span class="ident">update_camera</span>(<span class="ident">raylib</span>);
     }
 
     <span class="comment">// Update the camera</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_camera</span>(
-        <span class="kw-2">&amp;mut</span> <span class="self">self</span>, 
-        <span class="ident">raylib</span>: <span class="op">&amp;</span> <span class="ident">raylib::RaylibHandle</span>,
-    ) {
-        
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_camera</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">raylib</span>: <span class="kw-2">&amp;</span><span class="ident">raylib::RaylibHandle</span>) {
         <span class="comment">// Bounding box</span>
         <span class="kw">let</span> <span class="ident">bbox</span> <span class="op">=</span> <span class="ident">na::Vector2::new</span>(<span class="number">0.2</span>, <span class="number">0.2</span>);
 
         <span class="comment">// Get bounding box dimensions on the screen</span>
-        <span class="kw">let</span> <span class="ident">bbox_screen_min</span>: <span class="ident">raylib::math::Vector2</span> <span class="op">=</span> (((<span class="ident">na::Vector2::new</span>(<span class="number">1.0</span>, <span class="number">1.0</span>) <span class="op">-</span> <span class="ident">bbox</span>) <span class="op">*</span> <span class="number">0.5</span>).<span class="ident">component_mul</span>(
-            <span class="kw-2">&amp;</span><span class="ident">na::Vector2::new</span>(<span class="ident">raylib</span>.<span class="ident">get_screen_width</span>() <span class="kw">as</span> <span class="ident">f32</span>, <span class="ident">raylib</span>.<span class="ident">get_screen_height</span>() <span class="kw">as</span> <span class="ident">f32</span>)
-        )).<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">bbox_screen_max</span>: <span class="ident">raylib::math::Vector2</span> <span class="op">=</span> (((<span class="ident">na::Vector2::new</span>(<span class="number">1.0</span>, <span class="number">1.0</span>) <span class="op">+</span> <span class="ident">bbox</span>) <span class="op">*</span> <span class="number">0.5</span>).<span class="ident">component_mul</span>(
-            <span class="kw-2">&amp;</span><span class="ident">na::Vector2::new</span>(<span class="ident">raylib</span>.<span class="ident">get_screen_width</span>() <span class="kw">as</span> <span class="ident">f32</span>, <span class="ident">raylib</span>.<span class="ident">get_screen_height</span>() <span class="kw">as</span> <span class="ident">f32</span>)
-        )).<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="ident">bbox_screen_min</span>: <span class="ident">raylib::math::Vector2</span> <span class="op">=</span> (((<span class="ident">na::Vector2::new</span>(<span class="number">1.0</span>, <span class="number">1.0</span>) <span class="op">-</span> <span class="ident">bbox</span>) <span class="op">*</span> <span class="number">0.5</span>)
+            .<span class="ident">component_mul</span>(<span class="kw-2">&amp;</span><span class="ident">na::Vector2::new</span>(
+                <span class="ident">raylib</span>.<span class="ident">get_screen_width</span>() <span class="kw">as</span> <span class="ident">f32</span>,
+                <span class="ident">raylib</span>.<span class="ident">get_screen_height</span>() <span class="kw">as</span> <span class="ident">f32</span>,
+            )))
+        .<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="ident">bbox_screen_max</span>: <span class="ident">raylib::math::Vector2</span> <span class="op">=</span> (((<span class="ident">na::Vector2::new</span>(<span class="number">1.0</span>, <span class="number">1.0</span>) <span class="op">+</span> <span class="ident">bbox</span>) <span class="op">*</span> <span class="number">0.5</span>)
+            .<span class="ident">component_mul</span>(<span class="kw-2">&amp;</span><span class="ident">na::Vector2::new</span>(
+                <span class="ident">raylib</span>.<span class="ident">get_screen_width</span>() <span class="kw">as</span> <span class="ident">f32</span>,
+                <span class="ident">raylib</span>.<span class="ident">get_screen_height</span>() <span class="kw">as</span> <span class="ident">f32</span>,
+            )))
+        .<span class="ident">into</span>();
 
         <span class="comment">// Get bounding box in world space</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bbox_world_min</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">get_screen_to_world2D</span>(<span class="ident">bbox_screen_min</span>, <span class="self">self</span>.<span class="ident">camera</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bbox_world_max</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">get_screen_to_world2D</span>(<span class="ident">bbox_screen_max</span>, <span class="self">self</span>.<span class="ident">camera</span>);
 
-        <span class="comment">// Invert y </span>
+        <span class="comment">// Invert y</span>
         <span class="ident">bbox_world_min</span>.<span class="ident">y</span> <span class="kw-2">*</span><span class="op">=</span> <span class="op">-</span><span class="number">1.0</span>;
         <span class="ident">bbox_world_max</span>.<span class="ident">y</span> <span class="kw-2">*</span><span class="op">=</span> <span class="op">-</span><span class="number">1.0</span>;
 
         <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">offset</span> <span class="op">=</span> <span class="ident">bbox_screen_min</span>;
-        
+
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>.<span class="ident">x</span> <span class="op">&lt;</span> <span class="ident">bbox_world_min</span>.<span class="ident">x</span> {
             <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">target</span>.<span class="ident">x</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>.<span class="ident">x</span>;
         }
@@ -478,7 +490,7 @@
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>.<span class="ident">x</span> <span class="op">&gt;</span> <span class="ident">bbox_world_max</span>.<span class="ident">x</span> {
             <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">target</span>.<span class="ident">x</span> <span class="op">=</span> <span class="ident">bbox_world_min</span>.<span class="ident">x</span> <span class="op">+</span> (<span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">bbox_world_max</span>.<span class="ident">x</span>);
         }
-        
+
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>.<span class="ident">y</span> <span class="op">&lt;</span> <span class="ident">bbox_world_max</span>.<span class="ident">y</span> {
             <span class="self">self</span>.<span class="ident">camera</span>.<span class="ident">target</span>.<span class="ident">y</span> <span class="op">=</span> <span class="ident">bbox_world_max</span>.<span class="ident">y</span> <span class="op">-</span> (<span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>.<span class="ident">y</span> <span class="op">+</span> <span class="ident">bbox_world_min</span>.<span class="ident">y</span>);
         }
