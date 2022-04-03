@@ -379,6 +379,21 @@
 <span id="377">377</span>
 <span id="378">378</span>
 <span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses all of the game where the player can walk around.</span>
 
 <span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">Utc</span>};
@@ -411,6 +426,7 @@
     <span class="ident">world_colliders</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">WorldSpaceObjectCollider</span><span class="op">&gt;</span>,
     <span class="ident">show_debug_info</span>: <span class="ident">bool</span>,
     <span class="ident">play_start_time</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span>,
+    <span class="ident">player_start_position</span>: <span class="ident">na::Vector2</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">PlayableScene</span> {
@@ -423,11 +439,18 @@
         <span class="kw">let</span> <span class="ident">map_renderer</span> <span class="op">=</span> <span class="ident">MapRenderer::new</span>(
             <span class="string">&quot;map_gameMap.tmx&quot;</span>,
             <span class="string">&quot;map_gameMap.objects.json&quot;</span>,
+            <span class="string">&quot;map_gameMap.end.json&quot;</span>,
             <span class="ident">raylib_handle</span>,
             <span class="ident">thread</span>,
         )
         .<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">world_colliders</span> <span class="op">=</span> <span class="ident">map_renderer</span>.<span class="ident">get_world_colliders</span>();
+
+        <span class="comment">// Define the player start position</span>
+        <span class="kw">let</span> <span class="ident">player_start_position</span> <span class="op">=</span> <span class="ident">na::Vector2::new</span>(
+            <span class="number">10.0</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span>,
+            <span class="op">-</span><span class="number">10.0</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span>,
+        );
 
         <span class="comment">// Load the game music</span>
         <span class="kw">let</span> <span class="ident">game_soundtrack</span> <span class="op">=</span>
@@ -435,10 +458,8 @@
 
         <span class="self">Self</span> {
             <span class="ident">has_updated_discord_rpc</span>: <span class="bool-val">false</span>,
-            <span class="ident">player</span>: <span class="ident">Player::new</span>(<span class="ident">na::Vector2::new</span>(
-                <span class="number">10.0</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span>,
-                <span class="op">-</span><span class="number">10.0</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span>,
-            )),
+            <span class="ident">player_start_position</span>,
+            <span class="ident">player</span>: <span class="ident">Player::new</span>(<span class="ident">player_start_position</span>),
             <span class="ident">world_map</span>: <span class="ident">map_renderer</span>,
             <span class="ident">camera</span>: <span class="ident">raylib::camera::Camera2D</span> {
                 <span class="ident">target</span>: <span class="ident">raylib::math::Vector2</span> { <span class="ident">x</span>: <span class="number">0.0</span>, <span class="ident">y</span>: <span class="number">0.0</span> },
@@ -479,6 +500,8 @@
                 .<span class="ident">unwrap</span>();
             <span class="self">self</span>.<span class="ident">has_updated_discord_rpc</span> <span class="op">=</span> <span class="bool-val">true</span>;
             <span class="self">self</span>.<span class="ident">play_start_time</span> <span class="op">=</span> <span class="ident">Utc::now</span>();
+            <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">player_start_position</span>;
+            <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">velocity</span> <span class="op">=</span> <span class="ident">na::Vector2::new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>);
         }
 
         <span class="comment">// Ensure the game soundtrack is playing</span>
@@ -500,15 +523,22 @@
         <span class="self">self</span>.<span class="ident">draw_ui</span>(<span class="kw-2">&amp;mut</span> <span class="ident">draw</span>, <span class="ident">constants</span>);
 
         <span class="comment">// NOTE: If you want to trigger a cutscene, do it here by using one of:</span>
-        <span class="comment">// return MenuStateSignal::DoFinishedCutscene {</span>
-        <span class="comment">//     playtime: Utc::now().signed_duration_since(self.play_start_time),</span>
-        <span class="comment">// };</span>
         <span class="comment">// return MenuStateSignal::DoMeltedDeathCutscene {</span>
         <span class="comment">//     playtime: Utc::now().signed_duration_since(self.play_start_time),</span>
         <span class="comment">// };</span>
         <span class="comment">// return MenuStateSignal::DoOceanCutscene {</span>
         <span class="comment">//     playtime: Utc::now().signed_duration_since(self.play_start_time),</span>
         <span class="comment">// };</span>
+
+        <span class="comment">// Handle winning</span>
+        <span class="kw">if</span> <span class="self">self</span>
+            .<span class="ident">world_map</span>
+            .<span class="ident">is_point_inside_win_zone</span>(<span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>)
+        {
+            <span class="kw">return</span> <span class="ident">MenuStateSignal::DoFinishedCutscene</span> {
+                <span class="ident">playtime</span>: <span class="ident">Utc::now</span>().<span class="ident">signed_duration_since</span>(<span class="self">self</span>.<span class="ident">play_start_time</span>),
+            };
+        }
 
         <span class="comment">// A little hack to make pausing work</span>
         <span class="kw">if</span> <span class="ident">draw</span>.<span class="ident">is_key_pressed</span>(<span class="ident">KeyboardKey::KEY_ESCAPE</span>) {

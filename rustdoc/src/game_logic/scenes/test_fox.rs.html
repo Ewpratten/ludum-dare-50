@@ -111,6 +111,7 @@
 <span id="109">109</span>
 <span id="110">110</span>
 <span id="111">111</span>
+<span id="112">112</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This &quot;scene&quot; is used only for testing animation and resource loading</span>
 <span class="doccomment">//! It should be removed once the game is being worked on</span>
 
@@ -140,6 +141,7 @@
         <span class="kw">let</span> <span class="ident">map_renderer</span> <span class="op">=</span> <span class="ident">MapRenderer::new</span>(
             <span class="string">&quot;map_gameMap.tmx&quot;</span>,
             <span class="string">&quot;map_gameMap.objects.json&quot;</span>,
+            <span class="string">&quot;map_gameMap.end.json&quot;</span>,
             <span class="ident">raylib_handle</span>,
             <span class="ident">thread</span>,
         )
