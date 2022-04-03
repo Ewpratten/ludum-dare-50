@@ -8,7 +8,7 @@ use crate::{
     asset_manager::{load_music_from_internal_data, load_sound_from_internal_data},
     discord::{DiscordChannel, DiscordRpcSignal},
     global_resource_package::GlobalResources,
-    model::player::Player,
+    model::{player::Player, world_object::WorldSpaceObjectCollider},
     project_constants::ProjectConstants,
     rendering::utilities::{anim_texture::AnimatedTexture, map_render::MapRenderer},
 };
@@ -21,6 +21,7 @@ pub struct PlayableScene {
     camera: raylib::camera::Camera2D,
     last_update: SystemTime,
     game_soundtrack: Music,
+    world_colliders: Vec<WorldSpaceObjectCollider>,
 }
 
 impl PlayableScene {
@@ -37,6 +38,7 @@ impl PlayableScene {
             thread,
         )
         .unwrap();
+        let world_colliders = map_renderer.get_world_colliders();
 
         // Load the game music
         let game_soundtrack =
@@ -57,6 +59,7 @@ impl PlayableScene {
             },
             last_update: SystemTime::UNIX_EPOCH,
             game_soundtrack,
+            world_colliders,
         }
     }
 
@@ -113,10 +116,6 @@ impl PlayableScene {
         self.world_map
             .render_map(&mut ctx2d, &self.camera, true, self.player.position);
 
-        // NOTE: This is how to check friction and temperature
-        let current_friction = self.world_map.sample_friction_at(self.player.position);
-        let current_temperature = self.world_map.sample_temperature_at(self.player.position);
-
         let player_size =
             (constants.tile_size as f32 * constants.player.start_size * self.player.size) as i32;
 
@@ -156,6 +155,12 @@ impl PlayableScene {
 
         let player = &mut self.player;
 
+        // NOTE: This is how to check friction and temperature
+        let current_friction = self.world_map.sample_friction_at(player.position);
+        let current_temperature = self.world_map.sample_temperature_at(player.position);
+        let map_size = self.world_map.get_map_size();
+        // TODO: You can access the colission list with: self.world_colliders
+
         // Get input direction components
         let h_axis = raylib.is_key_down(KeyboardKey::KEY_D) as i8
             - raylib.is_key_down(KeyboardKey::KEY_A) as i8;
@@ -189,11 +194,6 @@ impl PlayableScene {
         }
 
         let velocity_modifier = &player.velocity * delta_time;
-
-        // Handle the player colliding with the world
-        let velocity_modifier = self
-            .world_map
-            .effect_velocity_with_collisions(player.position, velocity_modifier);
 
         player.position += velocity_modifier;
 

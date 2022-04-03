@@ -23,9 +23,11 @@ pub struct ObjectCollider {
     pub position: na::Vector2<f32>,
     /// Possible sizing
     pub size: Option<na::Vector2<f32>>,
-    /// Possible radius
-    pub radius: Option<f32>,
 }
+
+// Handy aliases
+pub type ObjectSpaceObjectCollider = ObjectCollider;
+pub type WorldSpaceObjectCollider = ObjectCollider;
 
 /// Definition of an object. Only one of these should exist *per object*, and they will be GPU instanced.
 #[derive(Debug, Clone, Deserialize)]
@@ -37,10 +39,11 @@ pub struct WorldObject {
     /// The object's top texture
     pub top_texture: Option<PossiblyAnimatedTexture>,
     /// colliders describing the object's footprint
-    // pub footprint: Vec<ObjectCollider>,
-    pub footprint_radius: Option<f32>,
+    pub footprint: Vec<ObjectSpaceObjectCollider>,
+    /// A "sphere of influence" for the object. This is used for showing under the roof
+    pub visualization_radius: Option<f32>,
     /// Colliders for physics
-    pub physics_colliders: Vec<ObjectCollider>,
+    pub physics_colliders: Vec<ObjectSpaceObjectCollider>,
     /// Temperature
     pub temperature: Option<f32>,
     /// Friction
