@@ -2,7 +2,7 @@ use std::{collections::HashMap, path::PathBuf, sync::Arc};
 
 use crate::{
     asset_manager::{load_texture_from_internal_data, InternalData},
-    model::{world_object_package::WorldObjectPackage, world_object::WorldSpaceObjectCollider},
+    model::{world_object::WorldSpaceObjectCollider, world_object_package::WorldObjectPackage},
 };
 use nalgebra as na;
 use raylib::{
@@ -148,11 +148,11 @@ impl MapRenderer {
 
         // If there is an object here, let it override the output
         for obj_ref in &self.world_objects.object_references {
-            if obj_ref.position.x == tile_position.x as f32
-                && obj_ref.position.y == tile_position.y as f32
+            if obj_ref.get_world_space_position().x == tile_position.x as f32
+                && obj_ref.get_world_space_position().y == tile_position.y as f32
             {
                 // Get access to the actual object definition
-                let object_key = format!("{}:{}", obj_ref.kind, obj_ref.name);
+                let object_key = obj_ref.into_key();
                 let obj_def = self
                     .world_objects
                     .object_definitions
@@ -203,11 +203,11 @@ impl MapRenderer {
 
         // If there is an object here, let it override the output
         for obj_ref in &self.world_objects.object_references {
-            if obj_ref.position.x == tile_position.x as f32
-                && obj_ref.position.y == tile_position.y as f32
+            if obj_ref.get_world_space_position().x == tile_position.x as f32
+                && obj_ref.get_world_space_position().y == tile_position.y as f32
             {
                 // Get access to the actual object definition
-                let object_key = format!("{}:{}", obj_ref.kind, obj_ref.name);
+                let object_key = obj_ref.into_key();
                 let obj_def = self
                     .world_objects
                     .object_definitions
@@ -264,6 +264,10 @@ impl MapRenderer {
             Vector2::new(screen_width as f32, screen_height as f32),
             camera,
         );
+        let player_position = na::Vector2::new(
+            player_position.x,
+            player_position.y * -1.0,
+        );
 
         // Handle each layer from the bottom up
         for layer in self.map.layers() {
@@ -319,12 +323,12 @@ impl MapRenderer {
 
                                     // Check if there is an object at this tile
                                     for obj_ref in &self.world_objects.object_references {
-                                        if obj_ref.position.x == sampler_x as f32
-                                            && obj_ref.position.y == sampler_y as f32
+                                        if obj_ref.get_tile_space_position().x == sampler_x as f32
+                                            && obj_ref.get_tile_space_position().y == sampler_y as f32
                                         {
                                             // Get access to the actual object definition
-                                            let object_key =
-                                                format!("{}:{}", obj_ref.kind, obj_ref.name);
+                                            let object_key = obj_ref.into_key();
+                                            // debug!("Found object: {}", object_key);
                                             let obj_def = self
                                                 .world_objects
                                                 .object_definitions
@@ -340,10 +344,10 @@ impl MapRenderer {
                                                     .unwrap();
                                                 tex.render_automatic(
                                                     draw_handle,
-                                                    obj_ref.position - (tex.size() / 2.0),
+                                                    obj_ref.get_world_space_position() - (tex.size() / 2.0),
                                                     None,
                                                     Some(tex.size() / 2.0),
-                                                    Some(obj_ref.rotation_radians.to_degrees()),
+                                                    Some(obj_ref.rotation_degrees),
                                                     None,
                                                 );
                                             } else {
@@ -352,7 +356,7 @@ impl MapRenderer {
                                                     .bottom_static_textures
                                                     .get_mut(&object_key)
                                                     .unwrap();
-                                                let p: Vector2 = obj_ref.position.into();
+                                                let p: Vector2 = obj_ref.get_world_space_position().into();
                                                 let r1 = Rectangle {
                                                     x: 0.0,
                                                     y: 0.0,
@@ -374,7 +378,7 @@ impl MapRenderer {
                                                         tex.width as f32 / 2.0,
                                                         tex.height as f32 / 2.0,
                                                     ),
-                                                    obj_ref.rotation_radians.to_degrees(),
+                                                    obj_ref.rotation_degrees,
                                                     Color::WHITE,
                                                 );
                                             }
@@ -387,7 +391,7 @@ impl MapRenderer {
                                                     obj_def.visualization_radius
                                                 {
                                                     let player_dist_to_object =
-                                                        (obj_ref.position - player_position).norm();
+                                                        (obj_ref.get_world_space_position() - player_position).norm();
                                                     // debug!(
                                                     //     "Player dist to object: {}",
                                                     //     player_dist_to_object
@@ -405,10 +409,10 @@ impl MapRenderer {
                                                         .unwrap();
                                                     tex.render_automatic(
                                                         draw_handle,
-                                                        obj_ref.position - (tex.size() / 2.0),
+                                                        obj_ref.get_world_space_position() - (tex.size() / 2.0),
                                                         None,
                                                         Some(tex.size() / 2.0),
-                                                        Some(obj_ref.rotation_radians.to_degrees()),
+                                                        Some(obj_ref.rotation_degrees),
                                                         Some(tint),
                                                     );
                                                 } else {
@@ -417,7 +421,7 @@ impl MapRenderer {
                                                         .top_static_textures
                                                         .get_mut(&object_key)
                                                         .unwrap();
-                                                    let p: Vector2 = obj_ref.position.into();
+                                                    let p: Vector2 = obj_ref.get_world_space_position().into();
                                                     let r1 = Rectangle {
                                                         x: 0.0,
                                                         y: 0.0,
@@ -439,7 +443,7 @@ impl MapRenderer {
                                                             tex.width as f32 / 2.0,
                                                             tex.height as f32 / 2.0,
                                                         ),
-                                                        obj_ref.rotation_radians.to_degrees(),
+                                                        obj_ref.rotation_degrees,
                                                         tint,
                                                     );
                                                 }
@@ -500,7 +504,7 @@ impl MapRenderer {
     //         }
 
     //         // Get the object definition
-    //         let object_key = format!("{}:{}", obj_ref.kind, obj_ref.name);
+    //         let object_key =  obj_ref.into_key();
     //         let obj_def = self
     //             .world_objects
     //             .object_definitions
@@ -543,6 +547,4 @@ impl MapRenderer {
     //     // If we got here, the player is not in a collision zone
     //     player_velocity
     // }
-
-
 }

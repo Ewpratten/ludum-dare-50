@@ -1,11 +1,12 @@
 [
     {
         "type": "env",
-        "name": "env_testObject",
+        "name": "env_umbrella",
+        "variant": "Blue",
         "position": [
-            0,
-            0
+            5,
+            7
         ],
-        "rotation_radians": 0.5
+        "rotation_degrees": 90
     }
 ]

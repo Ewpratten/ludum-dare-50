@@ -54,12 +54,15 @@ impl WorldObjectPackage {
         let mut world_space_colliders: Vec<WorldSpaceObjectCollider> = Vec::new();
         for reference in &object_references {
             // If this is a new object, load it.
-            let object_key = format!("{}:{}", reference.kind, reference.name);
+            let object_key = reference.into_key();
             if !object_definitions.contains_key(object_key.as_str()) {
                 // Construct the file path from the data we know about the reference
                 let path = format!(
-                    "assets/{}/{}/{}.json",
-                    reference.kind, reference.name, reference.name
+                    "assets/{}/{}/{}{}.json",
+                    reference.kind,
+                    reference.name,
+                    reference.name,
+                    reference.variant.as_ref().unwrap_or(&String::new())
                 );
 
                 // Attempt to load the object definition
@@ -100,7 +103,7 @@ impl WorldObjectPackage {
                 // Keep track of all the colliders in the world
                 for collider in &object_definition.physics_colliders {
                     // Get the object's position
-                    let object_position = reference.position;
+                    let object_position = reference.get_world_space_position();
 
                     // Convert the collider's position to world space
                     let world_space_collider = WorldSpaceObjectCollider {
