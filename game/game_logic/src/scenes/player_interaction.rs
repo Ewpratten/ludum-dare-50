@@ -44,12 +44,19 @@ impl PlayableScene {
         let game_soundtrack =
             load_music_from_internal_data(thread, "assets/audio/gameSoundtrack.mp3").unwrap();
 
-        Self {
-            has_updated_discord_rpc: false,
-            player: Player::new(na::Vector2::new(
+        // Load the player
+        let player = Player::new(
+            raylib_handle,
+            thread,
+            na::Vector2::new(
                 10.0 * constants.tile_size as f32,
                 -10.0 * constants.tile_size as f32,
-            )),
+            ),
+        );
+
+        Self {
+            has_updated_discord_rpc: false,
+            player,
             world_map: map_renderer,
             camera: raylib::camera::Camera2D {
                 target: raylib::math::Vector2 { x: 0.0, y: 0.0 },
@@ -197,7 +204,7 @@ impl PlayableScene {
 
         player.position += velocity_modifier;
 
-        player.size -= 0.001;  
+        player.size -= 0.001;
 
         self.update_camera(raylib);
     }
