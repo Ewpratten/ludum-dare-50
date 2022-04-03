@@ -356,6 +356,8 @@ impl PlayableScene {
 
         player.size -= 0.001;
 
+        player.size -= 0.001;  
+
         self.update_camera(raylib);
     }
 
