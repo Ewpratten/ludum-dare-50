@@ -1,5 +1,6 @@
 //! This scene encompasses all of the game where the player can walk around.
 
+use chrono::{DateTime, Utc};
 use nalgebra as na;
 use raylib::prelude::*;
 use std::time::SystemTime;
@@ -25,6 +26,7 @@ pub struct PlayableScene {
     game_soundtrack: Music,
     world_colliders: Vec<WorldSpaceObjectCollider>,
     show_debug_info: bool,
+    play_start_time: DateTime<Utc>,
 }
 
 impl PlayableScene {
@@ -64,6 +66,7 @@ impl PlayableScene {
             game_soundtrack,
             world_colliders,
             show_debug_info: false,
+            play_start_time: Utc::now(),
         }
     }
 
@@ -91,6 +94,7 @@ impl PlayableScene {
                 .await
                 .unwrap();
             self.has_updated_discord_rpc = true;
+            self.play_start_time = Utc::now();
         }
 
         // Ensure the game soundtrack is playing
@@ -111,6 +115,17 @@ impl PlayableScene {
 
         self.draw_ui(&mut draw, constants);
 
+        // NOTE: If you want to trigger a cutscene, do it here by using one of:
+        // return MenuStateSignal::DoFinishedCutscene {
+        //     playtime: Utc::now().signed_duration_since(self.play_start_time),
+        // };
+        // return MenuStateSignal::DoMeltedDeathCutscene {
+        //     playtime: Utc::now().signed_duration_since(self.play_start_time),
+        // };
+        // return MenuStateSignal::DoOceanCutscene {
+        //     playtime: Utc::now().signed_duration_since(self.play_start_time),
+        // };
+
         // A little hack to make pausing work
         if draw.is_key_pressed(KeyboardKey::KEY_ESCAPE) {
             return MenuStateSignal::DoPauseMenu;
@@ -124,8 +139,12 @@ impl PlayableScene {
         let mut ctx2d = draw.begin_mode2D(self.camera);
 
         // Render the map
-        self.world_map
-            .render_map(&mut ctx2d, &self.camera, self.show_debug_info, self.player.position);
+        self.world_map.render_map(
+            &mut ctx2d,
+            &self.camera,
+            self.show_debug_info,
+            self.player.position,
+        );
 
         let player_size =
             (constants.tile_size as f32 * constants.player.start_size * self.player.size) as i32;
