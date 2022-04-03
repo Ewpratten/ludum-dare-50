@@ -10,7 +10,8 @@ use raylib::{
 use crate::{
     discord::{DiscordChannel, DiscordRpcSignal},
     global_resource_package::GlobalResources,
-    project_constants::ProjectConstants, persistent::settings::PersistentGameSettings,
+    persistent::settings::PersistentGameSettings,
+    project_constants::ProjectConstants,
 };
 
 #[derive(Debug, Clone)]
@@ -21,6 +22,7 @@ pub enum MenuStateSignal {
     DoOptions,
     DoCredits,
     DoLeaderboard,
+    DoPauseMenu,
 }
 
 #[derive(Debug)]
@@ -35,7 +37,7 @@ impl MainMenu {
         raylib_handle: &mut RaylibHandle,
         thread: &RaylibThread,
         constants: &ProjectConstants,
-        game_settings: &mut PersistentGameSettings
+        game_settings: &mut PersistentGameSettings,
     ) -> Self {
         Self {
             has_updated_discord_rpc: false,
@@ -51,7 +53,7 @@ impl MainMenu {
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
         audio_subsystem: &mut RaylibAudio,
-        game_settings: &mut PersistentGameSettings
+        game_settings: &mut PersistentGameSettings,
     ) -> MenuStateSignal {
         // Handle updating discord RPC
         if !self.has_updated_discord_rpc {
@@ -90,7 +92,7 @@ impl MainMenu {
         let label_shadow_colors = Color::GRAY;
 
         //Initial Option placeholder words in the main menu
-        draw.draw_text("Game Title", 100, 90, 60, label_colors);
+        draw.draw_text(&constants.game_name, 100, 90, 60, label_colors);
         draw.draw_text("Start Game", 100, 190, 34, label_colors);
         draw.draw_text("Credits", 100, 410, 34, label_colors);
         draw.draw_text("Leaderboard", 100, 470, 34, label_colors);

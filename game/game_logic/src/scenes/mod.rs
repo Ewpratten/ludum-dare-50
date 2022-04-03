@@ -6,16 +6,20 @@
 use raylib::prelude::*;
 
 use crate::{
-    discord::DiscordChannel, global_resource_package::GlobalResources,
-    project_constants::ProjectConstants, persistent::{save_state::GameSaveState, settings::PersistentGameSettings},
+    discord::DiscordChannel,
+    global_resource_package::GlobalResources,
+    persistent::{save_state::GameSaveState, settings::PersistentGameSettings},
+    project_constants::ProjectConstants,
 };
 
 use self::{
     main_menu::{MainMenu, MenuStateSignal},
+    pause_menu::PauseMenu,
     player_interaction::PlayableScene,
     test_fox::TestFoxScene,
 };
 mod main_menu;
+mod pause_menu;
 mod player_interaction;
 mod test_fox;
 
@@ -29,6 +33,7 @@ pub struct SceneRenderDelegate {
     scene_test_fox: TestFoxScene,
     scene_playable: PlayableScene,
     scene_main_menu: MainMenu,
+    scene_pause_menu: PauseMenu,
 }
 
 impl SceneRenderDelegate {
@@ -39,12 +44,13 @@ impl SceneRenderDelegate {
         constants: &ProjectConstants,
         audio_subsystem: RaylibAudio,
         game_settings: &mut PersistentGameSettings,
-        save_state: &mut GameSaveState
+        save_state: &mut GameSaveState,
     ) -> Self {
         // Init some scenes
         let scene_test_fox = TestFoxScene::new(raylib, rl_thread);
         let scene_playable = PlayableScene::new(raylib, rl_thread, constants);
         let scene_main_menu = MainMenu::new(raylib, rl_thread, constants, game_settings);
+        let scene_pause_menu = PauseMenu::new(raylib, rl_thread, constants, game_settings);
 
         Self {
             menu_control_signal: MenuStateSignal::DoMainMenu,
@@ -53,6 +59,7 @@ impl SceneRenderDelegate {
             scene_test_fox,
             scene_playable,
             scene_main_menu,
+            scene_pause_menu,
         }
     }
 
@@ -67,12 +74,12 @@ impl SceneRenderDelegate {
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
         game_settings: &mut PersistentGameSettings,
-        save_state: &mut GameSaveState
+        save_state: &mut GameSaveState,
     ) {
         // Render the main menu if in it, otherwise, render the game
         match self.menu_control_signal {
             MenuStateSignal::StartGame => {
-                self.scene_playable
+                self.menu_control_signal = self.scene_playable
                     .render_frame(
                         raylib,
                         rl_thread,
@@ -100,7 +107,7 @@ impl SceneRenderDelegate {
                         global_resources,
                         constants,
                         &mut self.audio_subsystem,
-                        game_settings
+                        game_settings,
                     )
                     .await;
 
@@ -138,6 +145,19 @@ impl SceneRenderDelegate {
                         &mut self.audio_subsystem,
                     )
                     .await
+            }
+            MenuStateSignal::DoPauseMenu => {
+                self.menu_control_signal = self
+                    .scene_pause_menu
+                    .render_pause_menu_frame(
+                        raylib,
+                        rl_thread,
+                        discord,
+                        global_resources,
+                        constants,
+                        &mut self.audio_subsystem,
+                    )
+                    .await;
             }
         }
     }

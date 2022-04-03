@@ -28,7 +28,7 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
     constants: &ProjectConstants,
     discord_signaling: DiscordChannel,
     game_settings: &mut PersistentGameSettings,
-    save_state: &mut GameSaveState
+    save_state: &mut GameSaveState,
 ) where
     ConfigBuilder: FnOnce(&mut RaylibBuilder),
 {
@@ -100,9 +100,6 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
         .resources
         .expect("Failed to get global resources");
 
-    // Tracker for if we are showing the FPS counter
-    let mut show_fps_counter = false;
-
     // Run the event loop
     while !raylib_handle.window_should_close() {
         // Handle state machine updates
@@ -137,16 +134,6 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
             }
             _ => backend_sm = RenderBackendStates::sm_failed(),
         };
-
-        // Check for F3 being pressed
-        if raylib_handle.is_key_pressed(KeyboardKey::KEY_F3) {
-            show_fps_counter = !show_fps_counter;
-        }
-
-        // Show the FPS counter
-        if show_fps_counter {
-            raylib_handle.begin_drawing(&raylib_thread).draw_fps(10, 10);
-        }
 
         // Tell the profiler that we ended the frame
         profiling::finish_frame!();
