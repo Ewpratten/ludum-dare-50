@@ -60,7 +60,7 @@ impl PlayableScene {
         let game_soundtrack =
             load_music_from_internal_data(thread, "assets/audio/gameSoundtrack.mp3").unwrap();
 
-          // Load the player
+        // Load the player
         let player = Player::new(
             raylib_handle,
             thread,
@@ -356,7 +356,7 @@ impl PlayableScene {
 
         player.size -= 0.001;
 
-        player.size -= 0.001;  
+        player.size -= 0.001;
 
         self.update_camera(raylib);
     }
