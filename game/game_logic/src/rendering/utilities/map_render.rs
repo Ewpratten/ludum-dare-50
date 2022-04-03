@@ -264,6 +264,10 @@ impl MapRenderer {
             Vector2::new(screen_width as f32, screen_height as f32),
             camera,
         );
+        let player_position = na::Vector2::new(
+            player_position.x,
+            player_position.y * -1.0,
+        );
 
         // Handle each layer from the bottom up
         for layer in self.map.layers() {
@@ -319,12 +323,12 @@ impl MapRenderer {
 
                                     // Check if there is an object at this tile
                                     for obj_ref in &self.world_objects.object_references {
-                                        if obj_ref.get_world_space_position().x == sampler_x as f32
-                                            && obj_ref.get_world_space_position().y == sampler_y as f32
+                                        if obj_ref.get_tile_space_position().x == sampler_x as f32
+                                            && obj_ref.get_tile_space_position().y == sampler_y as f32
                                         {
                                             // Get access to the actual object definition
                                             let object_key = obj_ref.into_key();
-                                            debug!("Found object: {}", object_key);
+                                            // debug!("Found object: {}", object_key);
                                             let obj_def = self
                                                 .world_objects
                                                 .object_definitions

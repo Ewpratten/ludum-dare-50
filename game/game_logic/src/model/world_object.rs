@@ -76,6 +76,9 @@ impl WorldObjectRef {
         )
     }
     pub fn get_world_space_position(&self)-> na::Vector2<f32> {
-        self.position * 2.0
+        self.position * 128.0
+    }
+    pub fn get_tile_space_position(&self)-> na::Vector2<f32> {
+        self.position
     }
 }
