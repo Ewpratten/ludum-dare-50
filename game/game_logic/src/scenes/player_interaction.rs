@@ -197,6 +197,8 @@ impl PlayableScene {
 
         player.position += velocity_modifier;
 
+        player.size -= 0.001;  
+
         self.update_camera(raylib);
     }
 
