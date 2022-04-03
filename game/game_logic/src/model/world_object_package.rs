@@ -7,7 +7,7 @@ use crate::{
     rendering::utilities::anim_texture::AnimatedTexture,
 };
 
-use super::world_object::{WorldObject, WorldObjectRef};
+use super::world_object::{WorldObject, WorldObjectRef, WorldSpaceObjectCollider};
 
 #[derive(Debug, thiserror::Error)]
 pub enum WorldObjectPackageLoadError {
@@ -32,6 +32,8 @@ pub struct WorldObjectPackage {
     pub bottom_animated_textures: HashMap<String, AnimatedTexture>,
     /// Top animated textures
     pub top_animated_textures: HashMap<String, AnimatedTexture>,
+    /// A list of colliders in the world. We pre-solve these to make comput happy :)
+    pub world_space_colliders: Vec<WorldSpaceObjectCollider>,
 }
 
 impl WorldObjectPackage {
@@ -49,6 +51,7 @@ impl WorldObjectPackage {
         let mut top_static_textures = HashMap::new();
         let mut bottom_animated_textures = HashMap::new();
         let mut top_animated_textures = HashMap::new();
+        let mut world_space_colliders: Vec<WorldSpaceObjectCollider> = Vec::new();
         for reference in &object_references {
             // If this is a new object, load it.
             let object_key = format!("{}:{}", reference.kind, reference.name);
@@ -94,6 +97,21 @@ impl WorldObjectPackage {
                     }
                 }
 
+                // Keep track of all the colliders in the world
+                for collider in &object_definition.physics_colliders {
+                    // Get the object's position
+                    let object_position = reference.position;
+
+                    // Convert the collider's position to world space
+                    let world_space_collider = WorldSpaceObjectCollider {
+                        position: object_position + collider.position,
+                        size: collider.size,
+                    };
+
+                    // Add the collider to the list
+                    world_space_colliders.push(world_space_collider);
+                }
+
                 // Store the object definition
                 object_definitions.insert(object_key.to_string(), object_definition);
             }
@@ -106,6 +124,7 @@ impl WorldObjectPackage {
             top_static_textures,
             bottom_animated_textures,
             top_animated_textures,
+            world_space_colliders,
         })
     }
 }

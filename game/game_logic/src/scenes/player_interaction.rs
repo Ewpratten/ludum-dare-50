@@ -8,7 +8,7 @@ use crate::{
     asset_manager::{load_music_from_internal_data, load_sound_from_internal_data},
     discord::{DiscordChannel, DiscordRpcSignal},
     global_resource_package::GlobalResources,
-    model::player::Player,
+    model::{player::Player, world_object::WorldSpaceObjectCollider},
     project_constants::ProjectConstants,
     rendering::utilities::{anim_texture::AnimatedTexture, map_render::MapRenderer},
 };
@@ -21,6 +21,7 @@ pub struct PlayableScene {
     camera: raylib::camera::Camera2D,
     last_update: SystemTime,
     game_soundtrack: Music,
+    world_colliders: Vec<WorldSpaceObjectCollider>,
 }
 
 impl PlayableScene {
@@ -37,6 +38,7 @@ impl PlayableScene {
             thread,
         )
         .unwrap();
+        let world_colliders = map_renderer.get_world_colliders();
 
         // Load the game music
         let game_soundtrack =
@@ -44,22 +46,20 @@ impl PlayableScene {
 
         Self {
             has_updated_discord_rpc: false,
-            player: Player::new(na::Vector2::new(10.0 * constants.tile_size as f32, -10.0 * constants.tile_size as f32)),
+            player: Player::new(na::Vector2::new(
+                10.0 * constants.tile_size as f32,
+                -10.0 * constants.tile_size as f32,
+            )),
             world_map: map_renderer,
             camera: raylib::camera::Camera2D {
-                target: raylib::math::Vector2 { 
-                    x: 0.0, 
-                    y: 0.0,
-                },
-                offset: raylib::math::Vector2 { 
-                    x: 0.0,
-                    y: 0.0
-                },
+                target: raylib::math::Vector2 { x: 0.0, y: 0.0 },
+                offset: raylib::math::Vector2 { x: 0.0, y: 0.0 },
                 rotation: 0.0,
                 zoom: 1.0,
             },
             last_update: SystemTime::UNIX_EPOCH,
             game_soundtrack,
+            world_colliders,
         }
     }
 
@@ -116,10 +116,6 @@ impl PlayableScene {
         self.world_map
             .render_map(&mut ctx2d, &self.camera, true, self.player.position);
 
-        // NOTE: This is how to check friction and temperature
-        let current_friction = self.world_map.sample_friction_at(self.player.position);
-        let current_temperature = self.world_map.sample_temperature_at(self.player.position);
-
         let player_size =
             (constants.tile_size as f32 * constants.player.start_size * self.player.size) as i32;
 
@@ -159,6 +155,12 @@ impl PlayableScene {
 
         let player = &mut self.player;
 
+        // NOTE: This is how to check friction and temperature
+        let current_friction = self.world_map.sample_friction_at(player.position);
+        let current_temperature = self.world_map.sample_temperature_at(player.position);
+        let map_size = self.world_map.get_map_size();
+        // TODO: You can access the colission list with: self.world_colliders
+
         // Get input direction components
         let h_axis = raylib.is_key_down(KeyboardKey::KEY_D) as i8
             - raylib.is_key_down(KeyboardKey::KEY_A) as i8;
@@ -191,38 +193,42 @@ impl PlayableScene {
                 .set_magnitude((constants.player.max_velocity * constants.tile_size) as f32);
         }
 
-        player.position += &player.velocity * delta_time;
+        let velocity_modifier = &player.velocity * delta_time;
+
+        player.position += velocity_modifier;
 
         self.update_camera(raylib);
     }
 
     // Update the camera
-    pub fn update_camera(
-        &mut self, 
-        raylib: & raylib::RaylibHandle,
-    ) {
-        
+    pub fn update_camera(&mut self, raylib: &raylib::RaylibHandle) {
         // Bounding box
         let bbox = na::Vector2::new(0.2, 0.2);
 
         // Get bounding box dimensions on the screen
-        let bbox_screen_min: raylib::math::Vector2 = (((na::Vector2::new(1.0, 1.0) - bbox) * 0.5).component_mul(
-            &na::Vector2::new(raylib.get_screen_width() as f32, raylib.get_screen_height() as f32)
-        )).into();
-        let bbox_screen_max: raylib::math::Vector2 = (((na::Vector2::new(1.0, 1.0) + bbox) * 0.5).component_mul(
-            &na::Vector2::new(raylib.get_screen_width() as f32, raylib.get_screen_height() as f32)
-        )).into();
+        let bbox_screen_min: raylib::math::Vector2 = (((na::Vector2::new(1.0, 1.0) - bbox) * 0.5)
+            .component_mul(&na::Vector2::new(
+                raylib.get_screen_width() as f32,
+                raylib.get_screen_height() as f32,
+            )))
+        .into();
+        let bbox_screen_max: raylib::math::Vector2 = (((na::Vector2::new(1.0, 1.0) + bbox) * 0.5)
+            .component_mul(&na::Vector2::new(
+                raylib.get_screen_width() as f32,
+                raylib.get_screen_height() as f32,
+            )))
+        .into();
 
         // Get bounding box in world space
         let mut bbox_world_min = raylib.get_screen_to_world2D(bbox_screen_min, self.camera);
         let mut bbox_world_max = raylib.get_screen_to_world2D(bbox_screen_max, self.camera);
 
-        // Invert y 
+        // Invert y
         bbox_world_min.y *= -1.0;
         bbox_world_max.y *= -1.0;
 
         self.camera.offset = bbox_screen_min;
-        
+
         if self.player.position.x < bbox_world_min.x {
             self.camera.target.x = self.player.position.x;
         }
@@ -234,7 +240,7 @@ impl PlayableScene {
         if self.player.position.x > bbox_world_max.x {
             self.camera.target.x = bbox_world_min.x + (self.player.position.x - bbox_world_max.x);
         }
-        
+
         if self.player.position.y < bbox_world_max.y {
             self.camera.target.y = bbox_world_max.y - (self.player.position.y + bbox_world_min.y);
         }

@@ -2,7 +2,7 @@ use std::{collections::HashMap, path::PathBuf, sync::Arc};
 
 use crate::{
     asset_manager::{load_texture_from_internal_data, InternalData},
-    model::world_object_package::WorldObjectPackage,
+    model::{world_object_package::WorldObjectPackage, world_object::WorldSpaceObjectCollider},
 };
 use nalgebra as na;
 use raylib::{
@@ -129,6 +129,14 @@ impl MapRenderer {
             tile_textures,
             world_objects,
         })
+    }
+
+    /// Gets the map size
+    pub fn get_map_size(&self) -> na::Vector2<f32> {
+        na::Vector2::new(
+            self.map.width as f32 * 128.0,
+            self.map.height as f32 * 128.0,
+        )
     }
 
     pub fn sample_friction_at(&self, world_position: na::Vector2<f32>) -> Option<f32> {
@@ -376,7 +384,7 @@ impl MapRenderer {
                                                 // We need to detect if the player is in the footprint of the object
                                                 let mut tint = Color::WHITE;
                                                 if let Some(footprint_radius) =
-                                                    obj_def.footprint_radius
+                                                    obj_def.visualization_radius
                                                 {
                                                     let player_dist_to_object =
                                                         (obj_ref.position - player_position).norm();
@@ -460,4 +468,81 @@ impl MapRenderer {
             }
         }
     }
+
+    /// Get the list of world colliders
+    pub fn get_world_colliders(&self) -> Vec<WorldSpaceObjectCollider> {
+        self.world_objects.world_space_colliders.clone()
+    }
+
+    // /// Used to modify the player's velocity based on the effects of the world
+    // pub fn effect_velocity_with_collisions(
+    //     &self,
+    //     player_position: na::Vector2<f32>,
+    //     player_velocity: na::Vector2<f32>,
+    // ) -> na::Vector2<f32> {
+    //     // If the player is not moving, we don't need to do anything
+    //     if player_velocity.norm() == 0.0 {
+    //         return player_velocity;
+    //     }
+
+    //     // Get the velocity unit vector
+    //     let player_velocity_unit_vector = player_velocity.normalize();
+
+    //     // Find the position 1 pixel infront of the player
+    //     let player_position_1_pixel_infront = player_position + player_velocity_unit_vector;
+    //     let next_player_position = player_position + player_velocity;
+
+    //     // Check if this is in the collision zone of any objects
+    //     for obj_ref in &self.world_objects.object_references {
+    //         // Filter out anything more than 1000 pixels away
+    //         if (obj_ref.position - player_position).norm() > 1000.0 {
+    //             continue;
+    //         }
+
+    //         // Get the object definition
+    //         let object_key = format!("{}:{}", obj_ref.kind, obj_ref.name);
+    //         let obj_def = self
+    //             .world_objects
+    //             .object_definitions
+    //             .get(&object_key)
+    //             .unwrap();
+
+    //         // Check if the player is about to be in a collision zone
+    //         for collider in &obj_def.physics_colliders {
+    //             // Handle a radius collider vs a size collider
+    //             if let Some(radius) = collider.radius {
+    //                 // Check if we are about to collide with the circle
+    //                 if (next_player_position - obj_ref.position).norm() < radius {
+    //                     // Get the angle from the player to the center of the collider
+    //                     let angle_to_center =
+    //                         (obj_ref.position - player_position).angle(&na::Vector2::new(0.0, 0.0));
+    //                     if angle_to_center.abs() <= std::f32::consts::FRAC_PI_2 {
+    //                         // Apply the inverse of the velocity to the player
+    //                         return na::Vector2::zeros();
+    //                     }
+    //                 }
+    //             } else if let Some(size) = collider.size {
+    //                 // TODO: make this work for regular and rotated objects
+    //             }
+    //         }
+    //     }
+
+    //     // Check if the player is about to leave the map
+    //     let mut player_velocity = player_velocity;
+    //     if next_player_position.x < 0.0 {
+    //         player_velocity.x = 0.0;
+    //     } else if next_player_position.x > self.map.width as f32 * 128.0 {
+    //         player_velocity.x = 0.0;
+    //     }
+    //     if next_player_position.y > 0.0 {
+    //         player_velocity.y = 0.0;
+    //     } else if next_player_position.y < self.map.height as f32 * -128.0 {
+    //         player_velocity.y = 0.0;
+    //     }
+
+    //     // If we got here, the player is not in a collision zone
+    //     player_velocity
+    // }
+
+
 }
