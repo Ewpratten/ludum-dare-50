@@ -62,6 +62,30 @@
 <span id="60">60</span>
 <span id="61">61</span>
 <span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses the main menu system</span>
 
 <span class="kw">use</span> <span class="ident">na::Vector1</span>;
@@ -81,7 +105,9 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::main_menu::MenuStateSignal</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PauseMenu</span> {}
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PauseMenu</span> {
+    <span class="ident">show_debug_info</span>: <span class="ident">bool</span>,
+}
 
 <span class="kw">impl</span> <span class="ident">PauseMenu</span> {
     <span class="doccomment">/// Construct a new `PauseMenu`</span>
@@ -91,7 +117,9 @@
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
         <span class="ident">game_settings</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PersistentGameSettings</span>,
     ) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {}
+        <span class="self">Self</span> {
+            <span class="ident">show_debug_info</span>: <span class="bool-val">false</span>,
+        }
     }
 
     <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">render_pause_menu_frame</span>(
@@ -108,6 +136,26 @@
 
         <span class="comment">// Clear the screen</span>
         <span class="ident">draw</span>.<span class="ident">clear_background</span>(<span class="ident">Color::WHITE</span>);
+
+        <span class="comment">//Obtain mouse position</span>
+        <span class="kw">let</span> <span class="ident">mouse_x</span> <span class="op">=</span> <span class="ident">draw</span>.<span class="ident">get_mouse_x</span>();
+        <span class="kw">let</span> <span class="ident">mouse_y</span> <span class="op">=</span> <span class="ident">draw</span>.<span class="ident">get_mouse_y</span>();
+
+        <span class="comment">// Optionally display debug info</span>
+        <span class="kw">if</span> <span class="ident">draw</span>.<span class="ident">is_key_pressed</span>(<span class="ident">KeyboardKey::KEY_F3</span>) {
+            <span class="self">self</span>.<span class="ident">show_debug_info</span> <span class="op">=</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">show_debug_info</span>;
+        }
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">show_debug_info</span> {
+            <span class="comment">// Draw FPS and mouse location</span>
+            <span class="ident">draw</span>.<span class="ident">draw_fps</span>(<span class="number">10</span>, <span class="number">10</span>);
+            <span class="ident">draw</span>.<span class="ident">draw_text</span>(
+                <span class="macro">format!</span>(<span class="string">&quot;Mouse position: ({}, {})&quot;</span>, <span class="ident">mouse_x</span>, <span class="ident">mouse_y</span>).<span class="ident">as_str</span>(),
+                <span class="number">10</span>,
+                <span class="number">30</span>,
+                <span class="number">20</span>,
+                <span class="ident">Color::GREEN</span>,
+            );
+        }
 
         <span class="comment">// Title</span>
         <span class="ident">draw</span>.<span class="ident">draw_text</span>(<span class="string">&quot;Paused&quot;</span>, <span class="number">100</span>, <span class="number">90</span>, <span class="number">60</span>, <span class="ident">Color::BLACK</span>);

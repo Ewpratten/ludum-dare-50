@@ -258,6 +258,28 @@
 <span id="256">256</span>
 <span id="257">257</span>
 <span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses all of the game where the player can walk around.</span>
 
 <span class="kw">use</span> <span class="ident">nalgebra</span> <span class="kw">as</span> <span class="ident">na</span>;
@@ -284,6 +306,7 @@
     <span class="ident">last_update</span>: <span class="ident">SystemTime</span>,
     <span class="ident">game_soundtrack</span>: <span class="ident">Music</span>,
     <span class="ident">world_colliders</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">WorldSpaceObjectCollider</span><span class="op">&gt;</span>,
+    <span class="ident">show_debug_info</span>: <span class="ident">bool</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">PlayableScene</span> {
@@ -322,6 +345,7 @@
             <span class="ident">last_update</span>: <span class="ident">SystemTime::UNIX_EPOCH</span>,
             <span class="ident">game_soundtrack</span>,
             <span class="ident">world_colliders</span>,
+            <span class="ident">show_debug_info</span>: <span class="bool-val">false</span>,
         }
     }
 
@@ -383,7 +407,7 @@
 
         <span class="comment">// Render the map</span>
         <span class="self">self</span>.<span class="ident">world_map</span>
-            .<span class="ident">render_map</span>(<span class="kw-2">&amp;mut</span> <span class="ident">ctx2d</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">camera</span>, <span class="bool-val">true</span>, <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>);
+            .<span class="ident">render_map</span>(<span class="kw-2">&amp;mut</span> <span class="ident">ctx2d</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">camera</span>, <span class="self">self</span>.<span class="ident">show_debug_info</span>, <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>);
 
         <span class="kw">let</span> <span class="ident">player_size</span> <span class="op">=</span>
             (<span class="ident">constants</span>.<span class="ident">tile_size</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">*</span> <span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">start_size</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">size</span>) <span class="kw">as</span> <span class="ident">i32</span>;
@@ -398,6 +422,26 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">draw_ui</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">draw</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibDrawHandle</span>, <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>) {
+        <span class="comment">// Obtain mouse position</span>
+        <span class="kw">let</span> <span class="ident">mouse_x</span> <span class="op">=</span> <span class="ident">draw</span>.<span class="ident">get_mouse_x</span>();
+        <span class="kw">let</span> <span class="ident">mouse_y</span> <span class="op">=</span> <span class="ident">draw</span>.<span class="ident">get_mouse_y</span>();
+
+        <span class="comment">// Optionally display debug info</span>
+        <span class="kw">if</span> <span class="ident">draw</span>.<span class="ident">is_key_pressed</span>(<span class="ident">KeyboardKey::KEY_F3</span>) {
+            <span class="self">self</span>.<span class="ident">show_debug_info</span> <span class="op">=</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">show_debug_info</span>;
+        }
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">show_debug_info</span> {
+            <span class="comment">// Draw FPS and mouse location</span>
+            <span class="ident">draw</span>.<span class="ident">draw_fps</span>(<span class="number">10</span>, <span class="number">10</span>);
+            <span class="ident">draw</span>.<span class="ident">draw_text</span>(
+                <span class="macro">format!</span>(<span class="string">&quot;Mouse position: ({}, {})&quot;</span>, <span class="ident">mouse_x</span>, <span class="ident">mouse_y</span>).<span class="ident">as_str</span>(),
+                <span class="number">10</span>,
+                <span class="number">30</span>,
+                <span class="number">20</span>,
+                <span class="ident">Color::GREEN</span>,
+            );
+        }
+
         <span class="ident">draw</span>.<span class="ident">draw_rectangle</span>(<span class="ident">draw</span>.<span class="ident">get_screen_width</span>() <span class="op">/</span> <span class="number">2</span> <span class="op">-</span> <span class="number">225</span>, <span class="number">0</span>, <span class="number">450</span>, <span class="number">40</span>, <span class="ident">Color::WHITE</span>);
         <span class="ident">draw</span>.<span class="ident">draw_text</span>(
             <span class="string">&quot;Unregistered HyperCam 2&quot;</span>,
