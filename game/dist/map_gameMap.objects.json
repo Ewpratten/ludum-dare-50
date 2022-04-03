@@ -28,5 +28,15 @@
             9
         ],
         "rotation_degrees": 0
+    },
+    {
+        "type": "env",
+        "name": "env_chair",
+        "variant": "Dark",
+        "position": [
+            4,
+            9
+        ],
+        "rotation_degrees": -90
     }
 ]
