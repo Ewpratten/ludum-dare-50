@@ -343,6 +343,8 @@ impl PlayableScene {
             player.velocity.y = 0.0;
         }
 
+        player.size -= 0.001;  
+
         self.update_camera(raylib);
     }
 
