@@ -29,6 +29,16 @@
 <span id="27">27</span>
 <span id="28">28</span>
 <span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
 </pre><pre class="rust"><code><span class="doccomment">//! Global resources</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Overview</span>
@@ -41,11 +51,15 @@
 <span class="doccomment">//! The resources are loaded via [`asset_manager`](./asset_manager/index.html) in their own thread so we do not block the renderer.</span>
 
 <span class="kw">use</span> <span class="ident">poll_promise::Promise</span>;
-<span class="kw">use</span> <span class="ident">raylib</span>::{<span class="ident">RaylibHandle</span>, <span class="ident">RaylibThread</span>};
+<span class="kw">use</span> <span class="ident">raylib</span>::{<span class="ident">RaylibHandle</span>, <span class="ident">RaylibThread</span>, <span class="ident">audio::Sound</span>};
+
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::asset_manager::load_sound_from_internal_data</span>;
 
 <span class="doccomment">/// Global resource package</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GlobalResources</span> {}
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GlobalResources</span> {
+    <span class="kw">pub</span> <span class="ident">button_click_sound</span>: <span class="ident">Sound</span>
+}
 
 <span class="kw">impl</span> <span class="ident">GlobalResources</span> {
     <span class="doccomment">/// Load the resources (**blocking**)</span>
@@ -55,7 +69,13 @@
         <span class="ident">raylib</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibHandle</span>,
         <span class="ident">rl_thread</span>: <span class="kw-2">&amp;</span><span class="ident">RaylibThread</span>,
     ) -&gt; <span class="self">Self</span> {
-        <span class="self">Self</span> {}
+
+        <span class="comment">// Load the button click sound</span>
+        <span class="kw">let</span> <span class="ident">button_click_sound</span> <span class="op">=</span> <span class="ident">load_sound_from_internal_data</span>(<span class="string">&quot;assets/audio/button_click.ogg&quot;</span>).<span class="ident">unwrap</span>();
+
+        <span class="self">Self</span> {
+            <span class="ident">button_click_sound</span>
+        }
     }
 }
 </code></pre></div>

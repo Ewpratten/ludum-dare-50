@@ -126,6 +126,29 @@
 <span id="124">124</span>
 <span id="125">125</span>
 <span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The render code for various scenes</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Overview</span>
@@ -135,7 +158,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">discord::DiscordChannel</span>, <span class="ident">global_resource_package::GlobalResources</span>,
-    <span class="ident">project_constants::ProjectConstants</span>,
+    <span class="ident">project_constants::ProjectConstants</span>, <span class="ident">persistent</span>::{<span class="ident">save_state::GameSaveState</span>, <span class="ident">settings::PersistentGameSettings</span>},
 };
 
 <span class="kw">use</span> <span class="self">self</span>::{
@@ -165,15 +188,14 @@
         <span class="ident">raylib</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibHandle</span>,
         <span class="ident">rl_thread</span>: <span class="kw-2">&amp;</span><span class="ident">RaylibThread</span>,
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
+        <span class="ident">audio_subsystem</span>: <span class="ident">RaylibAudio</span>,
+        <span class="ident">game_settings</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PersistentGameSettings</span>,
+        <span class="ident">save_state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">GameSaveState</span>
     ) -&gt; <span class="self">Self</span> {
-        <span class="comment">// Set up audio</span>
-        <span class="kw">let</span> <span class="ident">audio_subsystem</span> <span class="op">=</span> <span class="ident">RaylibAudio::init_audio_device</span>();
-        <span class="ident">audio_subsystem</span>.<span class="ident">set_master_volume</span>(<span class="number">0.4</span>);
-
         <span class="comment">// Init some scenes</span>
         <span class="kw">let</span> <span class="ident">scene_test_fox</span> <span class="op">=</span> <span class="ident">TestFoxScene::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>);
         <span class="kw">let</span> <span class="ident">scene_playable</span> <span class="op">=</span> <span class="ident">PlayableScene::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">constants</span>);
-        <span class="kw">let</span> <span class="ident">scene_main_menu</span> <span class="op">=</span> <span class="ident">MainMenu::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">constants</span>);
+        <span class="kw">let</span> <span class="ident">scene_main_menu</span> <span class="op">=</span> <span class="ident">MainMenu::new</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">constants</span>, <span class="ident">game_settings</span>);
 
         <span class="self">Self</span> {
             <span class="ident">menu_control_signal</span>: <span class="ident">MenuStateSignal::DoMainMenu</span>,
@@ -195,13 +217,21 @@
         <span class="ident">discord</span>: <span class="kw-2">&amp;</span><span class="ident">DiscordChannel</span>,
         <span class="ident">global_resources</span>: <span class="kw-2">&amp;</span><span class="ident">GlobalResources</span>,
         <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
+        <span class="ident">game_settings</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PersistentGameSettings</span>,
+        <span class="ident">save_state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">GameSaveState</span>
     ) {
-
         <span class="comment">// Render the main menu if in it, otherwise, render the game</span>
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">menu_control_signal</span> {
             <span class="ident">MenuStateSignal::StartGame</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">scene_playable</span>
-                    .<span class="ident">render_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="kw-2">&amp;</span><span class="ident">discord</span>, <span class="ident">global_resources</span>, <span class="ident">constants</span>, <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">audio_subsystem</span>)
+                    .<span class="ident">render_frame</span>(
+                        <span class="ident">raylib</span>,
+                        <span class="ident">rl_thread</span>,
+                        <span class="kw-2">&amp;</span><span class="ident">discord</span>,
+                        <span class="ident">global_resources</span>,
+                        <span class="ident">constants</span>,
+                        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">audio_subsystem</span>,
+                    )
                     .<span class="kw">await</span>;
                 <span class="self">self</span>.<span class="ident">scene_playable</span>.<span class="ident">update_physics</span>(<span class="ident">raylib</span>, <span class="ident">constants</span>).<span class="kw">await</span>;
 
@@ -214,7 +244,15 @@
             <span class="ident">MenuStateSignal::DoMainMenu</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">menu_control_signal</span> <span class="op">=</span> <span class="self">self</span>
                     .<span class="ident">scene_main_menu</span>
-                    .<span class="ident">render_main_menu_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">discord</span>, <span class="ident">global_resources</span>, <span class="ident">constants</span>)
+                    .<span class="ident">render_main_menu_frame</span>(
+                        <span class="ident">raylib</span>,
+                        <span class="ident">rl_thread</span>,
+                        <span class="ident">discord</span>,
+                        <span class="ident">global_resources</span>,
+                        <span class="ident">constants</span>,
+                        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">audio_subsystem</span>,
+                        <span class="ident">game_settings</span>
+                    )
                     .<span class="kw">await</span>;
 
                 <span class="comment">// Clear the ingame discord status</span>
@@ -229,7 +267,14 @@
             <span class="ident">MenuStateSignal::DoCredits</span> =&gt; {
                 <span class="self">self</span>.<span class="ident">menu_control_signal</span> <span class="op">=</span> <span class="self">self</span>
                     .<span class="ident">scene_main_menu</span>
-                    .<span class="ident">render_credits_frame</span>(<span class="ident">raylib</span>, <span class="ident">rl_thread</span>, <span class="ident">discord</span>, <span class="ident">global_resources</span>, <span class="ident">constants</span>)
+                    .<span class="ident">render_credits_frame</span>(
+                        <span class="ident">raylib</span>,
+                        <span class="ident">rl_thread</span>,
+                        <span class="ident">discord</span>,
+                        <span class="ident">global_resources</span>,
+                        <span class="ident">constants</span>,
+                        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">audio_subsystem</span>,
+                    )
                     .<span class="kw">await</span>
             }
             <span class="ident">MenuStateSignal::DoLeaderboard</span> =&gt; {
@@ -241,6 +286,7 @@
                         <span class="ident">discord</span>,
                         <span class="ident">global_resources</span>,
                         <span class="ident">constants</span>,
+                        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">audio_subsystem</span>,
                     )
                     .<span class="kw">await</span>
             }

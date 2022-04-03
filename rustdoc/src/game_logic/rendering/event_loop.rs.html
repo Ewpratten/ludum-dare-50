@@ -137,6 +137,24 @@
 <span id="135">135</span>
 <span id="136">136</span>
 <span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The Event Loop module</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## Overview</span>
@@ -149,10 +167,13 @@
 <span class="kw">use</span> <span class="ident">std::cell::RefCell</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::discord::DiscordChannel</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::persistent::save_state::GameSaveState</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::persistent::settings::PersistentGameSettings</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::project_constants::ProjectConstants</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::rendering::core_renderer_sm</span>::{<span class="ident">PreloadState</span>, <span class="ident">RenderBackendStates</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::rendering::screens::sm_failure_screen</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::scenes::SceneRenderDelegate</span>;
+<span class="kw">use</span> <span class="ident">raylib::audio::RaylibAudio</span>;
 <span class="kw">use</span> <span class="ident">raylib::consts::KeyboardKey</span>;
 <span class="kw">use</span> <span class="ident">raylib::prelude::RaylibDraw</span>;
 <span class="kw">use</span> <span class="ident">raylib::RaylibBuilder</span>;
@@ -163,6 +184,8 @@
     <span class="ident">target_frames_per_second</span>: <span class="ident">u32</span>,
     <span class="ident">constants</span>: <span class="kw-2">&amp;</span><span class="ident">ProjectConstants</span>,
     <span class="ident">discord_signaling</span>: <span class="ident">DiscordChannel</span>,
+    <span class="ident">game_settings</span>: <span class="kw-2">&amp;mut</span> <span class="ident">PersistentGameSettings</span>,
+    <span class="ident">save_state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">GameSaveState</span>
 ) <span class="kw">where</span>
     <span class="ident">ConfigBuilder</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;mut</span> <span class="ident">RaylibBuilder</span>),
 {
@@ -181,13 +204,24 @@
     <span class="ident">raylib_handle</span>.<span class="ident">set_exit_key</span>(<span class="prelude-val">None</span>);
     <span class="ident">raylib_handle</span>.<span class="ident">set_target_fps</span>(<span class="ident">target_frames_per_second</span>);
 
+    <span class="comment">// Set up audio</span>
+    <span class="macro">debug!</span>(<span class="string">&quot;Set up Audio&quot;</span>);
+    <span class="kw">let</span> <span class="ident">audio_subsystem</span> <span class="op">=</span> <span class="ident">RaylibAudio::init_audio_device</span>();
+    <span class="ident">audio_subsystem</span>.<span class="ident">set_master_volume</span>(<span class="number">0.4</span>);
+
     <span class="comment">// Set up the internal screens</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">loading_screen</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::rendering::screens::loading_screen::LoadingScreen::new</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sm_failure_screen</span> <span class="op">=</span> <span class="ident">sm_failure_screen::SmFailureScreen::new</span>();
 
     <span class="comment">// Set up the main render delegate</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">render_delegate</span> <span class="op">=</span>
-        <span class="ident">SceneRenderDelegate::on_game_start</span>(<span class="kw-2">&amp;mut</span> <span class="ident">raylib_handle</span>, <span class="kw-2">&amp;</span><span class="ident">raylib_thread</span>, <span class="ident">constants</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">render_delegate</span> <span class="op">=</span> <span class="ident">SceneRenderDelegate::on_game_start</span>(
+        <span class="kw-2">&amp;mut</span> <span class="ident">raylib_handle</span>,
+        <span class="kw-2">&amp;</span><span class="ident">raylib_thread</span>,
+        <span class="ident">constants</span>,
+        <span class="ident">audio_subsystem</span>,
+        <span class="ident">game_settings</span>,
+        <span class="ident">save_state</span>,
+    );
 
     <span class="comment">// Handle loading the resources and rendering the loading screen</span>
     <span class="macro">log::trace!</span>(<span class="string">&quot;Running event loop&quot;</span>);
@@ -248,6 +282,8 @@
                         <span class="kw-2">&amp;</span><span class="ident">discord_signaling</span>,
                         <span class="kw-2">&amp;</span><span class="ident">global_resources</span>,
                         <span class="ident">constants</span>,
+                        <span class="ident">game_settings</span>,
+                        <span class="ident">save_state</span>,
                     )
                     .<span class="kw">await</span>;
 
