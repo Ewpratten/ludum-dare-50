@@ -10,7 +10,8 @@ use raylib::{
 use crate::{
     discord::{DiscordChannel, DiscordRpcSignal},
     global_resource_package::GlobalResources,
-    project_constants::ProjectConstants, persistent::settings::PersistentGameSettings,
+    persistent::settings::PersistentGameSettings,
+    project_constants::ProjectConstants,
 };
 
 #[derive(Debug, Clone)]
@@ -21,12 +22,14 @@ pub enum MenuStateSignal {
     DoOptions,
     DoCredits,
     DoLeaderboard,
+    DoPauseMenu,
 }
 
 #[derive(Debug)]
 pub struct MainMenu {
     pub has_updated_discord_rpc: bool,
     volume_percentage: f32,
+    show_debug_info: bool,
 }
 
 impl MainMenu {
@@ -35,11 +38,12 @@ impl MainMenu {
         raylib_handle: &mut RaylibHandle,
         thread: &RaylibThread,
         constants: &ProjectConstants,
-        game_settings: &mut PersistentGameSettings
+        game_settings: &mut PersistentGameSettings,
     ) -> Self {
         Self {
             has_updated_discord_rpc: false,
             volume_percentage: game_settings.volume.unwrap_or(0.5),
+            show_debug_info: false,
         }
     }
 
@@ -51,7 +55,7 @@ impl MainMenu {
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
         audio_subsystem: &mut RaylibAudio,
-        game_settings: &mut PersistentGameSettings
+        game_settings: &mut PersistentGameSettings,
     ) -> MenuStateSignal {
         // Handle updating discord RPC
         if !self.has_updated_discord_rpc {
@@ -76,9 +80,21 @@ impl MainMenu {
         let mouse_x = draw.get_mouse_x();
         let mouse_y = draw.get_mouse_y();
 
-        //TODO Errase later
-        draw.draw_text(&mouse_x.to_string(), 20, 5, 20, Color::BLACK);
-        draw.draw_text(&mouse_y.to_string(), 70, 5, 20, Color::BLACK);
+        // Optionally display debug info
+        if draw.is_key_pressed(KeyboardKey::KEY_F3) {
+            self.show_debug_info = !self.show_debug_info;
+        }
+        if self.show_debug_info {
+            // Draw FPS and mouse location
+            draw.draw_fps(10, 10);
+            draw.draw_text(
+                format!("Mouse position: ({}, {})", mouse_x, mouse_y).as_str(),
+                10,
+                30,
+                20,
+                Color::GREEN,
+            );
+        }
 
         //Screen Size
         let window_height = draw.get_screen_height();
@@ -90,7 +106,7 @@ impl MainMenu {
         let label_shadow_colors = Color::GRAY;
 
         //Initial Option placeholder words in the main menu
-        draw.draw_text("Game Title", 100, 90, 60, label_colors);
+        draw.draw_text(&constants.game_name, 100, 90, 60, label_colors);
         draw.draw_text("Start Game", 100, 190, 34, label_colors);
         draw.draw_text("Credits", 100, 410, 34, label_colors);
         draw.draw_text("Leaderboard", 100, 470, 34, label_colors);
