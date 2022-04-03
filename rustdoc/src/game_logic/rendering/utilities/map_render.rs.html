@@ -548,11 +548,13 @@
 <span id="546">546</span>
 <span id="547">547</span>
 <span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashMap</span>, <span class="ident">path::PathBuf</span>, <span class="ident">sync::Arc</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">asset_manager</span>::{<span class="ident">load_texture_from_internal_data</span>, <span class="ident">InternalData</span>},
-    <span class="ident">model</span>::{<span class="ident">world_object_package::WorldObjectPackage</span>, <span class="ident">world_object::WorldSpaceObjectCollider</span>},
+    <span class="ident">model</span>::{<span class="ident">world_object::WorldSpaceObjectCollider</span>, <span class="ident">world_object_package::WorldObjectPackage</span>},
 };
 <span class="kw">use</span> <span class="ident">nalgebra</span> <span class="kw">as</span> <span class="ident">na</span>;
 <span class="kw">use</span> <span class="ident">raylib</span>::{
@@ -698,11 +700,11 @@
 
         <span class="comment">// If there is an object here, let it override the output</span>
         <span class="kw">for</span> <span class="ident">obj_ref</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">world_objects</span>.<span class="ident">object_references</span> {
-            <span class="kw">if</span> <span class="ident">obj_ref</span>.<span class="ident">position</span>.<span class="ident">x</span> <span class="op">==</span> <span class="ident">tile_position</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="ident">f32</span>
-                <span class="op">&amp;&amp;</span> <span class="ident">obj_ref</span>.<span class="ident">position</span>.<span class="ident">y</span> <span class="op">==</span> <span class="ident">tile_position</span>.<span class="ident">y</span> <span class="kw">as</span> <span class="ident">f32</span>
+            <span class="kw">if</span> <span class="ident">obj_ref</span>.<span class="ident">get_world_space_position</span>().<span class="ident">x</span> <span class="op">==</span> <span class="ident">tile_position</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="ident">f32</span>
+                <span class="op">&amp;&amp;</span> <span class="ident">obj_ref</span>.<span class="ident">get_world_space_position</span>().<span class="ident">y</span> <span class="op">==</span> <span class="ident">tile_position</span>.<span class="ident">y</span> <span class="kw">as</span> <span class="ident">f32</span>
             {
                 <span class="comment">// Get access to the actual object definition</span>
-                <span class="kw">let</span> <span class="ident">object_key</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{}:{}&quot;</span>, <span class="ident">obj_ref</span>.<span class="ident">kind</span>, <span class="ident">obj_ref</span>.<span class="ident">name</span>);
+                <span class="kw">let</span> <span class="ident">object_key</span> <span class="op">=</span> <span class="ident">obj_ref</span>.<span class="ident">into_key</span>();
                 <span class="kw">let</span> <span class="ident">obj_def</span> <span class="op">=</span> <span class="self">self</span>
                     .<span class="ident">world_objects</span>
                     .<span class="ident">object_definitions</span>
@@ -753,11 +755,11 @@
 
         <span class="comment">// If there is an object here, let it override the output</span>
         <span class="kw">for</span> <span class="ident">obj_ref</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">world_objects</span>.<span class="ident">object_references</span> {
-            <span class="kw">if</span> <span class="ident">obj_ref</span>.<span class="ident">position</span>.<span class="ident">x</span> <span class="op">==</span> <span class="ident">tile_position</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="ident">f32</span>
-                <span class="op">&amp;&amp;</span> <span class="ident">obj_ref</span>.<span class="ident">position</span>.<span class="ident">y</span> <span class="op">==</span> <span class="ident">tile_position</span>.<span class="ident">y</span> <span class="kw">as</span> <span class="ident">f32</span>
+            <span class="kw">if</span> <span class="ident">obj_ref</span>.<span class="ident">get_world_space_position</span>().<span class="ident">x</span> <span class="op">==</span> <span class="ident">tile_position</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="ident">f32</span>
+                <span class="op">&amp;&amp;</span> <span class="ident">obj_ref</span>.<span class="ident">get_world_space_position</span>().<span class="ident">y</span> <span class="op">==</span> <span class="ident">tile_position</span>.<span class="ident">y</span> <span class="kw">as</span> <span class="ident">f32</span>
             {
                 <span class="comment">// Get access to the actual object definition</span>
-                <span class="kw">let</span> <span class="ident">object_key</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{}:{}&quot;</span>, <span class="ident">obj_ref</span>.<span class="ident">kind</span>, <span class="ident">obj_ref</span>.<span class="ident">name</span>);
+                <span class="kw">let</span> <span class="ident">object_key</span> <span class="op">=</span> <span class="ident">obj_ref</span>.<span class="ident">into_key</span>();
                 <span class="kw">let</span> <span class="ident">obj_def</span> <span class="op">=</span> <span class="self">self</span>
                     .<span class="ident">world_objects</span>
                     .<span class="ident">object_definitions</span>
@@ -814,6 +816,10 @@
             <span class="ident">Vector2::new</span>(<span class="ident">screen_width</span> <span class="kw">as</span> <span class="ident">f32</span>, <span class="ident">screen_height</span> <span class="kw">as</span> <span class="ident">f32</span>),
             <span class="ident">camera</span>,
         );
+        <span class="kw">let</span> <span class="ident">player_position</span> <span class="op">=</span> <span class="ident">na::Vector2::new</span>(
+            <span class="ident">player_position</span>.<span class="ident">x</span>,
+            <span class="ident">player_position</span>.<span class="ident">y</span> <span class="op">*</span> <span class="op">-</span><span class="number">1.0</span>,
+        );
 
         <span class="comment">// Handle each layer from the bottom up</span>
         <span class="kw">for</span> <span class="ident">layer</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">map</span>.<span class="ident">layers</span>() {
@@ -869,12 +875,12 @@
 
                                     <span class="comment">// Check if there is an object at this tile</span>
                                     <span class="kw">for</span> <span class="ident">obj_ref</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">world_objects</span>.<span class="ident">object_references</span> {
-                                        <span class="kw">if</span> <span class="ident">obj_ref</span>.<span class="ident">position</span>.<span class="ident">x</span> <span class="op">==</span> <span class="ident">sampler_x</span> <span class="kw">as</span> <span class="ident">f32</span>
-                                            <span class="op">&amp;&amp;</span> <span class="ident">obj_ref</span>.<span class="ident">position</span>.<span class="ident">y</span> <span class="op">==</span> <span class="ident">sampler_y</span> <span class="kw">as</span> <span class="ident">f32</span>
+                                        <span class="kw">if</span> <span class="ident">obj_ref</span>.<span class="ident">get_tile_space_position</span>().<span class="ident">x</span> <span class="op">==</span> <span class="ident">sampler_x</span> <span class="kw">as</span> <span class="ident">f32</span>
+                                            <span class="op">&amp;&amp;</span> <span class="ident">obj_ref</span>.<span class="ident">get_tile_space_position</span>().<span class="ident">y</span> <span class="op">==</span> <span class="ident">sampler_y</span> <span class="kw">as</span> <span class="ident">f32</span>
                                         {
                                             <span class="comment">// Get access to the actual object definition</span>
-                                            <span class="kw">let</span> <span class="ident">object_key</span> <span class="op">=</span>
-                                                <span class="macro">format!</span>(<span class="string">&quot;{}:{}&quot;</span>, <span class="ident">obj_ref</span>.<span class="ident">kind</span>, <span class="ident">obj_ref</span>.<span class="ident">name</span>);
+                                            <span class="kw">let</span> <span class="ident">object_key</span> <span class="op">=</span> <span class="ident">obj_ref</span>.<span class="ident">into_key</span>();
+                                            <span class="comment">// debug!(&quot;Found object: {}&quot;, object_key);</span>
                                             <span class="kw">let</span> <span class="ident">obj_def</span> <span class="op">=</span> <span class="self">self</span>
                                                 .<span class="ident">world_objects</span>
                                                 .<span class="ident">object_definitions</span>
@@ -890,10 +896,10 @@
                                                     .<span class="ident">unwrap</span>();
                                                 <span class="ident">tex</span>.<span class="ident">render_automatic</span>(
                                                     <span class="ident">draw_handle</span>,
-                                                    <span class="ident">obj_ref</span>.<span class="ident">position</span> <span class="op">-</span> (<span class="ident">tex</span>.<span class="ident">size</span>() <span class="op">/</span> <span class="number">2.0</span>),
+                                                    <span class="ident">obj_ref</span>.<span class="ident">get_world_space_position</span>() <span class="op">-</span> (<span class="ident">tex</span>.<span class="ident">size</span>() <span class="op">/</span> <span class="number">2.0</span>),
                                                     <span class="prelude-val">None</span>,
                                                     <span class="prelude-val">Some</span>(<span class="ident">tex</span>.<span class="ident">size</span>() <span class="op">/</span> <span class="number">2.0</span>),
-                                                    <span class="prelude-val">Some</span>(<span class="ident">obj_ref</span>.<span class="ident">rotation_radians</span>.<span class="ident">to_degrees</span>()),
+                                                    <span class="prelude-val">Some</span>(<span class="ident">obj_ref</span>.<span class="ident">rotation_degrees</span>),
                                                     <span class="prelude-val">None</span>,
                                                 );
                                             } <span class="kw">else</span> {
@@ -902,7 +908,7 @@
                                                     .<span class="ident">bottom_static_textures</span>
                                                     .<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">object_key</span>)
                                                     .<span class="ident">unwrap</span>();
-                                                <span class="kw">let</span> <span class="ident">p</span>: <span class="ident">Vector2</span> <span class="op">=</span> <span class="ident">obj_ref</span>.<span class="ident">position</span>.<span class="ident">into</span>();
+                                                <span class="kw">let</span> <span class="ident">p</span>: <span class="ident">Vector2</span> <span class="op">=</span> <span class="ident">obj_ref</span>.<span class="ident">get_world_space_position</span>().<span class="ident">into</span>();
                                                 <span class="kw">let</span> <span class="ident">r1</span> <span class="op">=</span> <span class="ident">Rectangle</span> {
                                                     <span class="ident">x</span>: <span class="number">0.0</span>,
                                                     <span class="ident">y</span>: <span class="number">0.0</span>,
@@ -924,7 +930,7 @@
                                                         <span class="ident">tex</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>,
                                                         <span class="ident">tex</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>,
                                                     ),
-                                                    <span class="ident">obj_ref</span>.<span class="ident">rotation_radians</span>.<span class="ident">to_degrees</span>(),
+                                                    <span class="ident">obj_ref</span>.<span class="ident">rotation_degrees</span>,
                                                     <span class="ident">Color::WHITE</span>,
                                                 );
                                             }
@@ -937,7 +943,7 @@
                                                     <span class="ident">obj_def</span>.<span class="ident">visualization_radius</span>
                                                 {
                                                     <span class="kw">let</span> <span class="ident">player_dist_to_object</span> <span class="op">=</span>
-                                                        (<span class="ident">obj_ref</span>.<span class="ident">position</span> <span class="op">-</span> <span class="ident">player_position</span>).<span class="ident">norm</span>();
+                                                        (<span class="ident">obj_ref</span>.<span class="ident">get_world_space_position</span>() <span class="op">-</span> <span class="ident">player_position</span>).<span class="ident">norm</span>();
                                                     <span class="comment">// debug!(</span>
                                                     <span class="comment">//     &quot;Player dist to object: {}&quot;,</span>
                                                     <span class="comment">//     player_dist_to_object</span>
@@ -955,10 +961,10 @@
                                                         .<span class="ident">unwrap</span>();
                                                     <span class="ident">tex</span>.<span class="ident">render_automatic</span>(
                                                         <span class="ident">draw_handle</span>,
-                                                        <span class="ident">obj_ref</span>.<span class="ident">position</span> <span class="op">-</span> (<span class="ident">tex</span>.<span class="ident">size</span>() <span class="op">/</span> <span class="number">2.0</span>),
+                                                        <span class="ident">obj_ref</span>.<span class="ident">get_world_space_position</span>() <span class="op">-</span> (<span class="ident">tex</span>.<span class="ident">size</span>() <span class="op">/</span> <span class="number">2.0</span>),
                                                         <span class="prelude-val">None</span>,
                                                         <span class="prelude-val">Some</span>(<span class="ident">tex</span>.<span class="ident">size</span>() <span class="op">/</span> <span class="number">2.0</span>),
-                                                        <span class="prelude-val">Some</span>(<span class="ident">obj_ref</span>.<span class="ident">rotation_radians</span>.<span class="ident">to_degrees</span>()),
+                                                        <span class="prelude-val">Some</span>(<span class="ident">obj_ref</span>.<span class="ident">rotation_degrees</span>),
                                                         <span class="prelude-val">Some</span>(<span class="ident">tint</span>),
                                                     );
                                                 } <span class="kw">else</span> {
@@ -967,7 +973,7 @@
                                                         .<span class="ident">top_static_textures</span>
                                                         .<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">object_key</span>)
                                                         .<span class="ident">unwrap</span>();
-                                                    <span class="kw">let</span> <span class="ident">p</span>: <span class="ident">Vector2</span> <span class="op">=</span> <span class="ident">obj_ref</span>.<span class="ident">position</span>.<span class="ident">into</span>();
+                                                    <span class="kw">let</span> <span class="ident">p</span>: <span class="ident">Vector2</span> <span class="op">=</span> <span class="ident">obj_ref</span>.<span class="ident">get_world_space_position</span>().<span class="ident">into</span>();
                                                     <span class="kw">let</span> <span class="ident">r1</span> <span class="op">=</span> <span class="ident">Rectangle</span> {
                                                         <span class="ident">x</span>: <span class="number">0.0</span>,
                                                         <span class="ident">y</span>: <span class="number">0.0</span>,
@@ -989,7 +995,7 @@
                                                             <span class="ident">tex</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>,
                                                             <span class="ident">tex</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>,
                                                         ),
-                                                        <span class="ident">obj_ref</span>.<span class="ident">rotation_radians</span>.<span class="ident">to_degrees</span>(),
+                                                        <span class="ident">obj_ref</span>.<span class="ident">rotation_degrees</span>,
                                                         <span class="ident">tint</span>,
                                                     );
                                                 }
@@ -1050,7 +1056,7 @@
     <span class="comment">//         }</span>
 
     <span class="comment">//         // Get the object definition</span>
-    <span class="comment">//         let object_key = format!(&quot;{}:{}&quot;, obj_ref.kind, obj_ref.name);</span>
+    <span class="comment">//         let object_key =  obj_ref.into_key();</span>
     <span class="comment">//         let obj_def = self</span>
     <span class="comment">//             .world_objects</span>
     <span class="comment">//             .object_definitions</span>
@@ -1093,8 +1099,6 @@
     <span class="comment">//     // If we got here, the player is not in a collision zone</span>
     <span class="comment">//     player_velocity</span>
     <span class="comment">// }</span>
-
-
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="game_logic" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>
