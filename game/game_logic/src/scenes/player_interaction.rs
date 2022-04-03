@@ -9,7 +9,10 @@ use crate::{
     asset_manager::{load_music_from_internal_data, load_sound_from_internal_data},
     discord::{DiscordChannel, DiscordRpcSignal},
     global_resource_package::GlobalResources,
-    model::{player::Player, world_object::WorldSpaceObjectCollider},
+    model::{
+        player::Player,
+        world_object::{ObjectCollider, WorldSpaceObjectCollider},
+    },
     project_constants::ProjectConstants,
     rendering::utilities::{anim_texture::AnimatedTexture, map_render::MapRenderer},
 };
@@ -177,6 +180,21 @@ impl PlayableScene {
                 20,
                 Color::GREEN,
             );
+            draw.draw_text(
+                format!(
+                    "player: ({}, {}) size: {} map: ({}, {})",
+                    self.player.position.x,
+                    self.player.position.y,
+                    self.player.size,
+                    self.world_map.get_map_size().x,
+                    self.world_map.get_map_size().y
+                )
+                .as_str(),
+                10,
+                50,
+                20,
+                Color::GREEN,
+            );
         }
 
         draw.draw_rectangle(draw.get_screen_width() / 2 - 225, 0, 450, 40, Color::WHITE);
@@ -210,7 +228,6 @@ impl PlayableScene {
         let current_temperature = self.world_map.sample_temperature_at(player.position);
         let map_size = self.world_map.get_map_size();
         // TODO: You can access the colission list with: self.world_colliders
-        // like this: self.world_colliders[0].size.x;
 
         // Get input direction components
         let h_axis = raylib.is_key_down(KeyboardKey::KEY_D) as i8
@@ -246,7 +263,70 @@ impl PlayableScene {
 
         let velocity_modifier = &player.velocity * delta_time;
 
-        player.position += velocity_modifier;
+        let player_size =
+            (constants.tile_size as f32 * constants.player.start_size * player.size / 2.0) as f32;
+
+        player.position.x += velocity_modifier.x;
+
+        for i in &self.world_colliders {
+            if player.position.x - player_size <= i.position.x + i.size.x / 2.0
+                && player.position.x + player_size >= i.position.x + i.size.x / 2.0
+                && player.position.y - player_size <= i.position.y + i.size.y / 2.0
+                && player.position.y + player_size >= i.position.y + i.size.x / 2.0
+            {
+                // if player.velocity.x < 0.0 {
+                //     player.position.x = i.position.x + i.size.x / 2.0 + player_size;
+                // } else if player.velocity.x > 0.0 {
+                //     player.position.x = i.position.x - i.size.x / 2.0 - player_size;
+                // }
+
+                player.position.x -= velocity_modifier.x;
+                player.velocity.x = 0.0;
+                break;
+            }
+        }
+
+        if player.position.x - player_size < 0.0
+            || player.position.x + player_size > self.world_map.get_map_size().x
+        {
+            if player.velocity.x < 0.0 {
+                player.position.x = player_size;
+            } else if player.velocity.x > 0.0 {
+                player.position.x = self.world_map.get_map_size().x - player_size;
+            }
+            player.velocity.x = 0.0;
+        }
+
+        player.position.y += velocity_modifier.y;
+
+        for i in &self.world_colliders {
+            if player.position.x - player_size <= i.position.x + i.size.x / 2.0
+                && player.position.x + player_size >= i.position.x + i.size.x / 2.0
+                && player.position.y - player_size <= i.position.y + i.size.y / 2.0
+                && player.position.y + player_size >= i.position.y + i.size.x / 2.0
+            {
+                if player.velocity.y < 0.0 {
+                    player.position.y = i.position.y + i.size.y / 2.0 + player_size;
+                } else if player.velocity.y > 0.0 {
+                    player.position.y = i.position.y - i.size.y / 2.0 - player_size;
+                }
+                player.position.y -= velocity_modifier.y;
+                player.velocity.y = 0.0;
+
+                break;
+            }
+        }
+
+        if player.position.y + player_size > 0.0
+            || player.position.y - player_size < -self.world_map.get_map_size().y
+        {
+            if player.velocity.y > 0.0 {
+                player.position.y = -player_size;
+            } else if player.velocity.y < 0.0 {
+                player.position.y = -self.world_map.get_map_size().y + player_size;
+            }
+            player.velocity.y = 0.0;
+        }
 
         self.update_camera(raylib);
     }
