@@ -8,7 +8,10 @@ use crate::{
     asset_manager::{load_music_from_internal_data, load_sound_from_internal_data},
     discord::{DiscordChannel, DiscordRpcSignal},
     global_resource_package::GlobalResources,
-    model::{player::Player, world_object::WorldSpaceObjectCollider},
+    model::{
+        player::Player,
+        world_object::{ObjectCollider, WorldSpaceObjectCollider},
+    },
     project_constants::ProjectConstants,
     rendering::utilities::{anim_texture::AnimatedTexture, map_render::MapRenderer},
 };
@@ -160,7 +163,6 @@ impl PlayableScene {
         let current_temperature = self.world_map.sample_temperature_at(player.position);
         let map_size = self.world_map.get_map_size();
         // TODO: You can access the colission list with: self.world_colliders
-        // like this: self.world_colliders[0].size.x;
 
         // Get input direction components
         let h_axis = raylib.is_key_down(KeyboardKey::KEY_D) as i8
@@ -196,7 +198,42 @@ impl PlayableScene {
 
         let velocity_modifier = &player.velocity * delta_time;
 
-        player.position += velocity_modifier;
+        player.position.x += velocity_modifier.x;
+
+        for i in &self.world_colliders {
+            if player.position.x <= i.position.x + i.size.x
+                && player.position.x + player.size >= i.position.x
+                && player.position.y <= i.position.y + i.size.y
+                && player.position.y + player.size >= i.position.y
+            {
+                player.position.x -= velocity_modifier.x;
+                player.velocity.x = 0;
+                break;
+            }
+        }
+
+        if player.position.x < 0.0 || next_player_position.x > self.world_map.get_map_size().x  * 128.0 {
+            player.position.x -= velocity_modifier.x;
+            player_velocity.x = 0.0;
+        }
+
+        player.position.y += velocity_modifier.y;
+
+        for i in &self.world_colliders {
+            if player.position.x <= i.position.x + i.size.x
+                && player.position.x + player.size >= i.position.x
+                && player.position.y <= i.position.y + i.size.y
+                && player.position.y + player.size >= i.position.y
+            {
+                player.position.y -= velocity_modifier.y;
+                break;
+            }
+        }
+
+        if player.position.y < 0.0 || next_player_position.y > self.world_map.get_map_size().y  * 128.0 {
+            player.position.y -= velocity_modifier.y;
+            player_velocity.y = 0.0;
+        }
 
         self.update_camera(raylib);
     }
