@@ -24,6 +24,7 @@ pub struct PlayableScene {
     last_update: SystemTime,
     game_soundtrack: Music,
     world_colliders: Vec<WorldSpaceObjectCollider>,
+    show_debug_info: bool,
 }
 
 impl PlayableScene {
@@ -62,6 +63,7 @@ impl PlayableScene {
             last_update: SystemTime::UNIX_EPOCH,
             game_soundtrack,
             world_colliders,
+            show_debug_info: false,
         }
     }
 
@@ -123,7 +125,7 @@ impl PlayableScene {
 
         // Render the map
         self.world_map
-            .render_map(&mut ctx2d, &self.camera, true, self.player.position);
+            .render_map(&mut ctx2d, &self.camera, self.show_debug_info, self.player.position);
 
         let player_size =
             (constants.tile_size as f32 * constants.player.start_size * self.player.size) as i32;
@@ -138,6 +140,26 @@ impl PlayableScene {
     }
 
     pub fn draw_ui(&mut self, draw: &mut RaylibDrawHandle, constants: &ProjectConstants) {
+        // Obtain mouse position
+        let mouse_x = draw.get_mouse_x();
+        let mouse_y = draw.get_mouse_y();
+
+        // Optionally display debug info
+        if draw.is_key_pressed(KeyboardKey::KEY_F3) {
+            self.show_debug_info = !self.show_debug_info;
+        }
+        if self.show_debug_info {
+            // Draw FPS and mouse location
+            draw.draw_fps(10, 10);
+            draw.draw_text(
+                format!("Mouse position: ({}, {})", mouse_x, mouse_y).as_str(),
+                10,
+                30,
+                20,
+                Color::GREEN,
+            );
+        }
+
         draw.draw_rectangle(draw.get_screen_width() / 2 - 225, 0, 450, 40, Color::WHITE);
         draw.draw_text(
             "Unregistered HyperCam 2",
