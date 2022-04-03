@@ -13,11 +13,13 @@ use crate::{
 };
 
 use self::{
+    cutscenes::CutScenes,
     main_menu::{MainMenu, MenuStateSignal},
     pause_menu::PauseMenu,
     player_interaction::PlayableScene,
     test_fox::TestFoxScene,
 };
+mod cutscenes;
 mod main_menu;
 mod pause_menu;
 mod player_interaction;
@@ -34,6 +36,7 @@ pub struct SceneRenderDelegate {
     scene_playable: PlayableScene,
     scene_main_menu: MainMenu,
     scene_pause_menu: PauseMenu,
+    scene_cutscenes: CutScenes,
 }
 
 impl SceneRenderDelegate {
@@ -51,6 +54,7 @@ impl SceneRenderDelegate {
         let scene_playable = PlayableScene::new(raylib, rl_thread, constants);
         let scene_main_menu = MainMenu::new(raylib, rl_thread, constants, game_settings);
         let scene_pause_menu = PauseMenu::new(raylib, rl_thread, constants, game_settings);
+        let scene_cutscenes = CutScenes::new(raylib, rl_thread, constants, game_settings);
 
         Self {
             menu_control_signal: MenuStateSignal::DoMainMenu,
@@ -60,6 +64,7 @@ impl SceneRenderDelegate {
             scene_playable,
             scene_main_menu,
             scene_pause_menu,
+            scene_cutscenes,
         }
     }
 
@@ -77,9 +82,10 @@ impl SceneRenderDelegate {
         save_state: &mut GameSaveState,
     ) {
         // Render the main menu if in it, otherwise, render the game
-        match self.menu_control_signal {
+        match &self.menu_control_signal {
             MenuStateSignal::StartGame => {
-                self.menu_control_signal = self.scene_playable
+                self.menu_control_signal = self
+                    .scene_playable
                     .render_frame(
                         raylib,
                         rl_thread,
@@ -156,6 +162,61 @@ impl SceneRenderDelegate {
                         global_resources,
                         constants,
                         &mut self.audio_subsystem,
+                    )
+                    .await;
+            }
+            MenuStateSignal::DoIntroCutscene => {
+                self.menu_control_signal = self
+                    .scene_cutscenes
+                    .render_bartender_cutscene_frame(
+                        raylib,
+                        rl_thread,
+                        discord,
+                        global_resources,
+                        constants,
+                        &mut self.audio_subsystem,
+                    )
+                    .await;
+            }
+            MenuStateSignal::DoMeltedDeathCutscene { playtime } => {
+                self.menu_control_signal = self
+                    .scene_cutscenes
+                    .render_melted_cutscene_frame(
+                        raylib,
+                        rl_thread,
+                        discord,
+                        global_resources,
+                        constants,
+                        &mut self.audio_subsystem,
+                        playtime,
+                    )
+                    .await;
+            }
+            MenuStateSignal::DoFinishedCutscene { playtime } => {
+                self.menu_control_signal = self
+                    .scene_cutscenes
+                    .render_finished_cutscene_frame(
+                        raylib,
+                        rl_thread,
+                        discord,
+                        global_resources,
+                        constants,
+                        &mut self.audio_subsystem,
+                        playtime,
+                    )
+                    .await;
+            }
+            MenuStateSignal::DoOceanCutscene { playtime } => {
+                self.menu_control_signal = self
+                    .scene_cutscenes
+                    .render_ocean_cutscene_frame(
+                        raylib,
+                        rl_thread,
+                        discord,
+                        global_resources,
+                        constants,
+                        &mut self.audio_subsystem,
+                        playtime,
                     )
                     .await;
             }
