@@ -27,6 +27,7 @@ impl TestFoxScene {
         let map_renderer = MapRenderer::new(
             "map_gameMap.tmx",
             "map_gameMap.objects.json",
+            "map_gameMap.end.json",
             raylib_handle,
             thread,
         )
