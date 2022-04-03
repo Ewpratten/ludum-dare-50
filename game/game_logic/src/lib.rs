@@ -33,14 +33,14 @@ extern crate approx; // For the macro `relative_eq!`
 extern crate log; // For the `info!`, `warn!`, etc. macros
 
 pub(crate) mod asset_manager;
+pub(crate) mod coord_convert;
 pub(crate) mod discord;
 pub(crate) mod global_resource_package;
+pub(crate) mod model;
 pub(crate) mod persistent;
 pub(crate) mod project_constants;
 pub(crate) mod rendering;
 pub(crate) mod scenes;
-pub(crate) mod model;
-pub(crate) mod coord_convert;
 
 /// This is the game logic entrypoint. Despite being async,
 /// this is expected to block the main thread for rendering and stuff.
@@ -84,6 +84,8 @@ pub async fn entrypoint(force_recreate_savefiles: bool) {
         project_constants.target_fps,
         &project_constants,
         event_loop_discord_tx,
+        &mut settings,
+        &mut save_state,
     )
     .await;
 
