@@ -70,8 +70,8 @@ impl PlayableScene {
         Self {
             has_updated_discord_rpc: false,
             player_start_position,
-            world_map: map_renderer,
             player,
+            world_map: map_renderer,
             camera: raylib::camera::Camera2D {
                 target: raylib::math::Vector2 { x: 0.0, y: 0.0 },
                 offset: raylib::math::Vector2 { x: 0.0, y: 0.0 },
@@ -349,6 +349,8 @@ impl PlayableScene {
             }
             player.velocity.y = 0.0;
         }
+
+        player.size -= 0.001;
 
         player.size -= 0.001;
 
