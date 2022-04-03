@@ -18,8 +18,8 @@
         }
     },
     "player": {
-        "max_velocity": 3,
-        "acceleration": 2,
+        "max_velocity": 30,
+        "acceleration": 20,
         "deceleration": 1,
         "start_size": 0.8
     }

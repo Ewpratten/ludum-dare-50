@@ -161,6 +161,13 @@ impl PlayableScene {
                 20,
                 Color::GREEN,
             );
+            draw.draw_text(
+                format!("player: ({}, {}) size: {} map: ({}, {})", self.player.position.x,self.player.position.y,self.player.size,self.world_map.get_map_size().x,self.world_map.get_map_size().y).as_str(),
+                10,
+                50,
+                20,
+                Color::GREEN,
+            );
         }
 
         draw.draw_rectangle(draw.get_screen_width() / 2 - 225, 0, 450, 40, Color::WHITE);
@@ -229,41 +236,62 @@ impl PlayableScene {
 
         let velocity_modifier = &player.velocity * delta_time;
 
+        let player_size =
+            (constants.tile_size as f32 * constants.player.start_size * player.size / 2.0) as f32;
+
         player.position.x += velocity_modifier.x;
 
         for i in &self.world_colliders {
-            if player.position.x <= i.position.x + i.size.x
-                && player.position.x + player.size >= i.position.x
-                && player.position.y <= i.position.y + i.size.y
-                && player.position.y + player.size >= i.position.y
+            if player.position.x - player_size <= i.position.x + i.size.x / 2.0
+                && player.position.x + player_size >= i.position.x + i.size.x / 2.0
+                && player.position.y - player_size<= i.position.y + i.size.y / 2.0
+                && player.position.y + player_size >= i.position.y + i.size.x / 2.0
             {
-                player.position.x -= velocity_modifier.x;
-                player.velocity.x = 0;
+                if player.velocity.x < 0.0 {
+                    player.position.x = i.position.x + i.size.x / 2.0 + player_size;
+                } else if player.velocity.x > 0.0 {
+                    player.position.x = i.position.x - i.size.x / 2.0 - player_size;
+                }
+                
+                player.velocity.x = 0.0;
                 break;
             }
         }
 
-        if player.position.x < 0.0 || next_player_position.x > self.world_map.get_map_size().x  * 128.0 {
-            player.position.x -= velocity_modifier.x;
-            player_velocity.x = 0.0;
+        if player.position.x - player_size < 0.0 || player.position.x + player_size > self.world_map.get_map_size().x {
+            if player.velocity.x < 0.0 {
+                player.position.x = player_size;
+            } else if player.velocity.x > 0.0 {
+                player.position.x = self.world_map.get_map_size().x - player_size;
+            }
+            player.velocity.x = 0.0;
         }
 
         player.position.y += velocity_modifier.y;
 
         for i in &self.world_colliders {
-            if player.position.x <= i.position.x + i.size.x
-                && player.position.x + player.size >= i.position.x
-                && player.position.y <= i.position.y + i.size.y
-                && player.position.y + player.size >= i.position.y
+            if player.position.x - player_size <= i.position.x + i.size.x / 2.0
+                && player.position.x + player_size >= i.position.x + i.size.x / 2.0
+                && player.position.y - player_size<= i.position.y + i.size.y / 2.0
+                && player.position.y + player_size >= i.position.y + i.size.x / 2.0
             {
-                player.position.y -= velocity_modifier.y;
+                if player.velocity.y < 0.0 {
+                    player.position.y = i.position.y + i.size.y / 2.0 + player_size;
+                } else if player.velocity.x > 0.0 {
+                    player.position.y = i.position.y - i.size.y / 2.0 - player_size;
+                }
+
                 break;
             }
         }
 
-        if player.position.y < 0.0 || next_player_position.y > self.world_map.get_map_size().y  * 128.0 {
-            player.position.y -= velocity_modifier.y;
-            player_velocity.y = 0.0;
+        if player.position.y + player_size > 0.0 || player.position.y - player_size < -self.world_map.get_map_size().y {
+            if player.velocity.y > 0.0 {
+                player.position.y = -player_size;
+            } else if player.velocity.y < 0.0 {
+                player.position.y = -self.world_map.get_map_size().y + player_size;
+            }
+            player.velocity.y = 0.0;
         }
 
         self.update_camera(raylib);
