@@ -1,5 +1,6 @@
 //! This scene encompasses the main menu system
 
+use chrono::Duration;
 use na::Vector1;
 use nalgebra as na;
 use raylib::{
@@ -23,6 +24,10 @@ pub enum MenuStateSignal {
     DoCredits,
     DoLeaderboard,
     DoPauseMenu,
+    DoIntroCutscene,
+    DoMeltedDeathCutscene { playtime: Duration },
+    DoFinishedCutscene { playtime: Duration },
+    DoOceanCutscene { playtime: Duration },
 }
 
 #[derive(Debug)]
@@ -119,7 +124,7 @@ impl MainMenu {
             draw.draw_text("Start Game", 100, 190, 34, label_colors);
             if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
                 audio_subsystem.play_sound(&global_resources.button_click_sound);
-                return MenuStateSignal::StartGame;
+                return MenuStateSignal::DoIntroCutscene;
             }
         }
 
@@ -364,7 +369,7 @@ impl MainMenu {
                 return MenuStateSignal::QuitGame;
             }
         }
-        // Return MenuStateSignal::StartGame if you want the game to start.
+        // Return MenuStateSignal::DoIntroCutscene if you want the game to start.
         // Otherwise, keep returning MenuStateSignal::DoMainMenu until the player clicks the start button
         return MenuStateSignal::DoMainMenu;
     }

@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-
+use nalgebra as na;
 use raylib::{texture::Texture2D, RaylibHandle, RaylibThread};
 
 use crate::{
@@ -106,10 +106,13 @@ impl WorldObjectPackage {
                     let object_position = reference.get_world_space_position();
 
                     // Convert the collider's position to world space
-                    let world_space_collider = WorldSpaceObjectCollider {
-                        position: object_position + collider.position,
+                    let mut world_space_collider = WorldSpaceObjectCollider {
+                        position: (object_position + collider.position),
                         size: collider.size,
                     };
+
+                    // Invert the Y axis of the collider's position
+                    world_space_collider.position.y = -world_space_collider.position.y;
 
                     // Add the collider to the list
                     world_space_colliders.push(world_space_collider);
