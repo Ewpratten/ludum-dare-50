@@ -181,7 +181,15 @@ impl PlayableScene {
                 Color::GREEN,
             );
             draw.draw_text(
-                format!("player: ({}, {}) size: {} map: ({}, {})", self.player.position.x,self.player.position.y,self.player.size,self.world_map.get_map_size().x,self.world_map.get_map_size().y).as_str(),
+                format!(
+                    "player: ({}, {}) size: {} map: ({}, {})",
+                    self.player.position.x,
+                    self.player.position.y,
+                    self.player.size,
+                    self.world_map.get_map_size().x,
+                    self.world_map.get_map_size().y
+                )
+                .as_str(),
                 10,
                 50,
                 20,
@@ -263,21 +271,24 @@ impl PlayableScene {
         for i in &self.world_colliders {
             if player.position.x - player_size <= i.position.x + i.size.x / 2.0
                 && player.position.x + player_size >= i.position.x + i.size.x / 2.0
-                && player.position.y - player_size<= i.position.y + i.size.y / 2.0
+                && player.position.y - player_size <= i.position.y + i.size.y / 2.0
                 && player.position.y + player_size >= i.position.y + i.size.x / 2.0
             {
-                if player.velocity.x < 0.0 {
-                    player.position.x = i.position.x + i.size.x / 2.0 + player_size;
-                } else if player.velocity.x > 0.0 {
-                    player.position.x = i.position.x - i.size.x / 2.0 - player_size;
-                }
-                
+                // if player.velocity.x < 0.0 {
+                //     player.position.x = i.position.x + i.size.x / 2.0 + player_size;
+                // } else if player.velocity.x > 0.0 {
+                //     player.position.x = i.position.x - i.size.x / 2.0 - player_size;
+                // }
+
+                player.position.x -= velocity_modifier.x;
                 player.velocity.x = 0.0;
                 break;
             }
         }
 
-        if player.position.x - player_size < 0.0 || player.position.x + player_size > self.world_map.get_map_size().x {
+        if player.position.x - player_size < 0.0
+            || player.position.x + player_size > self.world_map.get_map_size().x
+        {
             if player.velocity.x < 0.0 {
                 player.position.x = player_size;
             } else if player.velocity.x > 0.0 {
@@ -291,20 +302,24 @@ impl PlayableScene {
         for i in &self.world_colliders {
             if player.position.x - player_size <= i.position.x + i.size.x / 2.0
                 && player.position.x + player_size >= i.position.x + i.size.x / 2.0
-                && player.position.y - player_size<= i.position.y + i.size.y / 2.0
+                && player.position.y - player_size <= i.position.y + i.size.y / 2.0
                 && player.position.y + player_size >= i.position.y + i.size.x / 2.0
             {
                 if player.velocity.y < 0.0 {
                     player.position.y = i.position.y + i.size.y / 2.0 + player_size;
-                } else if player.velocity.x > 0.0 {
+                } else if player.velocity.y > 0.0 {
                     player.position.y = i.position.y - i.size.y / 2.0 - player_size;
                 }
+                player.position.y -= velocity_modifier.y;
+                player.velocity.y = 0.0;
 
                 break;
             }
         }
 
-        if player.position.y + player_size > 0.0 || player.position.y - player_size < -self.world_map.get_map_size().y {
+        if player.position.y + player_size > 0.0
+            || player.position.y - player_size < -self.world_map.get_map_size().y
+        {
             if player.velocity.y > 0.0 {
                 player.position.y = -player_size;
             } else if player.velocity.y < 0.0 {
