@@ -10,11 +10,15 @@
 //! The resources are loaded via [`asset_manager`](./asset_manager/index.html) in their own thread so we do not block the renderer.
 
 use poll_promise::Promise;
-use raylib::{RaylibHandle, RaylibThread};
+use raylib::{RaylibHandle, RaylibThread, audio::Sound};
+
+use crate::asset_manager::load_sound_from_internal_data;
 
 /// Global resource package
 #[derive(Debug)]
-pub struct GlobalResources {}
+pub struct GlobalResources {
+    pub button_click_sound: Sound
+}
 
 impl GlobalResources {
     /// Load the resources (**blocking**)
@@ -24,6 +28,12 @@ impl GlobalResources {
         raylib: &mut RaylibHandle,
         rl_thread: &RaylibThread,
     ) -> Self {
-        Self {}
+
+        // Load the button click sound
+        let button_click_sound = load_sound_from_internal_data("assets/audio/button_click.ogg").unwrap();
+
+        Self {
+            button_click_sound
+        }
     }
 }

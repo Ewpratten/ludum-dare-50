@@ -37,11 +37,8 @@ impl SceneRenderDelegate {
         raylib: &mut RaylibHandle,
         rl_thread: &RaylibThread,
         constants: &ProjectConstants,
+        audio_subsystem: RaylibAudio,
     ) -> Self {
-        // Set up audio
-        let audio_subsystem = RaylibAudio::init_audio_device();
-        audio_subsystem.set_master_volume(0.4);
-
         // Init some scenes
         let scene_test_fox = TestFoxScene::new(raylib, rl_thread);
         let scene_playable = PlayableScene::new(raylib, rl_thread, constants);
@@ -68,12 +65,18 @@ impl SceneRenderDelegate {
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
     ) {
-
         // Render the main menu if in it, otherwise, render the game
         match self.menu_control_signal {
             MenuStateSignal::StartGame => {
                 self.scene_playable
-                    .render_frame(raylib, rl_thread, &discord, global_resources, constants, &mut self.audio_subsystem)
+                    .render_frame(
+                        raylib,
+                        rl_thread,
+                        &discord,
+                        global_resources,
+                        constants,
+                        &mut self.audio_subsystem,
+                    )
                     .await;
                 self.scene_playable.update_physics(raylib, constants).await;
 
@@ -86,7 +89,14 @@ impl SceneRenderDelegate {
             MenuStateSignal::DoMainMenu => {
                 self.menu_control_signal = self
                     .scene_main_menu
-                    .render_main_menu_frame(raylib, rl_thread, discord, global_resources, constants)
+                    .render_main_menu_frame(
+                        raylib,
+                        rl_thread,
+                        discord,
+                        global_resources,
+                        constants,
+                        &mut self.audio_subsystem,
+                    )
                     .await;
 
                 // Clear the ingame discord status
@@ -101,7 +111,14 @@ impl SceneRenderDelegate {
             MenuStateSignal::DoCredits => {
                 self.menu_control_signal = self
                     .scene_main_menu
-                    .render_credits_frame(raylib, rl_thread, discord, global_resources, constants)
+                    .render_credits_frame(
+                        raylib,
+                        rl_thread,
+                        discord,
+                        global_resources,
+                        constants,
+                        &mut self.audio_subsystem,
+                    )
                     .await
             }
             MenuStateSignal::DoLeaderboard => {
@@ -113,6 +130,7 @@ impl SceneRenderDelegate {
                         discord,
                         global_resources,
                         constants,
+                        &mut self.audio_subsystem,
                     )
                     .await
             }

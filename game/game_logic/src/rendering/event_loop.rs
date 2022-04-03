@@ -14,6 +14,7 @@ use crate::project_constants::ProjectConstants;
 use crate::rendering::core_renderer_sm::{PreloadState, RenderBackendStates};
 use crate::rendering::screens::sm_failure_screen;
 use crate::scenes::SceneRenderDelegate;
+use raylib::audio::RaylibAudio;
 use raylib::consts::KeyboardKey;
 use raylib::prelude::RaylibDraw;
 use raylib::RaylibBuilder;
@@ -42,13 +43,22 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
     raylib_handle.set_exit_key(None);
     raylib_handle.set_target_fps(target_frames_per_second);
 
+    // Set up audio
+    debug!("Set up Audio");
+    let audio_subsystem = RaylibAudio::init_audio_device();
+    audio_subsystem.set_master_volume(0.4);
+
     // Set up the internal screens
     let mut loading_screen = crate::rendering::screens::loading_screen::LoadingScreen::new();
     let mut sm_failure_screen = sm_failure_screen::SmFailureScreen::new();
 
     // Set up the main render delegate
-    let mut render_delegate =
-        SceneRenderDelegate::on_game_start(&mut raylib_handle, &raylib_thread, constants);
+    let mut render_delegate = SceneRenderDelegate::on_game_start(
+        &mut raylib_handle,
+        &raylib_thread,
+        constants,
+        audio_subsystem,
+    );
 
     // Handle loading the resources and rendering the loading screen
     log::trace!("Running event loop");

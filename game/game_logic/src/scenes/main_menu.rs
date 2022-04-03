@@ -49,6 +49,7 @@ impl MainMenu {
         discord: &DiscordChannel,
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
+        audio_subsystem: &mut RaylibAudio,
     ) -> MenuStateSignal {
         // Handle updating discord RPC
         if !self.has_updated_discord_rpc {
@@ -88,7 +89,7 @@ impl MainMenu {
 
         //Initial Option placeholder words in the main menu
         draw.draw_text("Game Title", 100, 90, 60, label_colors);
-        draw.draw_text("Start Game", 100, 190, 34, label_colors);  
+        draw.draw_text("Start Game", 100, 190, 34, label_colors);
         draw.draw_text("Credits", 100, 410, 34, label_colors);
         draw.draw_text("Leaderboard", 100, 470, 34, label_colors);
         draw.draw_text("Exit", 100, 550, 34, label_colors);
@@ -99,6 +100,7 @@ impl MainMenu {
             draw.draw_text("Start Game", 103, 191, 34, label_shadow_colors);
             draw.draw_text("Start Game", 100, 190, 34, label_colors);
             if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
+                audio_subsystem.play_sound(&global_resources.button_click_sound);
                 return MenuStateSignal::StartGame;
             }
         }
@@ -107,6 +109,7 @@ impl MainMenu {
             draw.draw_text("Credits", 103, 411, 34, label_shadow_colors);
             draw.draw_text("Credits", 100, 410, 34, label_colors);
             if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
+                audio_subsystem.play_sound(&global_resources.button_click_sound);
                 return MenuStateSignal::DoCredits;
             }
         }
@@ -114,6 +117,7 @@ impl MainMenu {
             draw.draw_text("Leaderboard", 103, 471, 34, label_shadow_colors);
             draw.draw_text("Leaderboard", 100, 470, 34, label_colors);
             if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
+                audio_subsystem.play_sound(&global_resources.button_click_sound);
                 return MenuStateSignal::DoLeaderboard;
             }
         }
@@ -127,8 +131,24 @@ impl MainMenu {
         let button_shadow_color = Color::new(123, 201, 244, 255);
 
         //Inner pieces of the controller
-        draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 275.0, 235.0, 0, tile_color);//tile1
-        draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 225.0, 185.0, 0, tile_color);//tile2
+        draw.draw_ring(
+            Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+            50.0,
+            15.0,
+            275.0,
+            235.0,
+            0,
+            tile_color,
+        ); //tile1
+        draw.draw_ring(
+            Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+            50.0,
+            15.0,
+            225.0,
+            185.0,
+            0,
+            tile_color,
+        ); //tile2
 
         //- button
         draw.draw_rectangle(window_width - 133, window_height - 128, 21, 5, button_color);
@@ -137,64 +157,188 @@ impl MainMenu {
         draw.draw_rectangle(window_width - 70, window_height - 128, 21, 5, button_color); //horizontal line
 
         //Drawing external ring and internal ring
-        draw.draw_ring_lines(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 315.0, 45.0, 1, outer_ring_color);//Outer
-        draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 275.0, 85.0, 1, inner_ring_color);//Inner
+        draw.draw_ring_lines(
+            Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+            50.0,
+            15.0,
+            315.0,
+            45.0,
+            1,
+            outer_ring_color,
+        ); //Outer
+        draw.draw_ring(
+            Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+            50.0,
+            15.0,
+            275.0,
+            85.0,
+            1,
+            inner_ring_color,
+        ); //Inner
 
         //Tiles shown depending on volume_percentage's value
         if self.volume_percentage == 1.0 {
-            draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 125.0, 85.0, 0, tile_color);//tile4
-            draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 175.0, 135.0, 0, tile_color);//tile3
-            draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 225.0, 185.0, 0, tile_color);//tile2
-            draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 275.0, 235.0, 0, tile_color);//tile1
+            draw.draw_ring(
+                Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+                50.0,
+                15.0,
+                125.0,
+                85.0,
+                0,
+                tile_color,
+            ); //tile4
+            draw.draw_ring(
+                Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+                50.0,
+                15.0,
+                175.0,
+                135.0,
+                0,
+                tile_color,
+            ); //tile3
+            draw.draw_ring(
+                Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+                50.0,
+                15.0,
+                225.0,
+                185.0,
+                0,
+                tile_color,
+            ); //tile2
+            draw.draw_ring(
+                Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+                50.0,
+                15.0,
+                275.0,
+                235.0,
+                0,
+                tile_color,
+            ); //tile1
         } else if self.volume_percentage == 0.75 {
-            draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 175.0, 135.0, 0, tile_color);//tile3
-            draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 225.0, 185.0, 0, tile_color);//tile2
-            draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 275.0, 235.0, 0, tile_color);//tile1
+            draw.draw_ring(
+                Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+                50.0,
+                15.0,
+                175.0,
+                135.0,
+                0,
+                tile_color,
+            ); //tile3
+            draw.draw_ring(
+                Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+                50.0,
+                15.0,
+                225.0,
+                185.0,
+                0,
+                tile_color,
+            ); //tile2
+            draw.draw_ring(
+                Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+                50.0,
+                15.0,
+                275.0,
+                235.0,
+                0,
+                tile_color,
+            ); //tile1
         } else if self.volume_percentage == 0.5 {
-            draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 225.0, 185.0, 0, tile_color);//tile2
-            draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 275.0, 235.0, 0, tile_color);//tile1
+            draw.draw_ring(
+                Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+                50.0,
+                15.0,
+                225.0,
+                185.0,
+                0,
+                tile_color,
+            ); //tile2
+            draw.draw_ring(
+                Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+                50.0,
+                15.0,
+                275.0,
+                235.0,
+                0,
+                tile_color,
+            ); //tile1
         } else if self.volume_percentage == 0.25 {
-            draw.draw_ring(Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0), 50.0, 15.0, 275.0, 235.0, 0, tile_color);//tile1
+            draw.draw_ring(
+                Vector2::new((window_width as f32) - 90.0, (window_height as f32) - 140.0),
+                50.0,
+                15.0,
+                275.0,
+                235.0,
+                0,
+                tile_color,
+            ); //tile1
         } else if self.volume_percentage == 0.0 {
-            
         }
 
         //- Button functionality
-        if mouse_x >= (window_width - 133) && mouse_y >= (window_height - 135) && mouse_x <= (window_width - 112) && mouse_y <= (window_height - 115) {
-            draw.draw_rectangle(window_width - 130, window_height - 127, 21, 5, button_shadow_color);
+        if mouse_x >= (window_width - 133)
+            && mouse_y >= (window_height - 135)
+            && mouse_x <= (window_width - 112)
+            && mouse_y <= (window_height - 115)
+        {
+            draw.draw_rectangle(
+                window_width - 130,
+                window_height - 127,
+                21,
+                5,
+                button_shadow_color,
+            );
             draw.draw_rectangle(window_width - 133, window_height - 128, 21, 5, button_color);
 
             if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
+                audio_subsystem.play_sound(&global_resources.button_click_sound);
                 if self.volume_percentage <= 1.0 && self.volume_percentage > 0.0 {
-                   self.volume_percentage = self.volume_percentage - 0.25
-                } else if self.volume_percentage <= 0.0{
+                    self.volume_percentage = self.volume_percentage - 0.25
+                } else if self.volume_percentage <= 0.0 {
                     self.volume_percentage = 0.0;
                 }
             }
         }
 
         // + Button functionallity
-        if mouse_x >= (window_width - 70) && mouse_y >= (window_height - 135) && mouse_x <= (window_width - 49) && mouse_y <= (window_height - 115) {
-            draw.draw_rectangle(window_width - 59, window_height - 134, 5, 20, button_shadow_color);//Vertical Line
-            draw.draw_rectangle(window_width - 67, window_height - 127, 21, 5, button_shadow_color);
+        if mouse_x >= (window_width - 70)
+            && mouse_y >= (window_height - 135)
+            && mouse_x <= (window_width - 49)
+            && mouse_y <= (window_height - 115)
+        {
+            draw.draw_rectangle(
+                window_width - 59,
+                window_height - 134,
+                5,
+                20,
+                button_shadow_color,
+            ); //Vertical Line
+            draw.draw_rectangle(
+                window_width - 67,
+                window_height - 127,
+                21,
+                5,
+                button_shadow_color,
+            );
 
             draw.draw_rectangle(window_width - 62, window_height - 135, 5, 20, button_color); // vertical line
             draw.draw_rectangle(window_width - 70, window_height - 128, 21, 5, button_color); //horizontal line
-            
+
             if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
+                audio_subsystem.play_sound(&global_resources.button_click_sound);
                 if self.volume_percentage < 1.0 && self.volume_percentage >= 0.0 {
-                   self.volume_percentage = self.volume_percentage + 0.25
-                } else if self.volume_percentage <= 0.0{
+                    self.volume_percentage = self.volume_percentage + 0.25
+                } else if self.volume_percentage <= 0.0 {
                     self.volume_percentage = 0.0;
                 }
             }
         }
-        
+
         //Exit button
         if mouse_x >= 100 && mouse_y >= 550 && mouse_x <= 162 && mouse_y <= 575 {
             draw.draw_text("Exit", 103, 551, 34, label_shadow_colors);
             draw.draw_text("Exit", 100, 550, 34, label_colors);
             if draw.is_mouse_button_pressed(MouseButton::MOUSE_LEFT_BUTTON) {
+                audio_subsystem.play_sound(&global_resources.button_click_sound);
                 return MenuStateSignal::QuitGame;
             }
         }
@@ -211,7 +355,6 @@ impl MainMenu {
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
     ) -> MenuStateSignal {
-
         //Options Errased, Block of code left for precaution
         return MenuStateSignal::DoMainMenu;
     }
@@ -223,6 +366,7 @@ impl MainMenu {
         discord: &DiscordChannel,
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
+        audio_subsystem: &mut RaylibAudio,
     ) -> MenuStateSignal {
         //Colors
         let label_colors = Color::BLACK;
@@ -234,7 +378,7 @@ impl MainMenu {
         //Mouse Position
         let mouse_x = draw.get_mouse_x();
         let mouse_y = draw.get_mouse_y();
-        
+
         //TODO Errase in the end Show mouse position
         draw.draw_text(&mouse_x.to_string(), 20, 5, 20, Color::BLACK);
         draw.draw_text(&mouse_y.to_string(), 70, 5, 20, Color::BLACK);
@@ -243,27 +387,86 @@ impl MainMenu {
         let window_height = draw.get_screen_height();
         let window_width = draw.get_screen_width();
 
-        draw.draw_text("Credits", (window_width/2) - 100, 30, 55, label_colors);
+        draw.draw_text("Credits", (window_width / 2) - 100, 30, 55, label_colors);
 
-        draw.draw_text("Carter Tomlenovich", (window_width/2) - 170, 120, 40, credits_colours);
-        draw.draw_text("Emilia Firas", (window_width/2) - 170, 160, 40, credits_colours);
-        draw.draw_text("Emmet Logue", (window_width/2) - 170, 200, 40, credits_colours);
-        draw.draw_text("Evan Pratten", (window_width/2) - 170, 240, 40, credits_colours);
-        draw.draw_text("James Nickoli", (window_width/2) - 170, 280, 40, credits_colours);
-        draw.draw_text("Marcelo Geldres", (window_width/2) - 170, 320, 40, credits_colours);
-        draw.draw_text("Percy", (window_width/2) - 170, 360, 40, credits_colours);
-        draw.draw_text("Silas Bartha", (window_width/2) - 170, 400, 40, credits_colours);
-        draw.draw_text("Taya Armstrong", (window_width/2) - 170, 440, 40, credits_colours);
+        draw.draw_text(
+            "Carter Tomlenovich",
+            (window_width / 2) - 170,
+            120,
+            40,
+            credits_colours,
+        );
+        draw.draw_text(
+            "Emilia Firas",
+            (window_width / 2) - 170,
+            160,
+            40,
+            credits_colours,
+        );
+        draw.draw_text(
+            "Emmet Logue",
+            (window_width / 2) - 170,
+            200,
+            40,
+            credits_colours,
+        );
+        draw.draw_text(
+            "Evan Pratten",
+            (window_width / 2) - 170,
+            240,
+            40,
+            credits_colours,
+        );
+        draw.draw_text(
+            "James Nickoli",
+            (window_width / 2) - 170,
+            280,
+            40,
+            credits_colours,
+        );
+        draw.draw_text(
+            "Marcelo Geldres",
+            (window_width / 2) - 170,
+            320,
+            40,
+            credits_colours,
+        );
+        draw.draw_text("Percy", (window_width / 2) - 170, 360, 40, credits_colours);
+        draw.draw_text(
+            "Silas Bartha",
+            (window_width / 2) - 170,
+            400,
+            40,
+            credits_colours,
+        );
+        draw.draw_text(
+            "Taya Armstrong",
+            (window_width / 2) - 170,
+            440,
+            40,
+            credits_colours,
+        );
 
         //Return button variables
         let button_pos_x = 100; //116 Wide
-        let button_pos_y = window_height - (window_height/5); //26 height
+        let button_pos_y = window_height - (window_height / 5); //26 height
 
         draw.draw_text("Return", button_pos_x, button_pos_y, 34, label_colors);
-        if mouse_x >= 100 && mouse_y >= button_pos_y && mouse_x <= 216 && mouse_y <= (window_height - (window_height/5)) + 26 {
-            draw.draw_text("Return", button_pos_x + 3, button_pos_y + 1, 34, label_shadow_colors);
+        if mouse_x >= 100
+            && mouse_y >= button_pos_y
+            && mouse_x <= 216
+            && mouse_y <= (window_height - (window_height / 5)) + 26
+        {
+            draw.draw_text(
+                "Return",
+                button_pos_x + 3,
+                button_pos_y + 1,
+                34,
+                label_shadow_colors,
+            );
             draw.draw_text("Return", button_pos_x, button_pos_y, 34, label_colors);
             if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+                audio_subsystem.play_sound(&global_resources.button_click_sound);
                 return MenuStateSignal::DoMainMenu; //Goes back to main menu
             }
         }
@@ -278,8 +481,8 @@ impl MainMenu {
         discord: &DiscordChannel,
         global_resources: &GlobalResources,
         constants: &ProjectConstants,
+        audio_subsystem: &mut RaylibAudio,
     ) -> MenuStateSignal {
-
         //Colors
         let label_colors = Color::BLACK;
         let label_shadow_colors = Color::GRAY;
@@ -299,17 +502,34 @@ impl MainMenu {
         draw.draw_text(&mouse_y.to_string(), 70, 5, 20, Color::BLACK);
 
         let window_width = draw.get_screen_width();
-        draw.draw_text("Leaderboard", (window_width/2) - 176, 30, 55, label_colors);
+        draw.draw_text(
+            "Leaderboard",
+            (window_width / 2) - 176,
+            30,
+            55,
+            label_colors,
+        );
 
         //Return button variables
         let button_pos_x = 100; //116 Wide
-        let button_pos_y = window_height - (window_height/5); //26 height
+        let button_pos_y = window_height - (window_height / 5); //26 height
 
         draw.draw_text("Return", button_pos_x, button_pos_y, 34, label_colors);
-        if mouse_x >= 100 && mouse_y >= button_pos_y && mouse_x <= 216 && mouse_y <= (window_height - (window_height/5)) + 26 {
-            draw.draw_text("Return", button_pos_x + 3, button_pos_y + 1, 34, label_shadow_colors);
+        if mouse_x >= 100
+            && mouse_y >= button_pos_y
+            && mouse_x <= 216
+            && mouse_y <= (window_height - (window_height / 5)) + 26
+        {
+            draw.draw_text(
+                "Return",
+                button_pos_x + 3,
+                button_pos_y + 1,
+                34,
+                label_shadow_colors,
+            );
             draw.draw_text("Return", button_pos_x, button_pos_y, 34, label_colors);
             if draw.is_mouse_button_down(MouseButton::MOUSE_LEFT_BUTTON) {
+                audio_subsystem.play_sound(&global_resources.button_click_sound);
                 return MenuStateSignal::DoMainMenu; //Goes back to main menu
             }
         }
