@@ -460,4 +460,69 @@ impl MapRenderer {
             }
         }
     }
+
+    /// Used to modify the player's velocity based on the effects of the world
+    pub fn effect_velocity_with_collisions(
+        &self,
+        player_position: na::Vector2<f32>,
+        player_velocity: na::Vector2<f32>,
+    ) -> na::Vector2<f32> {
+        // If the player is not moving, we don't need to do anything
+        if player_velocity.norm() == 0.0 {
+            return player_velocity;
+        }
+
+        // Get the velocity unit vector
+        let player_velocity_unit_vector = player_velocity.normalize();
+
+        // Find the position 1 pixel infront of the player
+        let player_position_1_pixel_infront = player_position + player_velocity_unit_vector;
+
+        // Check if this is in the collision zone of any objects
+        for obj_ref in &self.world_objects.object_references {
+            // Filter out anything more than 1000 pixels away
+            if (obj_ref.position - player_position).norm() > 1000.0 {
+                continue;
+            }
+
+            // Get the object definition
+            let object_key = format!("{}:{}", obj_ref.kind, obj_ref.name);
+            let obj_def = self
+                .world_objects
+                .object_definitions
+                .get(&object_key)
+                .unwrap();
+
+            // Check if the player is about to be in a collision zone
+            for collider in &obj_def.physics_colliders {
+                // Handle a radius collider vs a size collider
+                if let Some(radius) = collider.radius {
+                    // if (player_position_1_pixel_infront - obj_ref.position).norm() <= radius {
+                    //     // We are in a collision zone. Only allow the player to move away from the object
+                    //     let player_to_object_vector = obj_ref.position - player_position;
+                    // }
+                } else if let Some(size) = collider.size {
+                }
+            }
+        }
+
+        // Check if the player is about to leave the map
+        let next_player_position = player_position + player_velocity;
+        let mut player_velocity = player_velocity;
+        if next_player_position.x < 0.0 {
+            player_velocity.x = 0.0;
+        } 
+        else if next_player_position.x > self.map.width as f32 * 128.0 {
+            player_velocity.x = 0.0;
+        }
+        if next_player_position.y > 0.0 {
+            player_velocity.y = 0.0;
+        } 
+        else if next_player_position.y < self.map.height as f32 * -128.0 {
+            player_velocity.y = 0.0;
+        }
+
+        // If we got here, the player is not in a collision zone
+        player_velocity
+    }
 }
