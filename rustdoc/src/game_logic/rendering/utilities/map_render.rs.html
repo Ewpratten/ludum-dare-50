@@ -568,6 +568,36 @@
 <span id="566">566</span>
 <span id="567">567</span>
 <span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashMap</span>, <span class="ident">path::PathBuf</span>, <span class="ident">sync::Arc</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -650,6 +680,7 @@
     <span class="ident">tile_textures</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">Texture2D</span><span class="op">&gt;</span>,
     <span class="ident">world_objects</span>: <span class="ident">WorldObjectPackage</span>,
     <span class="ident">world_end</span>: <span class="ident">na::Vector2</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
+    <span class="ident">cup_icon</span>: <span class="ident">Texture2D</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">MapRenderer</span> {
@@ -670,6 +701,14 @@
         <span class="comment">// Attempt to parse the TMX file</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">loader</span> <span class="op">=</span> <span class="ident">Loader::with_cache</span>(<span class="ident">ProgramDataTileCache::new</span>());
         <span class="kw">let</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">loader</span>.<span class="ident">load_tmx_map_from</span>(<span class="ident">data</span>.<span class="ident">as_slice</span>(), <span class="ident">tmx_path</span>)<span class="question-mark">?</span>;
+
+        <span class="comment">// Load the cup icon</span>
+        <span class="kw">let</span> <span class="ident">cup_icon</span> <span class="op">=</span> <span class="ident">load_texture_from_internal_data</span>(
+            <span class="ident">raylib</span>,
+            <span class="ident">raylib_thread</span>,
+            <span class="string">&quot;assets/prp/prp_cupIcon/prp_cupIcon.png&quot;</span>,
+        )
+        .<span class="ident">unwrap</span>();
 
         <span class="comment">// Iterate over all images in the map</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tile_textures</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
@@ -702,6 +741,7 @@
             <span class="ident">tile_textures</span>,
             <span class="ident">world_objects</span>,
             <span class="ident">world_end</span>,
+            <span class="ident">cup_icon</span>,
         })
     }
 
@@ -1060,81 +1100,101 @@
         <span class="comment">// Convert the position to a tile position</span>
         <span class="kw">let</span> <span class="ident">tile_x</span> <span class="op">=</span> (<span class="ident">position</span>.<span class="ident">x</span> <span class="op">/</span> <span class="number">128.0</span>).<span class="ident">floor</span>() <span class="kw">as</span> <span class="ident">i32</span>;
         <span class="kw">let</span> <span class="ident">tile_y</span> <span class="op">=</span> ((<span class="ident">position</span>.<span class="ident">y</span> <span class="op">*</span> <span class="op">-</span><span class="number">1.0</span>) <span class="op">/</span> <span class="number">128.0</span>).<span class="ident">floor</span>() <span class="kw">as</span> <span class="ident">i32</span>;
-        <span class="macro">debug!</span>(<span class="string">&quot;Tile x: {}, y: {}&quot;</span>, <span class="ident">tile_x</span>, <span class="ident">tile_y</span>);
+        <span class="comment">// debug!(&quot;Tile x: {}, y: {}&quot;, tile_x, tile_y);</span>
 
         <span class="comment">// Check if the tile is inside the win zone</span>
         <span class="ident">tile_x</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">world_end</span>.<span class="ident">x</span> <span class="op">&amp;&amp;</span> <span class="ident">tile_y</span> <span class="op">==</span> <span class="self">self</span>.<span class="ident">world_end</span>.<span class="ident">y</span>
     }
 
-    <span class="comment">// /// Used to modify the player&#39;s velocity based on the effects of the world</span>
-    <span class="comment">// pub fn effect_velocity_with_collisions(</span>
-    <span class="comment">//     &amp;self,</span>
-    <span class="comment">//     player_position: na::Vector2&lt;f32&gt;,</span>
-    <span class="comment">//     player_velocity: na::Vector2&lt;f32&gt;,</span>
-    <span class="comment">// ) -&gt; na::Vector2&lt;f32&gt; {</span>
-    <span class="comment">//     // If the player is not moving, we don&#39;t need to do anything</span>
-    <span class="comment">//     if player_velocity.norm() == 0.0 {</span>
-    <span class="comment">//         return player_velocity;</span>
-    <span class="comment">//     }</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_screenspace_vector_to_win_zone</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">draw</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibDrawHandle</span>,
+        <span class="ident">screen_center</span>: <span class="ident">na::Vector2</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>,
+        <span class="ident">camera</span>: <span class="kw-2">&amp;</span><span class="ident">Camera2D</span>,
+    ) -&gt; <span class="ident">na::Vector2</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">win_zone_position_world_space</span> <span class="op">=</span> <span class="ident">Vector2::new</span>(
+            <span class="self">self</span>.<span class="ident">world_end</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">*</span> <span class="number">128.0</span>,
+            (<span class="self">self</span>.<span class="ident">world_end</span>.<span class="ident">y</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">*</span> <span class="op">-</span><span class="number">1.0</span>) <span class="op">*</span> <span class="number">128.0</span>,
+        );
+        <span class="kw">let</span> <span class="ident">win_zone_position_screenspace</span> <span class="op">=</span>
+            <span class="ident">draw</span>.<span class="ident">get_world_to_screen2D</span>(<span class="ident">win_zone_position_world_space</span>, <span class="ident">camera</span>);
+        <span class="ident">na::Vector2::new</span>(
+            <span class="ident">win_zone_position_screenspace</span>.<span class="ident">x</span> <span class="op">-</span> <span class="ident">screen_center</span>.<span class="ident">x</span>,
+            <span class="ident">win_zone_position_screenspace</span>.<span class="ident">y</span> <span class="op">-</span> <span class="ident">screen_center</span>.<span class="ident">y</span>,
+        )
+    }
 
-    <span class="comment">//     // Get the velocity unit vector</span>
-    <span class="comment">//     let player_velocity_unit_vector = player_velocity.normalize();</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">render_hud_endgoal_arrow</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">draw</span>: <span class="kw-2">&amp;mut</span> <span class="ident">RaylibDrawHandle</span>,
+        <span class="ident">player_position</span>: <span class="ident">na::Vector2</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>,
+        <span class="ident">camera</span>: <span class="kw-2">&amp;</span><span class="ident">Camera2D</span>,
+    ) {
+        <span class="comment">// Get the center of the screen</span>
+        <span class="kw">let</span> <span class="ident">screen_center</span> <span class="op">=</span> <span class="ident">na::Vector2::new</span>(
+            <span class="ident">draw</span>.<span class="ident">get_screen_width</span>() <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>,
+            <span class="ident">draw</span>.<span class="ident">get_screen_height</span>() <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>,
+        );
 
-    <span class="comment">//     // Find the position 1 pixel infront of the player</span>
-    <span class="comment">//     let player_position_1_pixel_infront = player_position + player_velocity_unit_vector;</span>
-    <span class="comment">//     let next_player_position = player_position + player_velocity;</span>
+        <span class="comment">// Get the vector to the win zone</span>
+        <span class="kw">let</span> <span class="ident">vector_to_win_zone</span> <span class="op">=</span>
+            <span class="self">self</span>.<span class="ident">get_screenspace_vector_to_win_zone</span>(<span class="ident">draw</span>, <span class="ident">screen_center</span>, <span class="ident">camera</span>);
+        <span class="kw">let</span> <span class="ident">unit_vector_to_win_zone</span> <span class="op">=</span> <span class="ident">vector_to_win_zone</span>.<span class="ident">normalize</span>();
 
-    <span class="comment">//     // Check if this is in the collision zone of any objects</span>
-    <span class="comment">//     for obj_ref in &amp;self.world_objects.object_references {</span>
-    <span class="comment">//         // Filter out anything more than 1000 pixels away</span>
-    <span class="comment">//         if (obj_ref.position - player_position).norm() &gt; 1000.0 {</span>
-    <span class="comment">//             continue;</span>
-    <span class="comment">//         }</span>
+        <span class="comment">// Get the screenspace position of the win zone</span>
+        <span class="kw">let</span> <span class="ident">win_zone_position_screenspace</span> <span class="op">=</span> <span class="ident">draw</span>.<span class="ident">get_world_to_screen2D</span>(
+            <span class="ident">Vector2::new</span>(
+                <span class="self">self</span>.<span class="ident">world_end</span>.<span class="ident">x</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">*</span> <span class="number">128.0</span>,
+                (<span class="self">self</span>.<span class="ident">world_end</span>.<span class="ident">y</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">*</span> <span class="op">-</span><span class="number">1.0</span>) <span class="op">*</span> <span class="number">128.0</span>,
+            ),
+            <span class="ident">camera</span>,
+        );
 
-    <span class="comment">//         // Get the object definition</span>
-    <span class="comment">//         let object_key =  obj_ref.into_key();</span>
-    <span class="comment">//         let obj_def = self</span>
-    <span class="comment">//             .world_objects</span>
-    <span class="comment">//             .object_definitions</span>
-    <span class="comment">//             .get(&amp;object_key)</span>
-    <span class="comment">//             .unwrap();</span>
+        <span class="comment">// If the win zone is inside the camera&#39;s view, don&#39;t render the arrow</span>
+        <span class="kw">if</span> <span class="op">!</span>(<span class="ident">win_zone_position_screenspace</span>.<span class="ident">x</span> <span class="op">&lt;</span> <span class="number">0.0</span>
+            <span class="op">|</span><span class="op">|</span> <span class="ident">win_zone_position_screenspace</span>.<span class="ident">x</span> <span class="op">&gt;</span> <span class="ident">draw</span>.<span class="ident">get_screen_width</span>() <span class="kw">as</span> <span class="ident">f32</span>
+            <span class="op">|</span><span class="op">|</span> <span class="ident">win_zone_position_screenspace</span>.<span class="ident">y</span> <span class="op">&lt;</span> <span class="number">0.0</span>
+            <span class="op">|</span><span class="op">|</span> <span class="ident">win_zone_position_screenspace</span>.<span class="ident">y</span> <span class="op">&gt;</span> <span class="ident">draw</span>.<span class="ident">get_screen_height</span>() <span class="kw">as</span> <span class="ident">f32</span>)
+        {
+            <span class="kw">return</span>;
+        }
 
-    <span class="comment">//         // Check if the player is about to be in a collision zone</span>
-    <span class="comment">//         for collider in &amp;obj_def.physics_colliders {</span>
-    <span class="comment">//             // Handle a radius collider vs a size collider</span>
-    <span class="comment">//             if let Some(radius) = collider.radius {</span>
-    <span class="comment">//                 // Check if we are about to collide with the circle</span>
-    <span class="comment">//                 if (next_player_position - obj_ref.position).norm() &lt; radius {</span>
-    <span class="comment">//                     // Get the angle from the player to the center of the collider</span>
-    <span class="comment">//                     let angle_to_center =</span>
-    <span class="comment">//                         (obj_ref.position - player_position).angle(&amp;na::Vector2::new(0.0, 0.0));</span>
-    <span class="comment">//                     if angle_to_center.abs() &lt;= std::f32::consts::FRAC_PI_2 {</span>
-    <span class="comment">//                         // Apply the inverse of the velocity to the player</span>
-    <span class="comment">//                         return na::Vector2::zeros();</span>
-    <span class="comment">//                     }</span>
-    <span class="comment">//                 }</span>
-    <span class="comment">//             } else if let Some(size) = collider.size {</span>
-    <span class="comment">//                 // TODO: make this work for regular and rotated objects</span>
-    <span class="comment">//             }</span>
-    <span class="comment">//         }</span>
-    <span class="comment">//     }</span>
+        <span class="comment">// // Draw the line</span>
+        <span class="comment">// draw.draw_line(</span>
+        <span class="comment">//     screen_center.x as i32,</span>
+        <span class="comment">//     screen_center.y as i32,</span>
+        <span class="comment">//     (win_zone_position_screenspace.x + unit_vector_to_win_zone.x * 32.0) as i32,</span>
+        <span class="comment">//     (win_zone_position_screenspace.y + unit_vector_to_win_zone.y * 32.0) as i32,</span>
+        <span class="comment">//     Color::RED,</span>
+        <span class="comment">// );</span>
 
-    <span class="comment">//     // Check if the player is about to leave the map</span>
-    <span class="comment">//     let mut player_velocity = player_velocity;</span>
-    <span class="comment">//     if next_player_position.x &lt; 0.0 {</span>
-    <span class="comment">//         player_velocity.x = 0.0;</span>
-    <span class="comment">//     } else if next_player_position.x &gt; self.map.width as f32 * 128.0 {</span>
-    <span class="comment">//         player_velocity.x = 0.0;</span>
-    <span class="comment">//     }</span>
-    <span class="comment">//     if next_player_position.y &gt; 0.0 {</span>
-    <span class="comment">//         player_velocity.y = 0.0;</span>
-    <span class="comment">//     } else if next_player_position.y &lt; self.map.height as f32 * -128.0 {</span>
-    <span class="comment">//         player_velocity.y = 0.0;</span>
-    <span class="comment">//     }</span>
+        <span class="comment">// // Define the screen rect</span>
+        <span class="comment">// let screen_rect = Rectangle {</span>
+        <span class="comment">//     x: 0.0,</span>
+        <span class="comment">//     y: 0.0,</span>
+        <span class="comment">//     width: draw.get_screen_width() as f32,</span>
+        <span class="comment">//     height: draw.get_screen_height() as f32,</span>
+        <span class="comment">// };</span>
 
-    <span class="comment">//     // If we got here, the player is not in a collision zone</span>
-    <span class="comment">//     player_velocity</span>
-    <span class="comment">// }</span>
+        <span class="comment">// Find the intersection of the line and the screen edge</span>
+        <span class="kw">let</span> <span class="ident">intersect</span> <span class="op">=</span> <span class="ident">unit_vector_to_win_zone</span> <span class="op">*</span> (<span class="ident">draw</span>.<span class="ident">get_screen_height</span>() <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="number">2.0</span>);
+
+        <span class="comment">// Render the cup icon</span>
+        <span class="ident">draw</span>.<span class="ident">draw_texture</span>(
+            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cup_icon</span>,
+            (<span class="ident">screen_center</span>.<span class="ident">x</span> <span class="op">+</span> <span class="ident">intersect</span>.<span class="ident">x</span>) <span class="kw">as</span> <span class="ident">i32</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">cup_icon</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">i32</span> <span class="op">/</span> <span class="number">2</span>,
+            (<span class="ident">screen_center</span>.<span class="ident">y</span> <span class="op">+</span> <span class="ident">intersect</span>.<span class="ident">y</span>) <span class="kw">as</span> <span class="ident">i32</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">cup_icon</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">i32</span> <span class="op">/</span> <span class="number">2</span>,
+            <span class="ident">Color::WHITE</span>,
+        );
+
+        <span class="comment">// Render a circle where the line meets the screen edge</span>
+        <span class="ident">draw</span>.<span class="ident">draw_circle_lines</span>(
+            (<span class="ident">screen_center</span>.<span class="ident">x</span> <span class="op">+</span> <span class="ident">intersect</span>.<span class="ident">x</span>) <span class="kw">as</span> <span class="ident">i32</span>,
+            (<span class="ident">screen_center</span>.<span class="ident">y</span> <span class="op">+</span> <span class="ident">intersect</span>.<span class="ident">y</span>) <span class="kw">as</span> <span class="ident">i32</span>,
+            <span class="number">16.0</span>,
+            <span class="ident">Color::BLACK</span>,
+        );
+    }
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="game_logic" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.59.0 (9d1b2106e 2022-02-23)" ></div>

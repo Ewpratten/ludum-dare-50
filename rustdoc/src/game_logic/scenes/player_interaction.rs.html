@@ -394,6 +394,10 @@
 <span id="392">392</span>
 <span id="393">393</span>
 <span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses all of the game where the player can walk around.</span>
 
 <span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">Utc</span>};
@@ -608,14 +612,18 @@
             );
         }
 
-        <span class="ident">draw</span>.<span class="ident">draw_rectangle</span>(<span class="ident">draw</span>.<span class="ident">get_screen_width</span>() <span class="op">/</span> <span class="number">2</span> <span class="op">-</span> <span class="number">225</span>, <span class="number">0</span>, <span class="number">450</span>, <span class="number">40</span>, <span class="ident">Color::WHITE</span>);
-        <span class="ident">draw</span>.<span class="ident">draw_text</span>(
-            <span class="string">&quot;Unregistered HyperCam 2&quot;</span>,
-            <span class="ident">draw</span>.<span class="ident">get_screen_width</span>() <span class="op">/</span> <span class="number">2</span> <span class="op">-</span> <span class="number">215</span>,
-            <span class="number">0</span>,
-            <span class="number">32</span>,
-            <span class="ident">Color::BLACK</span>,
-        );
+        <span class="comment">// Draw the hint arrow</span>
+        <span class="self">self</span>.<span class="ident">world_map</span>
+            .<span class="ident">render_hud_endgoal_arrow</span>(<span class="ident">draw</span>, <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">camera</span>);
+
+        <span class="comment">// draw.draw_rectangle(draw.get_screen_width() / 2 - 225, 0, 450, 40, Color::WHITE);</span>
+        <span class="comment">// draw.draw_text(</span>
+        <span class="comment">//     &quot;Unregistered HyperCam 2&quot;,</span>
+        <span class="comment">//     draw.get_screen_width() / 2 - 215,</span>
+        <span class="comment">//     0,</span>
+        <span class="comment">//     32,</span>
+        <span class="comment">//     Color::BLACK,</span>
+        <span class="comment">// );</span>
     }
 
     <span class="comment">// Physics</span>
