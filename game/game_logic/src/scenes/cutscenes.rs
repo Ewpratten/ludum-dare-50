@@ -9,6 +9,7 @@ use raylib::{
 };
 
 use crate::{
+    asset_manager::load_texture_from_internal_data,
     discord::{DiscordChannel, DiscordRpcSignal},
     global_resource_package::GlobalResources,
     persistent::settings::PersistentGameSettings,
@@ -17,9 +18,24 @@ use crate::{
 
 use super::main_menu::MenuStateSignal;
 
+const MIWU_WHITE: Color = Color {
+    r: 247,
+    g: 239,
+    b: 231,
+    a: 255,
+};
+const MIWU_WHITE_V2: Color = Color {
+    r: 255,
+    g: 245,
+    b: 228,
+    a: 255,
+};
+
 #[derive(Debug)]
 pub struct CutScenes {
     show_debug_info: bool,
+    intro_art: Texture2D,
+    melted_art: Texture2D,
 }
 
 impl CutScenes {
@@ -30,8 +46,24 @@ impl CutScenes {
         constants: &ProjectConstants,
         game_settings: &mut PersistentGameSettings,
     ) -> Self {
+        // Load art
+        let intro_art = load_texture_from_internal_data(
+            raylib_handle,
+            thread,
+            "assets/cut/cut_intro/cut_intro.png",
+        )
+        .unwrap();
+        let melted_art = load_texture_from_internal_data(
+            raylib_handle,
+            thread,
+            "assets/cut/cut_melty/cut_melty.png",
+        )
+        .unwrap();
+
         Self {
             show_debug_info: false,
+            intro_art,
+            melted_art,
         }
     }
 
@@ -48,7 +80,7 @@ impl CutScenes {
         let mut draw = raylib.begin_drawing(rl_thread);
 
         // Clear the screen
-        draw.clear_background(Color::WHITE);
+        draw.clear_background(MIWU_WHITE);
 
         //Obtain mouse position
         let mouse_x = draw.get_mouse_x();
@@ -71,8 +103,40 @@ impl CutScenes {
         }
 
         // Title
-        draw.draw_text("INTRO CUTSCENE GOES HERE", 100, 90, 60, Color::BLACK);
-        draw.draw_text("Press SPACE to skip", 100, 600, 20, Color::BLACK);
+        // draw.draw_text("INTRO CUTSCENE GOES HERE", 100, 90, 60, Color::BLACK);
+        // draw.draw_text("Press SPACE to skip", 100, 600, 20, Color::BLACK);
+
+        let screen_height = draw.get_screen_height();
+        let screen_width = draw.get_screen_width();
+
+        // Build a rect for the texture
+        let tex_rect = Rectangle::new(
+            0.0,
+            0.0,
+            self.intro_art.width as f32,
+            self.intro_art.height as f32,
+        );
+
+        // Draw the texture to the center of the screen.
+        // Keep in mind, textures are drawn from the top left
+        // corner, so we need to offset the rect by half the
+        // texture's width and height.
+        let dest_rect = Rectangle::new(
+            (screen_width / 2) as f32 - (tex_rect.width / 2.0),
+            (screen_height / 2) as f32 - (tex_rect.height / 2.0),
+            tex_rect.width,
+            tex_rect.height,
+        );
+
+        // Draw the texture
+        draw.draw_texture_pro(
+            &self.intro_art,
+            &tex_rect,
+            &dest_rect,
+            Vector2::zero(),
+            0.0,
+            Color::WHITE,
+        );
 
         // Let the user leave this cutscene by pressing space
         if draw.is_key_pressed(KeyboardKey::KEY_SPACE) {
@@ -99,7 +163,7 @@ impl CutScenes {
         let mut draw = raylib.begin_drawing(rl_thread);
 
         // Clear the screen
-        draw.clear_background(Color::WHITE);
+        draw.clear_background(MIWU_WHITE_V2);
 
         //Obtain mouse position
         let mouse_x = draw.get_mouse_x();
@@ -121,16 +185,48 @@ impl CutScenes {
             );
         }
 
-        // Title
-        draw.draw_text("MELTY CUTSCENE GOES HERE", 100, 90, 60, Color::BLACK);
-        draw.draw_text(
-            &format!("This took you {} seconds", playtime.num_seconds()),
-            100,
-            600,
-            20,
-            Color::BLACK,
+        // // Title
+        // draw.draw_text("MELTY CUTSCENE GOES HERE", 100, 90, 60, Color::BLACK);
+        // draw.draw_text(
+        //     &format!("This took you {} seconds", playtime.num_seconds()),
+        //     100,
+        //     600,
+        //     20,
+        //     Color::BLACK,
+        // );
+        // draw.draw_text("Press SPACE to skip", 100, 680, 20, Color::BLACK);
+
+        let screen_height = draw.get_screen_height();
+        let screen_width = draw.get_screen_width();
+
+        // Build a rect for the texture
+        let tex_rect = Rectangle::new(
+            0.0,
+            0.0,
+            self.melted_art.width as f32,
+            self.melted_art.height as f32,
         );
-        draw.draw_text("Press SPACE to skip", 100, 680, 20, Color::BLACK);
+
+        // Draw the texture to the center of the screen.
+        // Keep in mind, textures are drawn from the top left
+        // corner, so we need to offset the rect by half the
+        // texture's width and height.
+        let dest_rect = Rectangle::new(
+            (screen_width / 2) as f32 - (tex_rect.width / 2.0),
+            (screen_height / 2) as f32 - (tex_rect.height / 2.0),
+            tex_rect.width,
+            tex_rect.height,
+        );
+
+        // Draw the texture
+        draw.draw_texture_pro(
+            &self.melted_art,
+            &tex_rect,
+            &dest_rect,
+            Vector2::zero(),
+            0.0,
+            Color::WHITE,
+        );
 
         // Let the user leave this cutscene by pressing space
         if draw.is_key_pressed(KeyboardKey::KEY_SPACE) {
@@ -158,7 +254,7 @@ impl CutScenes {
         let mut draw = raylib.begin_drawing(rl_thread);
 
         // Clear the screen
-        draw.clear_background(Color::WHITE);
+        draw.clear_background(MIWU_WHITE);
 
         //Obtain mouse position
         let mouse_x = draw.get_mouse_x();
@@ -217,7 +313,7 @@ impl CutScenes {
         let mut draw = raylib.begin_drawing(rl_thread);
 
         // Clear the screen
-        draw.clear_background(Color::WHITE);
+        draw.clear_background(MIWU_WHITE);
 
         //Obtain mouse position
         let mouse_x = draw.get_mouse_x();

@@ -60,18 +60,25 @@ impl PlayableScene {
         let game_soundtrack =
             load_music_from_internal_data(thread, "assets/audio/gameSoundtrack.mp3").unwrap();
 
+        // Load the player
+        let player = Player::new(
+            raylib_handle,
+            thread,
+            player_start_position,
+        );
+
         Self {
             has_updated_discord_rpc: false,
             player_start_position,
-            player: Player::new(player_start_position),
             world_map: map_renderer,
+            player,
             camera: raylib::camera::Camera2D {
                 target: raylib::math::Vector2 { x: 0.0, y: 0.0 },
                 offset: raylib::math::Vector2 { x: 0.0, y: 0.0 },
                 rotation: 0.0,
                 zoom: 1.0,
             },
-            last_update: SystemTime::UNIX_EPOCH,
+            last_update: SystemTime::now(),
             game_soundtrack,
             world_colliders,
             show_debug_info: false,
@@ -127,12 +134,17 @@ impl PlayableScene {
         self.draw_ui(&mut draw, constants);
 
         // NOTE: If you want to trigger a cutscene, do it here by using one of:
-        // return MenuStateSignal::DoMeltedDeathCutscene {
-        //     playtime: Utc::now().signed_duration_since(self.play_start_time),
-        // };
+
         // return MenuStateSignal::DoOceanCutscene {
         //     playtime: Utc::now().signed_duration_since(self.play_start_time),
         // };
+
+        // Handle Losing
+        if self.player.size < 0.15 {
+            return MenuStateSignal::DoMeltedDeathCutscene {
+                playtime: Utc::now().signed_duration_since(self.play_start_time),
+            }; 
+        }
 
         // Handle winning
         if self
@@ -181,6 +193,14 @@ impl PlayableScene {
         let mouse_x = draw.get_mouse_x();
         let mouse_y = draw.get_mouse_y();
 
+        let current_temperature = self.world_map.sample_temperature_at(
+            self.player.position.component_mul(&na::Vector2::new(1.0, -1.0))
+        );
+        let mut current_temperature_val: f32 = -247.51879; 
+        if let Some(val) = current_temperature {
+            current_temperature_val = val;
+        }
+
         // Optionally display debug info
         if draw.is_key_pressed(KeyboardKey::KEY_F3) {
             self.show_debug_info = !self.show_debug_info;
@@ -224,6 +244,12 @@ impl PlayableScene {
         //     32,
         //     Color::BLACK,
         // );
+        let melt_amount = (current_temperature_val)/(-247.51879);
+
+        draw.draw_text(
+            format!("Funny Temperature: ({})[{}]", current_temperature_val, melt_amount).as_str(),
+            10, 10, 20, Color::PAPAYAWHIP
+        );
     }
 
     // Physics
@@ -242,11 +268,11 @@ impl PlayableScene {
 
         let player = &mut self.player;
 
-        // NOTE: This is how to check friction and temperature
         let current_friction = self.world_map.sample_friction_at(player.position);
-        let current_temperature = self.world_map.sample_temperature_at(player.position);
+        let current_temperature = self.world_map.sample_temperature_at(
+            player.position.component_mul(&na::Vector2::new(1.0, -1.0))
+        );
         let map_size = self.world_map.get_map_size();
-        // TODO: You can access the colission list with: self.world_colliders
 
         // Get input direction components
         let h_axis = raylib.is_key_down(KeyboardKey::KEY_D) as i8
@@ -347,6 +373,15 @@ impl PlayableScene {
             player.velocity.y = 0.0;
         }
 
+        let mut current_temperature_val: f32 = -247.51879;
+        if let Some(val) = current_temperature {
+            current_temperature_val = val - 273.15;
+        }
+
+        let melt_amount = constants.player.melt_speed * (current_temperature_val)/(-247.51879);
+
+        player.size -= melt_amount * delta_time;
+        
         self.update_camera(raylib);
     }
 

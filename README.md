@@ -1,4 +1,4 @@
-# Ludum Dare 50: *unnamed game*
+# Ludum Dare 50: *Melting Point*
 [![Build Full Release](https://github.com/Ewpratten/ludum-dare-50/actions/workflows/build.yml/badge.svg)](https://github.com/Ewpratten/ludum-dare-50/actions/workflows/build.yml)
 
 ## Navigating this repository

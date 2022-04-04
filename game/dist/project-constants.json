@@ -1,5 +1,5 @@
 {
-    "game_name": "Ludum Dare 50",
+    "game_name": "Melting Point",
     "base_window_size": [
         1080,
         720
@@ -21,6 +21,7 @@
         "max_velocity": 3,
         "acceleration": 2,
         "deceleration": 1,
-        "start_size": 0.8
+        "start_size": 0.8,
+        "melt_speed": 0.00944443
     }
 }

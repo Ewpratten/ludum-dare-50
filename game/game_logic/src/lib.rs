@@ -21,6 +21,8 @@
 //! - If you want to add data to the save state file or settings file, check out the [`persistent`](persistent/index.html) module.
 #![doc(issue_tracker_base_url = "https://github.com/Ewpratten/ludum-dare-50/issues/")]
 
+use discord_sdk::activity::Assets;
+
 use crate::{
     asset_manager::load_json_structure,
     discord::{DiscordRpcSignal, DiscordRpcThreadHandle},
@@ -69,6 +71,12 @@ pub async fn entrypoint(force_recreate_savefiles: bool) {
         .expect("Failed to connect to Discord RPC");
     let event_loop_discord_tx = discord.get_channel();
     let discord_task_handle = discord.begin_thread_non_blocking();
+    event_loop_discord_tx
+        .send(DiscordRpcSignal::ChangeAssets(Assets::default().large(
+            project_constants.discord.artwork.get("logo").unwrap(),
+            Some(""),
+        )))
+        .await.unwrap();
 
     // Blocking call to the graphics rendering loop.
     rendering::event_loop::handle_graphics_blocking(

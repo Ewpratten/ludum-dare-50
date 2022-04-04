@@ -279,6 +279,9 @@ impl MapRenderer {
             camera,
         );
         let player_position = na::Vector2::new(player_position.x, player_position.y * -1.0);
+        // Get the tile width and height
+        let tile_width = 128;
+        let tile_height = 128;
 
         // Handle each layer from the bottom up
         for layer in self.map.layers() {
@@ -288,10 +291,6 @@ impl MapRenderer {
                     // Keep track of our sampler X and Y values
                     let mut sampler_x = 0;
                     let mut sampler_y = 0;
-
-                    // Get the tile width and height
-                    let tile_width = 128;
-                    let tile_height = 128;
 
                     // Loop until we have covered all tiles on the screen
                     for y in (world_win_top_left.y as i64)..(world_win_bottom_right.y as i64) {
@@ -331,156 +330,177 @@ impl MapRenderer {
                                             Color::WHITE,
                                         );
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+                tiled::LayerType::ObjectLayer(_) => todo!(),
+                tiled::LayerType::ImageLayer(_) => todo!(),
+                tiled::LayerType::GroupLayer(_) => todo!(),
+            }
+        }
 
-                                    // Check if there is an object at this tile
-                                    for obj_ref in &self.world_objects.object_references {
-                                        if obj_ref.get_tile_space_position().x == sampler_x as f32
-                                            && obj_ref.get_tile_space_position().y
-                                                == sampler_y as f32
-                                        {
-                                            // Get access to the actual object definition
-                                            let object_key = obj_ref.into_key();
-                                            // debug!("Found object: {}", object_key);
-                                            let obj_def = self
-                                                .world_objects
-                                                .object_definitions
-                                                .get(&object_key)
-                                                .unwrap();
+        // Keep track of our sampler X and Y values
+        let mut sampler_x = 0;
+        let mut sampler_y = 0;
 
-                                            // We need to render the base layer of the object
-                                            if obj_def.bottom_texture.animated.unwrap_or(false) {
-                                                let tex = self
-                                                    .world_objects
-                                                    .bottom_animated_textures
-                                                    .get_mut(&object_key)
-                                                    .unwrap();
-                                                tex.render_automatic(
-                                                    draw_handle,
-                                                    obj_ref.get_world_space_position()
-                                                        - (tex.size() / 2.0),
-                                                    None,
-                                                    Some(tex.size() / 2.0),
-                                                    Some(obj_ref.rotation_degrees),
-                                                    None,
-                                                );
-                                            } else {
-                                                let tex = self
-                                                    .world_objects
-                                                    .bottom_static_textures
-                                                    .get_mut(&object_key)
-                                                    .unwrap();
-                                                let p: Vector2 =
-                                                    obj_ref.get_world_space_position().into();
-                                                let r1 = Rectangle {
-                                                    x: 0.0,
-                                                    y: 0.0,
-                                                    width: tex.width as f32,
-                                                    height: tex.height as f32,
-                                                };
-                                                let r2 = Rectangle {
-                                                    x: p.x,
-                                                    y: p.y,
-                                                    width: tex.width as f32,
-                                                    height: tex.height as f32,
-                                                };
+        // Loop until we have covered all tiles on the screen
+        for y in (world_win_top_left.y as i64)..(world_win_bottom_right.y as i64) {
+            // Convert the pixel coordinates to tile coordinates
+            let tile_y = (y as f32 / tile_height as f32).floor() as i32;
 
-                                                draw_handle.draw_texture_pro(
-                                                    &tex,
-                                                    r1,
-                                                    r2,
-                                                    Vector2::new(
-                                                        tex.width as f32 / 2.0,
-                                                        tex.height as f32 / 2.0,
-                                                    ),
-                                                    obj_ref.rotation_degrees,
-                                                    Color::WHITE,
-                                                );
-                                            }
+            // If we are looking at a new tile, update the sampler
+            if sampler_y != tile_y {
+                sampler_y = tile_y;
 
-                                            // If needed we can render the top layer of the object
-                                            if let Some(top_texture) = &obj_def.top_texture {
-                                                // We need to detect if the player is in the footprint of the object
-                                                let mut tint = Color::WHITE;
-                                                if let Some(footprint_radius) =
-                                                    obj_def.visualization_radius
-                                                {
-                                                    let player_dist_to_object = (obj_ref
-                                                        .get_world_space_position()
-                                                        - player_position)
-                                                        .norm();
-                                                    // debug!(
-                                                    //     "Player dist to object: {}",
-                                                    //     player_dist_to_object
-                                                    // );
-                                                    if player_dist_to_object <= footprint_radius {
-                                                        tint.a = 128;
-                                                    }
-                                                }
+                for x in (world_win_top_left.x as i64)..(world_win_bottom_right.x as i64) {
+                    // Convert the pixel coordinates to tile coordinates
+                    let tile_x = (x as f32 / tile_width as f32).floor() as i32;
+                    // debug!("Tile: ({}, {})", tile_x, tile_y);
 
-                                                if top_texture.animated.unwrap_or(false) {
-                                                    let tex = self
-                                                        .world_objects
-                                                        .top_animated_textures
-                                                        .get_mut(&object_key)
-                                                        .unwrap();
-                                                    tex.render_automatic(
-                                                        draw_handle,
-                                                        obj_ref.get_world_space_position()
-                                                            - (tex.size() / 2.0),
-                                                        None,
-                                                        Some(tex.size() / 2.0),
-                                                        Some(obj_ref.rotation_degrees),
-                                                        Some(tint),
-                                                    );
-                                                } else {
-                                                    let tex = self
-                                                        .world_objects
-                                                        .top_static_textures
-                                                        .get_mut(&object_key)
-                                                        .unwrap();
-                                                    let p: Vector2 =
-                                                        obj_ref.get_world_space_position().into();
-                                                    let r1 = Rectangle {
-                                                        x: 0.0,
-                                                        y: 0.0,
-                                                        width: tex.width as f32,
-                                                        height: tex.height as f32,
-                                                    };
-                                                    let r2 = Rectangle {
-                                                        x: p.x,
-                                                        y: p.y,
-                                                        width: tex.width as f32,
-                                                        height: tex.height as f32,
-                                                    };
+                    // If we are looking at a new tile, update the sampler
+                    if sampler_x != tile_x {
+                        sampler_x = tile_x;
 
-                                                    draw_handle.draw_texture_pro(
-                                                        &tex,
-                                                        r1,
-                                                        r2,
-                                                        Vector2::new(
-                                                            tex.width as f32 / 2.0,
-                                                            tex.height as f32 / 2.0,
-                                                        ),
-                                                        obj_ref.rotation_degrees,
-                                                        tint,
-                                                    );
-                                                }
-                                            }
+                        // Check if there is an object at this tile
+                        for obj_ref in &self.world_objects.object_references {
+                            if obj_ref.get_tile_space_position().x == sampler_x as f32
+                                && obj_ref.get_tile_space_position().y == sampler_y as f32
+                            {
+                                // Get access to the actual object definition
+                                let object_key = obj_ref.into_key();
+                                // debug!("Found object: {}", object_key);
+                                let obj_def = self
+                                    .world_objects
+                                    .object_definitions
+                                    .get(&object_key)
+                                    .unwrap();
+
+                                // We need to render the base layer of the object
+                                if obj_def.bottom_texture.animated.unwrap_or(false) {
+                                    let tex = self
+                                        .world_objects
+                                        .bottom_animated_textures
+                                        .get_mut(&object_key)
+                                        .unwrap();
+                                    tex.render_automatic(
+                                        draw_handle,
+                                        obj_ref.get_world_space_position() - (tex.size() / 2.0),
+                                        None,
+                                        Some(tex.size() / 2.0),
+                                        Some(obj_ref.rotation_degrees),
+                                        None,
+                                    );
+                                } else {
+                                    let tex = self
+                                        .world_objects
+                                        .bottom_static_textures
+                                        .get_mut(&object_key)
+                                        .unwrap();
+                                    let p: Vector2 = obj_ref.get_world_space_position().into();
+                                    let r1 = Rectangle {
+                                        x: 0.0,
+                                        y: 0.0,
+                                        width: tex.width as f32,
+                                        height: tex.height as f32,
+                                    };
+                                    let r2 = Rectangle {
+                                        x: p.x,
+                                        y: p.y,
+                                        width: tex.width as f32,
+                                        height: tex.height as f32,
+                                    };
+
+                                    draw_handle.draw_texture_pro(
+                                        &tex,
+                                        r1,
+                                        r2,
+                                        Vector2::new(
+                                            tex.width as f32 / 2.0,
+                                            tex.height as f32 / 2.0,
+                                        ),
+                                        obj_ref.rotation_degrees,
+                                        Color::WHITE,
+                                    );
+                                }
+
+                                // If needed we can render the top layer of the object
+                                if let Some(top_texture) = &obj_def.top_texture {
+                                    // We need to detect if the player is in the footprint of the object
+                                    let mut tint = Color::WHITE;
+                                    if let Some(footprint_radius) = obj_def.visualization_radius {
+                                        let player_dist_to_object =
+                                            (obj_ref.get_world_space_position() - player_position)
+                                                .norm();
+                                        // debug!(
+                                        //     "Player dist to object: {}",
+                                        //     player_dist_to_object
+                                        // );
+                                        if player_dist_to_object <= footprint_radius {
+                                            tint.a = 128;
                                         }
                                     }
 
-                                    if show_debug_grid {
-                                        draw_handle.draw_rectangle_lines(
-                                            tile_x * tile_width as i32,
-                                            tile_y * tile_height as i32,
-                                            self.map.tile_width as i32,
-                                            self.map.tile_height as i32,
-                                            Color::RED,
+                                    if top_texture.animated.unwrap_or(false) {
+                                        let tex = self
+                                            .world_objects
+                                            .top_animated_textures
+                                            .get_mut(&object_key)
+                                            .unwrap();
+                                        tex.render_automatic(
+                                            draw_handle,
+                                            obj_ref.get_world_space_position() - (tex.size() / 2.0),
+                                            None,
+                                            Some(tex.size() / 2.0),
+                                            Some(obj_ref.rotation_degrees),
+                                            Some(tint),
                                         );
-                                        draw_handle.draw_pixel(x as i32, y as i32, Color::BLUE);
+                                    } else {
+                                        let tex = self
+                                            .world_objects
+                                            .top_static_textures
+                                            .get_mut(&object_key)
+                                            .unwrap();
+                                        let p: Vector2 = obj_ref.get_world_space_position().into();
+                                        let r1 = Rectangle {
+                                            x: 0.0,
+                                            y: 0.0,
+                                            width: tex.width as f32,
+                                            height: tex.height as f32,
+                                        };
+                                        let r2 = Rectangle {
+                                            x: p.x,
+                                            y: p.y,
+                                            width: tex.width as f32,
+                                            height: tex.height as f32,
+                                        };
+
+                                        draw_handle.draw_texture_pro(
+                                            &tex,
+                                            r1,
+                                            r2,
+                                            Vector2::new(
+                                                tex.width as f32 / 2.0,
+                                                tex.height as f32 / 2.0,
+                                            ),
+                                            obj_ref.rotation_degrees,
+                                            tint,
+                                        );
                                     }
                                 }
                             }
+                        }
+
+                        if show_debug_grid {
+                            draw_handle.draw_rectangle_lines(
+                                tile_x * tile_width as i32,
+                                tile_y * tile_height as i32,
+                                self.map.tile_width as i32,
+                                self.map.tile_height as i32,
+                                Color::RED,
+                            );
+                            draw_handle.draw_pixel(x as i32, y as i32, Color::BLUE);
                         }
                     }
                     // for collider in &self.world_objects.world_space_colliders {
@@ -493,9 +513,6 @@ impl MapRenderer {
                     //     );
                     // }
                 }
-                tiled::LayerType::ObjectLayer(_) => todo!(),
-                tiled::LayerType::ImageLayer(_) => todo!(),
-                tiled::LayerType::GroupLayer(_) => todo!(),
             }
         }
     }
