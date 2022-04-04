@@ -1,0 +1,36 @@
+{
+    "name": "env_personLie1",
+    "bottom_texture": {
+        "file_path": "assets/env/env_umbrella/env_blank.png"
+    },
+    "top_texture": {
+        "file_path": "assets/env/env_umbrella/env_personLie1.png"
+    },
+    "footprint":[
+        {
+            "position": [
+                0,
+                0
+            ],
+            "size": [
+                50,
+                118
+            ]
+        }
+    ],
+    
+    "visualization_radius": 1.0,
+    "physics_colliders": [
+        {
+            "position": [
+                0,
+                0
+            ],
+            "size": [
+                50,
+                118
+            ]
+        }
+    ],
+    "temperature": 5.0
+}

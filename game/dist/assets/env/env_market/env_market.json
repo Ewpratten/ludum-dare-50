@@ -1,0 +1,145 @@
+{
+    "name": "env_market",
+    "bottom_texture": {
+        "file_path": "assets/env/env_umbrella/env_marketBottom.png"
+    },
+    "top_texture": {
+        "file_path": "assets/env/env_umbrella/env_marketTop.png"
+    },
+    "footprint": [
+        {
+            "position": [
+                0,
+                0
+            ],
+            "size": [
+                512,
+                512
+            ]
+        }
+    ],
+    "visualization_radius": 300.0,
+    "physics_colliders": [
+        {
+            "position": [
+                44,
+                246
+            ],
+            "size": [
+                60,
+                20
+            ]
+        },
+        {
+            "position": [
+                157,
+                246
+            ],
+            "size": [
+                200,
+                20
+            ]
+        },
+        {
+            "position": [
+                -246,
+                0
+            ],
+            "size": [
+                20,
+                512
+            ]
+        },
+        {
+            "position": [
+                -103,
+                -62
+            ],
+            "size": [
+                95,
+                35
+            ]
+        },
+        {
+            "position": [
+                -188,
+                -216
+            ],
+            "size": [
+                396,
+                77
+            ]
+        },
+        {
+            "position": [
+                -220,
+                -51
+            ],
+            "size": [
+                340,
+                17
+            ]
+        },
+        {
+            "position": [
+                44,
+                -10
+            ],
+            "size": [
+                100,
+                230
+            ]
+        },
+        {
+            "position": [
+                116,
+                181
+            ],
+            "size": [
+                20,
+                146
+            ]
+        },
+        {
+            "position": [
+                12,
+                246
+            ],
+            "size": [
+                190,
+                20
+            ]
+        },
+        {
+            "position": [
+                -121,
+                246
+            ],
+            "size": [
+                10,
+                20
+            ]
+        },
+        {
+            "position": [
+                233,
+                235
+            ],
+            "size": [
+                8,
+                8
+            ]
+        },
+        {
+            "position": [
+                233,
+                -235
+            ],
+            "size": [
+                8,
+                8
+            ]
+        }
+    ],
+    "temperature": 1.0
+}
