@@ -212,14 +212,18 @@ impl PlayableScene {
             );
         }
 
-        draw.draw_rectangle(draw.get_screen_width() / 2 - 225, 0, 450, 40, Color::WHITE);
-        draw.draw_text(
-            "Unregistered HyperCam 2",
-            draw.get_screen_width() / 2 - 215,
-            0,
-            32,
-            Color::BLACK,
-        );
+        // Draw the hint arrow
+        self.world_map
+            .render_hud_endgoal_arrow(draw, self.player.position, &self.camera);
+
+        // draw.draw_rectangle(draw.get_screen_width() / 2 - 225, 0, 450, 40, Color::WHITE);
+        // draw.draw_text(
+        //     "Unregistered HyperCam 2",
+        //     draw.get_screen_width() / 2 - 215,
+        //     0,
+        //     32,
+        //     Color::BLACK,
+        // );
     }
 
     // Physics
