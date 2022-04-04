@@ -113,6 +113,7 @@ impl PlayableScene {
             self.play_start_time = Utc::now();
             self.player.position = self.player_start_position;
             self.player.velocity = na::Vector2::new(0.0, 0.0);
+            self.player.size = 1.0;
         }
 
         // Ensure the game soundtrack is playing
@@ -193,13 +194,6 @@ impl PlayableScene {
         let mouse_x = draw.get_mouse_x();
         let mouse_y = draw.get_mouse_y();
 
-        let current_temperature = self.world_map.sample_temperature_at(
-            self.player.position.component_mul(&na::Vector2::new(1.0, -1.0))
-        );
-        let mut current_temperature_val: f32 = -247.51879; 
-        if let Some(val) = current_temperature {
-            current_temperature_val = val;
-        }
 
         // Optionally display debug info
         if draw.is_key_pressed(KeyboardKey::KEY_F3) {
@@ -244,12 +238,6 @@ impl PlayableScene {
         //     32,
         //     Color::BLACK,
         // );
-        let melt_amount = (current_temperature_val)/(-247.51879);
-
-        draw.draw_text(
-            format!("Funny Temperature: ({})[{}]", current_temperature_val, melt_amount).as_str(),
-            10, 10, 20, Color::PAPAYAWHIP
-        );
     }
 
     // Physics
@@ -373,12 +361,12 @@ impl PlayableScene {
             player.velocity.y = 0.0;
         }
 
-        let mut current_temperature_val: f32 = -247.51879;
+        let mut current_temperature_val: f32 = 298.78121; 
         if let Some(val) = current_temperature {
-            current_temperature_val = val - 273.15;
+            current_temperature_val = val + 273.15;
         }
 
-        let melt_amount = constants.player.melt_speed * (current_temperature_val)/(-247.51879);
+        let melt_amount = constants.player.melt_speed * ((((current_temperature_val/298.78121)-1.0) * 50.0) + 1.0);
 
         player.size -= melt_amount * delta_time;
         
