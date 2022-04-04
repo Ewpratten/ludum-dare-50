@@ -1,10 +1,10 @@
 {
-    "name": "env_umbrellaWhiteBlue",
+    "name": "env_personLie1",
     "bottom_texture": {
-        "file_path": "assets/env/env_umbrella/env_umbrellaPole.png"
+        "file_path": "assets/env/env_umbrella/env_blank.png"
     },
     "top_texture": {
-        "file_path": "assets/env/env_umbrella/env_umbrellaWhiteBlue.png"
+        "file_path": "assets/env/env_umbrella/env_personLie1.png"
     },
     "footprint":[
         {
@@ -13,12 +13,13 @@
                 0
             ],
             "size": [
-                216,
-                216
+                50,
+                118
             ]
         }
     ],
-    "visualization_radius": 256.0,
+    
+    "visualization_radius": 1.0,
     "physics_colliders": [
         {
             "position": [
@@ -26,10 +27,10 @@
                 0
             ],
             "size": [
-                6,
-                6
+                50,
+                118
             ]
         }
     ],
-    "temperature": 3.0
+    "temperature": 5.0
 }

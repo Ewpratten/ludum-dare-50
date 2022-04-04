@@ -9,8 +9,8 @@
     "footprint":[
         {
             "position": [
-                -108,
-                -108
+                0,
+                0
             ],
             "size": [
                 216,
@@ -22,8 +22,8 @@
     "physics_colliders": [
         {
             "position": [
-                -3,
-                -3
+                0,
+                0
             ],
             "size": [
                 6,
