@@ -1,6 +1,6 @@
-use std::collections::HashMap;
 use nalgebra as na;
 use raylib::{texture::Texture2D, RaylibHandle, RaylibThread};
+use std::collections::HashMap;
 
 use crate::{
     asset_manager::{load_json_structure, load_texture_from_internal_data},
@@ -34,6 +34,8 @@ pub struct WorldObjectPackage {
     pub top_animated_textures: HashMap<String, AnimatedTexture>,
     /// A list of colliders in the world. We pre-solve these to make comput happy :)
     pub world_space_colliders: Vec<WorldSpaceObjectCollider>,
+    /// A list of footprints in the world. We pre-solve these to make comput happy :)
+    pub world_space_footprints: Vec<WorldSpaceObjectCollider>,
 }
 
 impl WorldObjectPackage {
@@ -52,6 +54,7 @@ impl WorldObjectPackage {
         let mut bottom_animated_textures = HashMap::new();
         let mut top_animated_textures = HashMap::new();
         let mut world_space_colliders: Vec<WorldSpaceObjectCollider> = Vec::new();
+        let mut world_space_footprints: Vec<WorldSpaceObjectCollider> = Vec::new();
         for reference in &object_references {
             // If this is a new object, load it.
             let object_key = reference.into_key();
@@ -118,6 +121,24 @@ impl WorldObjectPackage {
                     world_space_colliders.push(world_space_collider);
                 }
 
+                // Keep track of all the footprints in the world
+                for collider in &object_definition.footprint {
+                    // Get the object's position
+                    let object_position = reference.get_world_space_position();
+
+                    // Convert the collider's position to world space
+                    let mut world_space_collider = WorldSpaceObjectCollider {
+                        position: (object_position + collider.position),
+                        size: collider.size,
+                    };
+
+                    // Invert the Y axis of the collider's position
+                    world_space_collider.position.y = -world_space_collider.position.y;
+
+                    // Add the collider to the list
+                    world_space_footprints.push(world_space_collider);
+                }
+
                 // Store the object definition
                 object_definitions.insert(object_key.to_string(), object_definition);
             }
@@ -131,6 +152,7 @@ impl WorldObjectPackage {
             bottom_animated_textures,
             top_animated_textures,
             world_space_colliders,
+            world_space_footprints,
         })
     }
 }
