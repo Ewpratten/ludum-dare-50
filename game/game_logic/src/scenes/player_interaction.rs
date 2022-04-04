@@ -196,7 +196,7 @@ impl PlayableScene {
         let current_temperature = self.world_map.sample_temperature_at(
             self.player.position.component_mul(&na::Vector2::new(1.0, -1.0))
         );
-        let mut current_temperature_val: f32 = 1.0; 
+        let mut current_temperature_val: f32 = -247.51879; 
         if let Some(val) = current_temperature {
             current_temperature_val = val;
         }
@@ -244,7 +244,7 @@ impl PlayableScene {
         //     32,
         //     Color::BLACK,
         // );
-        let melt_amount = constants.player.melt_speed * (current_temperature_val)/(-247.51879);
+        let melt_amount = (current_temperature_val)/(-247.51879);
 
         draw.draw_text(
             format!("Funny Temperature: ({})[{}]", current_temperature_val, melt_amount).as_str(),
@@ -378,7 +378,8 @@ impl PlayableScene {
             current_temperature_val = val - 273.15;
         }
 
-        let melt_amount = constants.player.melt_speed * (-247.51879)/(current_temperature_val);
+        let melt_amount = constants.player.melt_speed * (current_temperature_val)/(-247.51879);
+
         player.size -= melt_amount * delta_time;
         
         self.update_camera(raylib);
