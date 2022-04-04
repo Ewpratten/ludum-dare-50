@@ -398,6 +398,41 @@
 <span id="396">396</span>
 <span id="397">397</span>
 <span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This scene encompasses all of the game where the player can walk around.</span>
 
 <span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">Utc</span>};
@@ -460,18 +495,25 @@
         <span class="kw">let</span> <span class="ident">game_soundtrack</span> <span class="op">=</span>
             <span class="ident">load_music_from_internal_data</span>(<span class="ident">thread</span>, <span class="string">&quot;assets/audio/gameSoundtrack.mp3&quot;</span>).<span class="ident">unwrap</span>();
 
+        <span class="comment">// Load the player</span>
+        <span class="kw">let</span> <span class="ident">player</span> <span class="op">=</span> <span class="ident">Player::new</span>(
+            <span class="ident">raylib_handle</span>,
+            <span class="ident">thread</span>,
+            <span class="ident">player_start_position</span>,
+        );
+
         <span class="self">Self</span> {
             <span class="ident">has_updated_discord_rpc</span>: <span class="bool-val">false</span>,
             <span class="ident">player_start_position</span>,
-            <span class="ident">player</span>: <span class="ident">Player::new</span>(<span class="ident">player_start_position</span>),
             <span class="ident">world_map</span>: <span class="ident">map_renderer</span>,
+            <span class="ident">player</span>,
             <span class="ident">camera</span>: <span class="ident">raylib::camera::Camera2D</span> {
                 <span class="ident">target</span>: <span class="ident">raylib::math::Vector2</span> { <span class="ident">x</span>: <span class="number">0.0</span>, <span class="ident">y</span>: <span class="number">0.0</span> },
                 <span class="ident">offset</span>: <span class="ident">raylib::math::Vector2</span> { <span class="ident">x</span>: <span class="number">0.0</span>, <span class="ident">y</span>: <span class="number">0.0</span> },
                 <span class="ident">rotation</span>: <span class="number">0.0</span>,
                 <span class="ident">zoom</span>: <span class="number">1.0</span>,
             },
-            <span class="ident">last_update</span>: <span class="ident">SystemTime::UNIX_EPOCH</span>,
+            <span class="ident">last_update</span>: <span class="ident">SystemTime::now</span>(),
             <span class="ident">game_soundtrack</span>,
             <span class="ident">world_colliders</span>,
             <span class="ident">show_debug_info</span>: <span class="bool-val">false</span>,
@@ -527,12 +569,17 @@
         <span class="self">self</span>.<span class="ident">draw_ui</span>(<span class="kw-2">&amp;mut</span> <span class="ident">draw</span>, <span class="ident">constants</span>);
 
         <span class="comment">// NOTE: If you want to trigger a cutscene, do it here by using one of:</span>
-        <span class="comment">// return MenuStateSignal::DoMeltedDeathCutscene {</span>
-        <span class="comment">//     playtime: Utc::now().signed_duration_since(self.play_start_time),</span>
-        <span class="comment">// };</span>
+
         <span class="comment">// return MenuStateSignal::DoOceanCutscene {</span>
         <span class="comment">//     playtime: Utc::now().signed_duration_since(self.play_start_time),</span>
         <span class="comment">// };</span>
+
+        <span class="comment">// Handle Losing</span>
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">size</span> <span class="op">&lt;</span> <span class="number">0.15</span> {
+            <span class="kw">return</span> <span class="ident">MenuStateSignal::DoMeltedDeathCutscene</span> {
+                <span class="ident">playtime</span>: <span class="ident">Utc::now</span>().<span class="ident">signed_duration_since</span>(<span class="self">self</span>.<span class="ident">play_start_time</span>),
+            }; 
+        }
 
         <span class="comment">// Handle winning</span>
         <span class="kw">if</span> <span class="self">self</span>
@@ -581,6 +628,14 @@
         <span class="kw">let</span> <span class="ident">mouse_x</span> <span class="op">=</span> <span class="ident">draw</span>.<span class="ident">get_mouse_x</span>();
         <span class="kw">let</span> <span class="ident">mouse_y</span> <span class="op">=</span> <span class="ident">draw</span>.<span class="ident">get_mouse_y</span>();
 
+        <span class="kw">let</span> <span class="ident">current_temperature</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">sample_temperature_at</span>(
+            <span class="self">self</span>.<span class="ident">player</span>.<span class="ident">position</span>.<span class="ident">component_mul</span>(<span class="kw-2">&amp;</span><span class="ident">na::Vector2::new</span>(<span class="number">1.0</span>, <span class="op">-</span><span class="number">1.0</span>))
+        );
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current_temperature_val</span>: <span class="ident">f32</span> <span class="op">=</span> <span class="op">-</span><span class="number">247.51879</span>; 
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">val</span>) <span class="op">=</span> <span class="ident">current_temperature</span> {
+            <span class="ident">current_temperature_val</span> <span class="op">=</span> <span class="ident">val</span>;
+        }
+
         <span class="comment">// Optionally display debug info</span>
         <span class="kw">if</span> <span class="ident">draw</span>.<span class="ident">is_key_pressed</span>(<span class="ident">KeyboardKey::KEY_F3</span>) {
             <span class="self">self</span>.<span class="ident">show_debug_info</span> <span class="op">=</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">show_debug_info</span>;
@@ -624,6 +679,12 @@
         <span class="comment">//     32,</span>
         <span class="comment">//     Color::BLACK,</span>
         <span class="comment">// );</span>
+        <span class="kw">let</span> <span class="ident">melt_amount</span> <span class="op">=</span> (<span class="ident">current_temperature_val</span>)<span class="op">/</span>(<span class="op">-</span><span class="number">247.51879</span>);
+
+        <span class="ident">draw</span>.<span class="ident">draw_text</span>(
+            <span class="macro">format!</span>(<span class="string">&quot;Funny Temperature: ({})[{}]&quot;</span>, <span class="ident">current_temperature_val</span>, <span class="ident">melt_amount</span>).<span class="ident">as_str</span>(),
+            <span class="number">10</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="ident">Color::PAPAYAWHIP</span>
+        );
     }
 
     <span class="comment">// Physics</span>
@@ -642,11 +703,11 @@
 
         <span class="kw">let</span> <span class="ident">player</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">player</span>;
 
-        <span class="comment">// NOTE: This is how to check friction and temperature</span>
         <span class="kw">let</span> <span class="ident">current_friction</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">sample_friction_at</span>(<span class="ident">player</span>.<span class="ident">position</span>);
-        <span class="kw">let</span> <span class="ident">current_temperature</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">sample_temperature_at</span>(<span class="ident">player</span>.<span class="ident">position</span>);
+        <span class="kw">let</span> <span class="ident">current_temperature</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">sample_temperature_at</span>(
+            <span class="ident">player</span>.<span class="ident">position</span>.<span class="ident">component_mul</span>(<span class="kw-2">&amp;</span><span class="ident">na::Vector2::new</span>(<span class="number">1.0</span>, <span class="op">-</span><span class="number">1.0</span>))
+        );
         <span class="kw">let</span> <span class="ident">map_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">world_map</span>.<span class="ident">get_map_size</span>();
-        <span class="comment">// TODO: You can access the colission list with: self.world_colliders</span>
 
         <span class="comment">// Get input direction components</span>
         <span class="kw">let</span> <span class="ident">h_axis</span> <span class="op">=</span> <span class="ident">raylib</span>.<span class="ident">is_key_down</span>(<span class="ident">KeyboardKey::KEY_D</span>) <span class="kw">as</span> <span class="ident">i8</span>
@@ -747,6 +808,15 @@
             <span class="ident">player</span>.<span class="ident">velocity</span>.<span class="ident">y</span> <span class="op">=</span> <span class="number">0.0</span>;
         }
 
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current_temperature_val</span>: <span class="ident">f32</span> <span class="op">=</span> <span class="op">-</span><span class="number">247.51879</span>;
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">val</span>) <span class="op">=</span> <span class="ident">current_temperature</span> {
+            <span class="ident">current_temperature_val</span> <span class="op">=</span> <span class="ident">val</span> <span class="op">-</span> <span class="number">273.15</span>;
+        }
+
+        <span class="kw">let</span> <span class="ident">melt_amount</span> <span class="op">=</span> <span class="ident">constants</span>.<span class="ident">player</span>.<span class="ident">melt_speed</span> <span class="op">*</span> (<span class="ident">current_temperature_val</span>)<span class="op">/</span>(<span class="op">-</span><span class="number">247.51879</span>);
+
+        <span class="ident">player</span>.<span class="ident">size</span> <span class="op">-</span><span class="op">=</span> <span class="ident">melt_amount</span> <span class="op">*</span> <span class="ident">delta_time</span>;
+        
         <span class="self">self</span>.<span class="ident">update_camera</span>(<span class="ident">raylib</span>);
     }
 
