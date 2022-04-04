@@ -289,9 +289,9 @@ impl PlayableScene {
 
         for i in &self.world_colliders {
             if player.position.x - player_size <= i.position.x + i.size.x / 2.0
-                && player.position.x + player_size >= i.position.x + i.size.x / 2.0
+                && player.position.x + player_size >= i.position.x - i.size.x / 2.0
                 && player.position.y - player_size <= i.position.y + i.size.y / 2.0
-                && player.position.y + player_size >= i.position.y + i.size.y / 2.0
+                && player.position.y + player_size >= i.position.y - i.size.y / 2.0
             {
                 // if player.velocity.x < 0.0 {
                 //     player.position.x = i.position.x + i.size.x / 2.0 + player_size;
@@ -320,9 +320,9 @@ impl PlayableScene {
 
         for i in &self.world_colliders {
             if player.position.x - player_size <= i.position.x + i.size.x / 2.0
-                && player.position.x + player_size >= i.position.x + i.size.x / 2.0
-                && player.position.y - player_size <= i.position.y + i.size.y / 2.0
-                && player.position.y + player_size >= i.position.y + i.size.y / 2.0
+            && player.position.x + player_size >= i.position.x - i.size.x / 2.0
+            && player.position.y - player_size <= i.position.y + i.size.y / 2.0
+            && player.position.y + player_size >= i.position.y - i.size.y / 2.0
             {
                 // if player.velocity.y < 0.0 {
                 //     player.position.y = i.position.y + i.size.y / 2.0 + player_size;

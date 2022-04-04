@@ -1,10 +1,10 @@
 {
     "name": "env_carGrey",
     "bottom_texture": {
-        "file_path": "assets/env/env_cars/env_carWheels.png"
+        "file_path": "assets/env/env_car/env_carWheels.png"
     },
     "top_texture": {
-        "file_path": "assets/env/env_cars/env_carGrey.png"
+        "file_path": "assets/env/env_car/env_carGrey.png"
     },
     "footprint": [
         {
