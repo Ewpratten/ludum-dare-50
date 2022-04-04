@@ -43,6 +43,9 @@ pub struct PlayerConstants {
 
     /// Starting size of player in tiles
     pub start_size: f32,
+
+    /// Base melting speed in percent per second
+    pub melt_speed: f32,
 }
 
 /// This structure is filled with the contents of `dist/project-constants.json` at runtime
