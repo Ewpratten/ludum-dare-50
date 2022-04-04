@@ -615,6 +615,15 @@
 <span id="613">613</span>
 <span id="614">614</span>
 <span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashMap</span>, <span class="ident">path::PathBuf</span>, <span class="ident">sync::Arc</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::{
@@ -1120,6 +1129,15 @@
                             <span class="ident">draw_handle</span>.<span class="ident">draw_pixel</span>(<span class="ident">x</span> <span class="kw">as</span> <span class="ident">i32</span>, <span class="ident">y</span> <span class="kw">as</span> <span class="ident">i32</span>, <span class="ident">Color::BLUE</span>);
                         }
                     }
+                    <span class="comment">// for collider in &amp;self.world_objects.world_space_colliders {</span>
+                    <span class="comment">//     draw_handle.draw_rectangle_lines(</span>
+                    <span class="comment">//         (collider.position.x-collider.size.x/2.0) as i32,</span>
+                    <span class="comment">//         -(collider.position.y+collider.size.y/2.0) as i32,</span>
+                    <span class="comment">//         collider.size.x as i32,</span>
+                    <span class="comment">//         collider.size.y as i32,</span>
+                    <span class="comment">//         Color::BLUEVIOLET,</span>
+                    <span class="comment">//     );</span>
+                    <span class="comment">// }</span>
                 }
             }
         }
