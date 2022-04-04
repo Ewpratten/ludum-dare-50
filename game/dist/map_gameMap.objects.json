@@ -38,5 +38,15 @@
             9
         ],
         "rotation_degrees": -90
+    },
+    {
+        "type": "env",
+        "name": "env_Market",
+        "variant": "Red",
+        "position": [
+            14,
+            119
+        ],
+        "rotation_degrees": 90
     }
 ]

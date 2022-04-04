@@ -3,192 +3,444 @@
  <tileset firstgid="1" name="floorTiles" tilewidth="128" tileheight="128" tilecount="63" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="5"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_beachTile/env_WSandBottomRightCorner.png"/>
   </tile>
   <tile id="1">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="5"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_beachTile/env_wSandInvertedBLC.png"/>
   </tile>
   <tile id="2">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="5"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_beachTile/env_wSandInvertedBottomEdge.png"/>
   </tile>
   <tile id="3">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="5"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_beachTile/env_wSandInvertedLeftEdge.png"/>
   </tile>
   <tile id="4">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="5"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_beachTile/env_wSandInvertedTLC.png"/>
   </tile>
   <tile id="5">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="5"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_beachTile/env_wSandInvertedTopEdge.png"/>
   </tile>
   <tile id="6">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="5"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_beachTile/env_WSandTopRightCorner.png"/>
   </tile>
   <tile id="7">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="20"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_BoardwalkLeftEdge.png"/>
   </tile>
   <tile id="8">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="20"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_BoardwalkMiddle.png"/>
   </tile>
   <tile id="9">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="20"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_BoardwalkRightEdge.png"/>
   </tile>
   <tile id="10">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="20"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_BoardwalkTopEdge.png"/>
   </tile>
   <tile id="11">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="20"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_BoardwalkTopLeftCorner.png"/>
   </tile>
   <tile id="12">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="20"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_BoardwalkTopRightCorner.png"/>
   </tile>
   <tile id="13">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_gbwInvertedBLC.png"/>
   </tile>
   <tile id="14">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_gbwInvertedBottomEdge.png"/>
   </tile>
   <tile id="15">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_gbwInvertedBRC.png"/>
   </tile>
   <tile id="16">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_gbwInvertedLeftEdge.png"/>
   </tile>
   <tile id="17">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_gbwInvertedRightEdge.png"/>
   </tile>
   <tile id="18">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_gbwInvertedTLC.png"/>
   </tile>
   <tile id="19">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_gbwInvertedTopEdge.png"/>
   </tile>
   <tile id="20">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_gbwInvertedTRC.png"/>
   </tile>
   <tile id="21">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_GrassBottomLeftCorner.png"/>
   </tile>
   <tile id="22">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_GrassBottomRightCorner.png"/>
   </tile>
   <tile id="23">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_GrassMiddle.png"/>
   </tile>
   <tile id="24">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_GrassTopLeftCorner.png"/>
   </tile>
   <tile id="25">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_GrassTopRightCorner.png"/>
   </tile>
   <tile id="26">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="31"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_SandBottomLeftCorner.png"/>
   </tile>
   <tile id="27">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="31"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_SandBottomRightCorner.png"/>
   </tile>
   <tile id="28">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="35"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_SandMiddle.png"/>
   </tile>
   <tile id="29">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="31"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_SandTopLeftCorner.png"/>
   </tile>
   <tile id="30">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="31"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_SandTopRightCorner.png"/>
   </tile>
   <tile id="31">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="35"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_sbwInvertedBLC.png"/>
   </tile>
   <tile id="32">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="35"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_sbwInvertedBottomEdge.png"/>
   </tile>
   <tile id="33">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="35"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_sbwInvertedBRC.png"/>
   </tile>
   <tile id="34">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="35"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_sbwInvertedLeftEdge.png"/>
   </tile>
   <tile id="35">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="35"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_sbwInvertedRightEdge.png"/>
   </tile>
   <tile id="36">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="35"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_sbwInvertedTLC.png"/>
   </tile>
   <tile id="37">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="35"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_sbwInvertedTopEdge.png"/>
   </tile>
   <tile id="38">
+   <properties>
+    <property name="friction" type="float" value="0.7"/>
+    <property name="temperature" type="float" value="35"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_boardwalkTile/env_sbwInvertedTRC.png"/>
   </tile>
   <tile id="39">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_grassTile/env_sgInvertedBLC.png"/>
   </tile>
   <tile id="40">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_grassTile/env_sgInvertedBottomEdge.png"/>
   </tile>
   <tile id="41">
+   <properties>
+    <property name="friction" value="0.8"/>
+    <property name="temperature" value="25"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_grassTile/env_sgInvertedBRC.png"/>
   </tile>
   <tile id="42">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="27"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_grassTile/env_sgInvertedLeftEdge.png"/>
   </tile>
   <tile id="43">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="27"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_grassTile/env_sgInvertedRightEdge.png"/>
   </tile>
   <tile id="44">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="27"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_grassTile/env_sgInvertedTLC.png"/>
   </tile>
   <tile id="45">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="27"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_grassTile/env_sgInvertedTopEdge.png"/>
   </tile>
   <tile id="46">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="27"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_grassTile/env_sgInvertedTRC.png"/>
   </tile>
   <tile id="47">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="27"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_grassTile/env_SGrassBottomLeftCorner.png"/>
   </tile>
   <tile id="48">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="27"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_grassTile/env_SGrassBottomRightCorner.png"/>
   </tile>
   <tile id="49">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="27"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_grassTile/env_SGrassTopLeftCorner.png"/>
   </tile>
   <tile id="50">
+   <properties>
+    <property name="friction" type="float" value="0.8"/>
+    <property name="temperature" type="float" value="27"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_grassTile/env_SGrassTopRightCorner.png"/>
   </tile>
   <tile id="51">
+   <properties>
+    <property name="friction" type="float" value="0.5"/>
+    <property name="temperature" type="float" value="80"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_pavementTile/DarkRoadMiddle.png"/>
   </tile>
   <tile id="52">
+   <properties>
+    <property name="friction" type="float" value="0.6"/>
+    <property name="temperature" type="float" value="50"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_pavementTile/RoadLine.png"/>
   </tile>
   <tile id="53">
+   <properties>
+    <property name="friction" type="float" value="0.6"/>
+    <property name="temperature" type="float" value="50"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_pavementTile/RoadLineSide.png"/>
   </tile>
   <tile id="54">
+   <properties>
+    <property name="friction" type="float" value="0.6"/>
+    <property name="temperature" type="float" value="50"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_pavementTile/RoadMiddle.png"/>
   </tile>
   <tile id="55">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="40"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_sidewalkTile/SidewalkBWGrassEdge.png"/>
   </tile>
   <tile id="56">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="40"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_sidewalkTile/SidewalkGrassCorner.png"/>
   </tile>
   <tile id="57">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="40"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_sidewalkTile/SidewalkGrassEdge.png"/>
   </tile>
   <tile id="58">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="40"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_sidewalkTile/SidewalkGrassInnerCorner.png"/>
   </tile>
   <tile id="59">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="40"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_sidewalkTile/SidewalkSandCorner.png"/>
   </tile>
   <tile id="60">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="40"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_sidewalkTile/SidewalkSandEdge.png"/>
   </tile>
   <tile id="61">
+   <properties>
+    <property name="friction" type="float" value="1.1"/>
+    <property name="temperature" type="float" value="40"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_sidewalkTile/SidewalkSandInnerCorner.png"/>
   </tile>
   <tile id="67">
+   <properties>
+    <property name="friction" type="float" value="0.65"/>
+    <property name="temperature" type="float" value="4"/>
+   </properties>
    <image width="128" height="128" source="assets/env/env_beachTile/env_wSand.png"/>
   </tile>
   <wangsets>
