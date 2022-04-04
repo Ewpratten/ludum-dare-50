@@ -1,0 +1,65 @@
+{
+    "name": "env_tronkDark",
+    "bottom_texture": {
+        "file_path": "assets/env/env_cars/env_tronkWheels.png"
+    },
+    "top_texture": {
+        "file_path": "assets/env/env_cars/env_tronkDark.png"
+    },
+    "footprint": [
+        {
+            "position": [
+                0,
+                0
+            ],
+            "size": [
+                384,
+                640
+            ]
+        }
+    ],
+    "visualization_radius": 220.0,
+    "physics_colliders": [
+        {
+            "position": [
+                -137,
+                -64
+            ],
+            "size": [
+                53,
+                100
+            ]
+        },
+        {
+            "position": [
+                137,
+                -64
+            ],
+            "size": [
+                53,
+                100
+            ]
+        },
+        {
+            "position": [
+                140,
+                -240
+            ],
+            "size": [
+                53,
+                100
+            ]
+        },
+        {
+            "position": [
+                -140,
+                -240
+            ],
+            "size": [
+                53,
+                100
+            ]
+        }
+    ],
+    "temperature": 7.0
+}

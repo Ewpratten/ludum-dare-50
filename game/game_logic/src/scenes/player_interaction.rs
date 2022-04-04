@@ -291,7 +291,7 @@ impl PlayableScene {
             if player.position.x - player_size <= i.position.x + i.size.x / 2.0
                 && player.position.x + player_size >= i.position.x + i.size.x / 2.0
                 && player.position.y - player_size <= i.position.y + i.size.y / 2.0
-                && player.position.y + player_size >= i.position.y + i.size.x / 2.0
+                && player.position.y + player_size >= i.position.y + i.size.y / 2.0
             {
                 // if player.velocity.x < 0.0 {
                 //     player.position.x = i.position.x + i.size.x / 2.0 + player_size;
@@ -322,13 +322,13 @@ impl PlayableScene {
             if player.position.x - player_size <= i.position.x + i.size.x / 2.0
                 && player.position.x + player_size >= i.position.x + i.size.x / 2.0
                 && player.position.y - player_size <= i.position.y + i.size.y / 2.0
-                && player.position.y + player_size >= i.position.y + i.size.x / 2.0
+                && player.position.y + player_size >= i.position.y + i.size.y / 2.0
             {
-                if player.velocity.y < 0.0 {
-                    player.position.y = i.position.y + i.size.y / 2.0 + player_size;
-                } else if player.velocity.y > 0.0 {
-                    player.position.y = i.position.y - i.size.y / 2.0 - player_size;
-                }
+                // if player.velocity.y < 0.0 {
+                //     player.position.y = i.position.y + i.size.y / 2.0 + player_size;
+                // } else if player.velocity.y > 0.0 {
+                //     player.position.y = i.position.y - i.size.y / 2.0 - player_size;
+                // }
                 player.position.y -= velocity_modifier.y;
                 player.velocity.y = 0.0;
 

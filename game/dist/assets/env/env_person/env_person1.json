@@ -1,10 +1,10 @@
 {
-    "name": "env_personLie1",
+    "name": "env_person1",
     "bottom_texture": {
-        "file_path": "assets/env/env_umbrella/env_blank.png"
+        "file_path": "assets/env/env_person/env_blank.png"
     },
     "top_texture": {
-        "file_path": "assets/env/env_umbrella/env_personLie1.png"
+        "file_path": "assets/env/env_person/env_personLie1.png"
     },
     "footprint":[
         {

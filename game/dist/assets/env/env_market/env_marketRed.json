@@ -1,10 +1,10 @@
 {
-    "name": "env_market",
+    "name": "env_marketRed",
     "bottom_texture": {
-        "file_path": "assets/env/env_umbrella/env_marketBottom.png"
+        "file_path": "assets/env/env_market/env_marketBottom.png"
     },
     "top_texture": {
-        "file_path": "assets/env/env_umbrella/env_marketTop.png"
+        "file_path": "assets/env/env_market/env_marketTop.png"
     },
     "footprint": [
         {

@@ -1,0 +1,65 @@
+{
+    "name": "env_carGrey",
+    "bottom_texture": {
+        "file_path": "assets/env/env_cars/env_carWheels.png"
+    },
+    "top_texture": {
+        "file_path": "assets/env/env_cars/env_carGrey.png"
+    },
+    "footprint": [
+        {
+            "position": [
+                0,
+                0
+            ],
+            "size": [
+                384,
+                512
+            ]
+        }
+    ],
+    "visualization_radius": 220.0,
+    "physics_colliders": [
+        {
+            "position": [
+                -107,
+                113
+            ],
+            "size": [
+                42,
+                78
+            ]
+        },
+        {
+            "position": [
+                107,
+                113
+            ],
+            "size": [
+                42,
+                78
+            ]
+        },
+        {
+            "position": [
+                -107,
+                -113
+            ],
+            "size": [
+                42,
+                78
+            ]
+        },
+        {
+            "position": [
+                107,
+                -113
+            ],
+            "size": [
+                42,
+                78
+            ]
+        }
+    ],
+    "temperature": 7.0
+}
