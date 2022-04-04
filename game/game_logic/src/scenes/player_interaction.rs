@@ -30,6 +30,7 @@ pub struct PlayableScene {
     world_colliders: Vec<WorldSpaceObjectCollider>,
     show_debug_info: bool,
     play_start_time: DateTime<Utc>,
+    player_start_position: na::Vector2<f32>,
 }
 
 impl PlayableScene {
@@ -42,11 +43,18 @@ impl PlayableScene {
         let map_renderer = MapRenderer::new(
             "map_gameMap.tmx",
             "map_gameMap.objects.json",
+            "map_gameMap.end.json",
             raylib_handle,
             thread,
         )
         .unwrap();
         let world_colliders = map_renderer.get_world_colliders();
+
+        // Define the player start position
+        let player_start_position = na::Vector2::new(
+            10.0 * constants.tile_size as f32,
+            -10.0 * constants.tile_size as f32,
+        );
 
         // Load the game music
         let game_soundtrack =
@@ -54,10 +62,8 @@ impl PlayableScene {
 
         Self {
             has_updated_discord_rpc: false,
-            player: Player::new(na::Vector2::new(
-                10.0 * constants.tile_size as f32,
-                -10.0 * constants.tile_size as f32,
-            )),
+            player_start_position,
+            player: Player::new(player_start_position),
             world_map: map_renderer,
             camera: raylib::camera::Camera2D {
                 target: raylib::math::Vector2 { x: 0.0, y: 0.0 },
@@ -98,6 +104,8 @@ impl PlayableScene {
                 .unwrap();
             self.has_updated_discord_rpc = true;
             self.play_start_time = Utc::now();
+            self.player.position = self.player_start_position;
+            self.player.velocity = na::Vector2::new(0.0, 0.0);
         }
 
         // Ensure the game soundtrack is playing
@@ -119,15 +127,22 @@ impl PlayableScene {
         self.draw_ui(&mut draw, constants);
 
         // NOTE: If you want to trigger a cutscene, do it here by using one of:
-        // return MenuStateSignal::DoFinishedCutscene {
-        //     playtime: Utc::now().signed_duration_since(self.play_start_time),
-        // };
         // return MenuStateSignal::DoMeltedDeathCutscene {
         //     playtime: Utc::now().signed_duration_since(self.play_start_time),
         // };
         // return MenuStateSignal::DoOceanCutscene {
         //     playtime: Utc::now().signed_duration_since(self.play_start_time),
         // };
+
+        // Handle winning
+        if self
+            .world_map
+            .is_point_inside_win_zone(self.player.position)
+        {
+            return MenuStateSignal::DoFinishedCutscene {
+                playtime: Utc::now().signed_duration_since(self.play_start_time),
+            };
+        }
 
         // A little hack to make pausing work
         if draw.is_key_pressed(KeyboardKey::KEY_ESCAPE) {
@@ -197,14 +212,18 @@ impl PlayableScene {
             );
         }
 
-        draw.draw_rectangle(draw.get_screen_width() / 2 - 225, 0, 450, 40, Color::WHITE);
-        draw.draw_text(
-            "Unregistered HyperCam 2",
-            draw.get_screen_width() / 2 - 215,
-            0,
-            32,
-            Color::BLACK,
-        );
+        // Draw the hint arrow
+        self.world_map
+            .render_hud_endgoal_arrow(draw, self.player.position, &self.camera);
+
+        // draw.draw_rectangle(draw.get_screen_width() / 2 - 225, 0, 450, 40, Color::WHITE);
+        // draw.draw_text(
+        //     "Unregistered HyperCam 2",
+        //     draw.get_screen_width() / 2 - 215,
+        //     0,
+        //     32,
+        //     Color::BLACK,
+        // );
     }
 
     // Physics

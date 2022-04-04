@@ -107,11 +107,16 @@ impl MainMenu {
 
         // TODO: Render stuff
         //Label Colors
-        let label_colors = Color::BLACK;
-        let label_shadow_colors = Color::GRAY;
+        let label_colors = Color::new(123, 201, 244, 255);
+        let label_shadow_colors = Color::new(82, 135, 195, 255);
 
         //Initial Option placeholder words in the main menu
+        draw.draw_text(&constants.game_name, 103, 93, 60, label_shadow_colors);
+        draw.draw_text(&constants.game_name, 97, 87, 60, label_shadow_colors);
         draw.draw_text(&constants.game_name, 100, 90, 60, label_colors);
+
+
+        //Options
         draw.draw_text("Start Game", 100, 190, 34, label_colors);
         draw.draw_text("Credits", 100, 410, 34, label_colors);
         draw.draw_text("Leaderboard", 100, 470, 34, label_colors);
@@ -146,7 +151,7 @@ impl MainMenu {
         }
 
         //Volume Controller
-        //Color Pallete Variables
+        //Colors Pallete Variables
         let tile_color = Color::new(158, 93, 65, 255);
         let outer_ring_color = Color::new(255, 191, 113, 255);
         let inner_ring_color = Color::new(244, 203, 184, 255);
@@ -395,9 +400,10 @@ impl MainMenu {
         constants: &ProjectConstants,
         audio_subsystem: &mut RaylibAudio,
     ) -> MenuStateSignal {
+
         //Colors
-        let label_colors = Color::BLACK;
-        let label_shadow_colors = Color::GRAY;
+        let label_colors = Color::new(123, 201, 244, 255);
+        let label_shadow_colors = Color::new(82, 135, 195, 255);
         let credits_colours = Color::new(82, 135, 195, 255);
 
         let mut draw = raylib.begin_drawing(rl_thread);
@@ -414,6 +420,8 @@ impl MainMenu {
         let window_height = draw.get_screen_height();
         let window_width = draw.get_screen_width();
 
+        draw.draw_text("Credits", (window_width / 2) - 97, 27, 55, label_shadow_colors);
+        draw.draw_text("Credits", (window_width / 2) - 103, 33, 55, label_shadow_colors);
         draw.draw_text("Credits", (window_width / 2) - 100, 30, 55, label_colors);
 
         draw.draw_text(
@@ -511,8 +519,8 @@ impl MainMenu {
         audio_subsystem: &mut RaylibAudio,
     ) -> MenuStateSignal {
         //Colors
-        let label_colors = Color::BLACK;
-        let label_shadow_colors = Color::GRAY;
+        let label_colors = Color::new(123, 201, 244, 255);
+        let label_shadow_colors = Color::new(82, 135, 195, 255);
 
         let mut draw = raylib.begin_drawing(rl_thread);
         draw.clear_background(Color::WHITE);
@@ -529,6 +537,20 @@ impl MainMenu {
         draw.draw_text(&mouse_y.to_string(), 70, 5, 20, Color::BLACK);
 
         let window_width = draw.get_screen_width();
+        draw.draw_text(
+            "Leaderboard",
+            (window_width / 2) - 173,
+            27,
+            55,
+            label_shadow_colors,
+        );
+        draw.draw_text(
+            "Leaderboard",
+            (window_width / 2) - 179,
+            33,
+            55,
+            label_shadow_colors,
+        );
         draw.draw_text(
             "Leaderboard",
             (window_width / 2) - 176,

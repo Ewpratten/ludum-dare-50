@@ -1,7 +1,7 @@
 use std::{collections::HashMap, path::PathBuf, sync::Arc};
 
 use crate::{
-    asset_manager::{load_texture_from_internal_data, InternalData},
+    asset_manager::{load_json_structure, load_texture_from_internal_data, InternalData},
     model::{world_object::WorldSpaceObjectCollider, world_object_package::WorldObjectPackage},
 };
 use nalgebra as na;
@@ -79,6 +79,8 @@ pub struct MapRenderer {
     map: Map,
     tile_textures: HashMap<PathBuf, Texture2D>,
     world_objects: WorldObjectPackage,
+    world_end: na::Vector2<i32>,
+    cup_icon: Texture2D,
 }
 
 impl MapRenderer {
@@ -86,6 +88,7 @@ impl MapRenderer {
     pub fn new(
         tmx_path: &str,
         objects_path: &str,
+        end_path: &str,
         raylib: &mut RaylibHandle,
         raylib_thread: &RaylibThread,
     ) -> Result<Self, MapRenderError> {
@@ -98,6 +101,14 @@ impl MapRenderer {
         // Attempt to parse the TMX file
         let mut loader = Loader::with_cache(ProgramDataTileCache::new());
         let map = loader.load_tmx_map_from(data.as_slice(), tmx_path)?;
+
+        // Load the cup icon
+        let cup_icon = load_texture_from_internal_data(
+            raylib,
+            raylib_thread,
+            "assets/prp/prp_cupIcon/prp_cupIcon.png",
+        )
+        .unwrap();
 
         // Iterate over all images in the map
         let mut tile_textures = HashMap::new();
@@ -123,11 +134,14 @@ impl MapRenderer {
 
         // Load the world objects
         let world_objects = WorldObjectPackage::load(raylib, raylib_thread, objects_path).unwrap();
+        let world_end = load_json_structure(end_path).unwrap();
 
         Ok(Self {
             map,
             tile_textures,
             world_objects,
+            world_end,
+            cup_icon,
         })
     }
 
@@ -264,10 +278,7 @@ impl MapRenderer {
             Vector2::new(screen_width as f32, screen_height as f32),
             camera,
         );
-        let player_position = na::Vector2::new(
-            player_position.x,
-            player_position.y * -1.0,
-        );
+        let player_position = na::Vector2::new(player_position.x, player_position.y * -1.0);
 
         // Handle each layer from the bottom up
         for layer in self.map.layers() {
@@ -324,7 +335,8 @@ impl MapRenderer {
                                     // Check if there is an object at this tile
                                     for obj_ref in &self.world_objects.object_references {
                                         if obj_ref.get_tile_space_position().x == sampler_x as f32
-                                            && obj_ref.get_tile_space_position().y == sampler_y as f32
+                                            && obj_ref.get_tile_space_position().y
+                                                == sampler_y as f32
                                         {
                                             // Get access to the actual object definition
                                             let object_key = obj_ref.into_key();
@@ -344,7 +356,8 @@ impl MapRenderer {
                                                     .unwrap();
                                                 tex.render_automatic(
                                                     draw_handle,
-                                                    obj_ref.get_world_space_position() - (tex.size() / 2.0),
+                                                    obj_ref.get_world_space_position()
+                                                        - (tex.size() / 2.0),
                                                     None,
                                                     Some(tex.size() / 2.0),
                                                     Some(obj_ref.rotation_degrees),
@@ -356,7 +369,8 @@ impl MapRenderer {
                                                     .bottom_static_textures
                                                     .get_mut(&object_key)
                                                     .unwrap();
-                                                let p: Vector2 = obj_ref.get_world_space_position().into();
+                                                let p: Vector2 =
+                                                    obj_ref.get_world_space_position().into();
                                                 let r1 = Rectangle {
                                                     x: 0.0,
                                                     y: 0.0,
@@ -390,8 +404,10 @@ impl MapRenderer {
                                                 if let Some(footprint_radius) =
                                                     obj_def.visualization_radius
                                                 {
-                                                    let player_dist_to_object =
-                                                        (obj_ref.get_world_space_position() - player_position).norm();
+                                                    let player_dist_to_object = (obj_ref
+                                                        .get_world_space_position()
+                                                        - player_position)
+                                                        .norm();
                                                     // debug!(
                                                     //     "Player dist to object: {}",
                                                     //     player_dist_to_object
@@ -409,7 +425,8 @@ impl MapRenderer {
                                                         .unwrap();
                                                     tex.render_automatic(
                                                         draw_handle,
-                                                        obj_ref.get_world_space_position() - (tex.size() / 2.0),
+                                                        obj_ref.get_world_space_position()
+                                                            - (tex.size() / 2.0),
                                                         None,
                                                         Some(tex.size() / 2.0),
                                                         Some(obj_ref.rotation_degrees),
@@ -421,7 +438,8 @@ impl MapRenderer {
                                                         .top_static_textures
                                                         .get_mut(&object_key)
                                                         .unwrap();
-                                                    let p: Vector2 = obj_ref.get_world_space_position().into();
+                                                    let p: Vector2 =
+                                                        obj_ref.get_world_space_position().into();
                                                     let r1 = Rectangle {
                                                         x: 0.0,
                                                         y: 0.0,
@@ -478,73 +496,103 @@ impl MapRenderer {
         self.world_objects.world_space_colliders.clone()
     }
 
-    // /// Used to modify the player's velocity based on the effects of the world
-    // pub fn effect_velocity_with_collisions(
-    //     &self,
-    //     player_position: na::Vector2<f32>,
-    //     player_velocity: na::Vector2<f32>,
-    // ) -> na::Vector2<f32> {
-    //     // If the player is not moving, we don't need to do anything
-    //     if player_velocity.norm() == 0.0 {
-    //         return player_velocity;
-    //     }
+    pub fn is_point_inside_win_zone(&self, position: na::Vector2<f32>) -> bool {
+        // Convert the position to a tile position
+        let tile_x = (position.x / 128.0).floor() as i32;
+        let tile_y = ((position.y * -1.0) / 128.0).floor() as i32;
+        // debug!("Tile x: {}, y: {}", tile_x, tile_y);
 
-    //     // Get the velocity unit vector
-    //     let player_velocity_unit_vector = player_velocity.normalize();
+        // Check if the tile is inside the win zone
+        tile_x == self.world_end.x && tile_y == self.world_end.y
+    }
 
-    //     // Find the position 1 pixel infront of the player
-    //     let player_position_1_pixel_infront = player_position + player_velocity_unit_vector;
-    //     let next_player_position = player_position + player_velocity;
+    pub fn get_screenspace_vector_to_win_zone(
+        &self,
+        draw: &mut RaylibDrawHandle,
+        screen_center: na::Vector2<f32>,
+        camera: &Camera2D,
+    ) -> na::Vector2<f32> {
+        let win_zone_position_world_space = Vector2::new(
+            self.world_end.x as f32 * 128.0,
+            (self.world_end.y as f32 * -1.0) * 128.0,
+        );
+        let win_zone_position_screenspace =
+            draw.get_world_to_screen2D(win_zone_position_world_space, camera);
+        na::Vector2::new(
+            win_zone_position_screenspace.x - screen_center.x,
+            win_zone_position_screenspace.y - screen_center.y,
+        )
+    }
 
-    //     // Check if this is in the collision zone of any objects
-    //     for obj_ref in &self.world_objects.object_references {
-    //         // Filter out anything more than 1000 pixels away
-    //         if (obj_ref.position - player_position).norm() > 1000.0 {
-    //             continue;
-    //         }
+    pub fn render_hud_endgoal_arrow(
+        &self,
+        draw: &mut RaylibDrawHandle,
+        player_position: na::Vector2<f32>,
+        camera: &Camera2D,
+    ) {
+        // Get the center of the screen
+        let screen_center = na::Vector2::new(
+            draw.get_screen_width() as f32 / 2.0,
+            draw.get_screen_height() as f32 / 2.0,
+        );
 
-    //         // Get the object definition
-    //         let object_key =  obj_ref.into_key();
-    //         let obj_def = self
-    //             .world_objects
-    //             .object_definitions
-    //             .get(&object_key)
-    //             .unwrap();
+        // Get the vector to the win zone
+        let vector_to_win_zone =
+            self.get_screenspace_vector_to_win_zone(draw, screen_center, camera);
+        let unit_vector_to_win_zone = vector_to_win_zone.normalize();
 
-    //         // Check if the player is about to be in a collision zone
-    //         for collider in &obj_def.physics_colliders {
-    //             // Handle a radius collider vs a size collider
-    //             if let Some(radius) = collider.radius {
-    //                 // Check if we are about to collide with the circle
-    //                 if (next_player_position - obj_ref.position).norm() < radius {
-    //                     // Get the angle from the player to the center of the collider
-    //                     let angle_to_center =
-    //                         (obj_ref.position - player_position).angle(&na::Vector2::new(0.0, 0.0));
-    //                     if angle_to_center.abs() <= std::f32::consts::FRAC_PI_2 {
-    //                         // Apply the inverse of the velocity to the player
-    //                         return na::Vector2::zeros();
-    //                     }
-    //                 }
-    //             } else if let Some(size) = collider.size {
-    //                 // TODO: make this work for regular and rotated objects
-    //             }
-    //         }
-    //     }
+        // Get the screenspace position of the win zone
+        let win_zone_position_screenspace = draw.get_world_to_screen2D(
+            Vector2::new(
+                self.world_end.x as f32 * 128.0,
+                (self.world_end.y as f32 * -1.0) * 128.0,
+            ),
+            camera,
+        );
 
-    //     // Check if the player is about to leave the map
-    //     let mut player_velocity = player_velocity;
-    //     if next_player_position.x < 0.0 {
-    //         player_velocity.x = 0.0;
-    //     } else if next_player_position.x > self.map.width as f32 * 128.0 {
-    //         player_velocity.x = 0.0;
-    //     }
-    //     if next_player_position.y > 0.0 {
-    //         player_velocity.y = 0.0;
-    //     } else if next_player_position.y < self.map.height as f32 * -128.0 {
-    //         player_velocity.y = 0.0;
-    //     }
+        // If the win zone is inside the camera's view, don't render the arrow
+        if !(win_zone_position_screenspace.x < 0.0
+            || win_zone_position_screenspace.x > draw.get_screen_width() as f32
+            || win_zone_position_screenspace.y < 0.0
+            || win_zone_position_screenspace.y > draw.get_screen_height() as f32)
+        {
+            return;
+        }
 
-    //     // If we got here, the player is not in a collision zone
-    //     player_velocity
-    // }
+        // // Draw the line
+        // draw.draw_line(
+        //     screen_center.x as i32,
+        //     screen_center.y as i32,
+        //     (win_zone_position_screenspace.x + unit_vector_to_win_zone.x * 32.0) as i32,
+        //     (win_zone_position_screenspace.y + unit_vector_to_win_zone.y * 32.0) as i32,
+        //     Color::RED,
+        // );
+
+        // // Define the screen rect
+        // let screen_rect = Rectangle {
+        //     x: 0.0,
+        //     y: 0.0,
+        //     width: draw.get_screen_width() as f32,
+        //     height: draw.get_screen_height() as f32,
+        // };
+
+        // Find the intersection of the line and the screen edge
+        let intersect = unit_vector_to_win_zone * (draw.get_screen_height() as f32 / 2.0);
+
+        // Render the cup icon
+        draw.draw_texture(
+            &self.cup_icon,
+            (screen_center.x + intersect.x) as i32 - self.cup_icon.width as i32 / 2,
+            (screen_center.y + intersect.y) as i32 - self.cup_icon.height as i32 / 2,
+            Color::WHITE,
+        );
+
+        // Render a circle where the line meets the screen edge
+        draw.draw_circle_lines(
+            (screen_center.x + intersect.x) as i32,
+            (screen_center.y + intersect.y) as i32,
+            16.0,
+            Color::BLACK,
+        );
+    }
 }
