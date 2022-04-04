@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["CutScenes",""]]});
+initSidebarItems({"constant":[["MIWU_WHITE",""],["MIWU_WHITE_V2",""]],"struct":[["CutScenes",""]]});
