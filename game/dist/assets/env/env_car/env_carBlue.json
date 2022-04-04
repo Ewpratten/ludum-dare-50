@@ -1,10 +1,10 @@
 {
-    "name": "env_carOrange",
+    "name": "env_carBlue",
     "bottom_texture": {
-        "file_path": "assets/env/env_cars/env_carWheels.png"
+        "file_path": "assets/env/env_car/env_carWheels.png"
     },
     "top_texture": {
-        "file_path": "assets/env/env_cars/env_carOrange.png"
+        "file_path": "assets/env/env_car/env_carBlue.png"
     },
     "footprint": [
         {
@@ -18,7 +18,7 @@
             ]
         }
     ],
-    "visualization_radius": 220.0,
+    "visualization_radius": 220,
     "physics_colliders": [
         {
             "position": [
@@ -61,5 +61,5 @@
             ]
         }
     ],
-    "temperature": 7.0
+    "temperature": 7
 }

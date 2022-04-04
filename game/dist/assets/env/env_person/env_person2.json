@@ -4,7 +4,7 @@
         "file_path": "assets/env/env_person/env_blank.png"
     },
     "top_texture": {
-        "file_path": "assets/env/env_person/env_person1.png"
+        "file_path": "assets/env/env_person/env_personSit1.png"
     },
     "footprint":[
         {

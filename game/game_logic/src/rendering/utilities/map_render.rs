@@ -503,6 +503,15 @@ impl MapRenderer {
                             draw_handle.draw_pixel(x as i32, y as i32, Color::BLUE);
                         }
                     }
+                    // for collider in &self.world_objects.world_space_colliders {
+                    //     draw_handle.draw_rectangle_lines(
+                    //         (collider.position.x-collider.size.x/2.0) as i32,
+                    //         -(collider.position.y+collider.size.y/2.0) as i32,
+                    //         collider.size.x as i32,
+                    //         collider.size.y as i32,
+                    //         Color::BLUEVIOLET,
+                    //     );
+                    // }
                 }
             }
         }

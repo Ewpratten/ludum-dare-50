@@ -1,31 +1,82 @@
 [
     {
         "type": "env",
-        "name": "env_umbrella",
-        "variant": "Blue",
-        "position": [
-            5,
-            7
-        ],
-        "rotation_degrees": 90
-    },
-    {
-        "type": "env",
-        "name": "env_umbrella",
-        "variant": "RedTowels",
-        "position": [
-            7,
-            7
-        ],
-        "rotation_degrees": 180
-    },
-    {
-        "type": "env",
-        "name": "env_towel",
+        "name": "env_market",
         "variant": "Red",
         "position": [
-            6,
-            9
+            14,120
+        ],
+        "rotation_degrees": 0
+    },
+    {
+        "type": "env",
+        "name": "env_market",
+        "variant": "Yellow",
+        "position": [
+            14,115
+        ],
+        "rotation_degrees": 0
+    },
+    {
+        "type": "env",
+        "name": "env_market",
+        "variant": "Purple",
+        "position": [
+            14,110
+        ],
+        "rotation_degrees": 0
+    },
+    {
+        "type": "env",
+        "name": "env_market",
+        "variant": "Red",
+        "position": [
+            20,105
+        ],
+        "rotation_degrees": 0
+    },
+    {
+        "type": "env",
+        "name": "env_market",
+        "variant": "Yellow",
+        "position": [
+            20,96
+        ],
+        "rotation_degrees": 0
+    },
+    {
+        "type": "env",
+        "name": "env_market",
+        "variant": "Yellow",
+        "position": [
+            19,46
+        ],
+        "rotation_degrees": 0
+    },
+    {
+        "type": "env",
+        "name": "env_market",
+        "variant": "Purple",
+        "position": [
+            19,32
+        ],
+        "rotation_degrees": 0
+    },
+    {
+        "type": "env",
+        "name": "env_market",
+        "variant": "Purple",
+        "position": [
+            20,76
+        ],
+        "rotation_degrees": 0
+    },
+    {
+        "type": "env",
+        "name": "env_market",
+        "variant": "Yellow",
+        "position": [
+            15,15
         ],
         "rotation_degrees": 0
     },
@@ -34,17 +85,25 @@
         "name": "env_chair",
         "variant": "Dark",
         "position": [
-            4,
-            9
+            4,124
         ],
-        "rotation_degrees": -90
+        "rotation_degrees": 0
     },
     {
         "type": "env",
-        "name": "env_market",
-        "variant": "Red",
+        "name": "env_chair",
+        "variant": "Dark",
         "position": [
-            14,14
+            6,124
+        ],
+        "rotation_degrees": 0
+    },
+    {
+        "type": "env",
+        "name": "env_chair",
+        "variant": "Light",
+        "position": [
+            19,119
         ],
         "rotation_degrees": 0
     }
