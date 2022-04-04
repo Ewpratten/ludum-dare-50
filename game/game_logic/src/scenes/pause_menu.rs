@@ -54,8 +54,8 @@ impl PauseMenu {
         draw.clear_background(Color::WHITE);
 
         //Color Pallette
-        let label_colors = Color::BLACK;
-        let label_shadow_colors = Color::GRAY;
+        let label_colors = Color::new(123, 201, 244, 255);
+        let label_shadow_colors = Color::new(82, 135, 195, 255);
 
         //Obtain mouse position
         let mouse_x = draw.get_mouse_x();
@@ -78,6 +78,8 @@ impl PauseMenu {
         }
 
         // Title
+        draw.draw_text("Paused", 97, 87, 60, label_shadow_colors);
+        draw.draw_text("Paused", 103, 93, 60, label_shadow_colors);
         draw.draw_text("Paused", 100, 90, 60, label_colors);
 
         //Return to Main Menu button variables
