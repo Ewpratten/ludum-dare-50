@@ -366,7 +366,8 @@ impl PlayableScene {
             current_temperature_val = val + 273.15;
         }
 
-        let melt_amount = constants.player.melt_speed * ((((current_temperature_val/298.78121)-1.0) * 50.0) + 1.0);
+        let melt_amount = constants.player.melt_speed 
+            + (constants.player.melt_speed * (((current_temperature_val / 298.78121) - 1.0) * 10.0));
 
         player.size -= melt_amount * delta_time;
         
