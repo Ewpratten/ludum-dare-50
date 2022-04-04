@@ -44,9 +44,8 @@
         "name": "env_market",
         "variant": "Red",
         "position": [
-            14,
-            119
+            14,14
         ],
-        "rotation_degrees": 90
+        "rotation_degrees": 0
     }
 ]
