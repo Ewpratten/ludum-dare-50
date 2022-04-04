@@ -50,7 +50,7 @@ pub async fn handle_graphics_blocking<ConfigBuilder>(
     // Set up audio
     debug!("Set up Audio");
     let audio_subsystem = RaylibAudio::init_audio_device();
-    audio_subsystem.set_master_volume(0.4);
+    audio_subsystem.set_master_volume(game_settings.volume.unwrap_or(0.5));
 
     // Set up the internal screens
     let mut loading_screen = crate::rendering::screens::loading_screen::LoadingScreen::new();
